@@ -1,0 +1,46 @@
+# This workflow will build a golang project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
+
+name: CI-Build
+
+on:
+  push:
+    branches:
+      - main
+      - release-*
+  pull_request:
+    branches:
+      - main
+      - release-*
+
+jobs:
+  build-docker-images:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get the version
+        id: get_version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/}
+          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Get image registry
+        id: get_image_registry
+        run: |
+          echo "IMG_REGISTRY=${{ secrets.NX_ALIYUN_REGISTRY }}" >> $GITHUB_OUTPUT
+
+#      - name: Docker Login
+#        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
+#        with:
+#          registry: ${{ secrets.NX_ALIYUN_REGISTRY }}
+#          username: ${{ secrets.NX_ALIYUN_USERNAME }}
+#          password: ${{ secrets.NX_ALIYUN_PASSWORD }}
+
+#      - name: Build Images
+#        run: make docker-build-apiserver IMG_REGISTRY=${{ steps.get_image_registry.outputs.IMG_REGISTRY }} VERSION=${{ steps.get_version.outputs.VERSION }}
+#
+#      - name: Push Images
+#        run: make docker-push-apiserver IMG_REGISTRY=${{ steps.get_image_registry.outputs.IMG_REGISTRY }} VERSION=${{ steps.get_version.outputs.VERSION }}
+
+
