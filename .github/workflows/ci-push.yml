@@ -3,7 +3,8 @@ name: CI-Push
 on:
   push:
     branches:
-      - master
+      - main
+      - release-*
     tags:
       - "v*"
   workflow_dispatch: {}
