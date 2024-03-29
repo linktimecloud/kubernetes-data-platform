@@ -22,7 +22,6 @@ import (
 	"encoding/base64"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"os/exec"
@@ -50,31 +49,31 @@ func ArrayJoin(arr []string, delimeter string) string {
 func DownloadFile(url string, targetDir string) error {
 	log.Debugf("Downloading file %s to %s", url, targetDir)
 	if err := os.MkdirAll(targetDir, 0755); err != nil {
-		return fmt.Errorf("Failed to create target directory: %v", err)
+		return fmt.Errorf("failed to create target directory: %v", err)
 	}
 
 	client := &http.Client{}
 	resp, err := client.Head(url)
 	if err != nil {
-		return fmt.Errorf("Failed to fetch headers of remote file: %s", err)
+		return fmt.Errorf("failed to fetch headers of remote file: %s", err)
 	}
 	defer resp.Body.Close()
 
 	remoteModTime, err := time.Parse(time.RFC1123, resp.Header.Get("Last-Modified"))
 	if err != nil {
-		return fmt.Errorf("Failed to stat remote file: %s", err)
+		return fmt.Errorf("failed to stat remote file: %s", err)
 	}
 
 	localFilePath := filepath.Join(targetDir, filepath.Base(url))
 	if _, err := os.Stat(localFilePath); !os.IsNotExist(err) {
 		localFileInfo, err := os.Stat(localFilePath)
 		if err != nil {
-			return fmt.Errorf("Failed to stat local file: %s", err)
+			return fmt.Errorf("failed to stat local file: %s", err)
 		}
 
 		if !remoteModTime.Before(localFileInfo.ModTime()) {
 			if err := os.Remove(localFilePath); err != nil {
-				return fmt.Errorf("Failed to remove local file: %s", err)
+				return fmt.Errorf("failed to remove local file: %s", err)
 			}
 		}
 	}
@@ -82,17 +81,17 @@ func DownloadFile(url string, targetDir string) error {
 	if _, err := os.Stat(localFilePath); os.IsNotExist(err) {
 		resp, err = client.Get(url)
 		if err != nil {
-			return fmt.Errorf("Failed to download file: %s", err)
+			return fmt.Errorf("failed to download file: %s", err)
 		}
 		defer resp.Body.Close()
 
-		body, err := ioutil.ReadAll(resp.Body)
+		body, err := io.ReadAll(resp.Body)
 		if err != nil {
-			return fmt.Errorf("Failed to read response body: %s", err)
+			return fmt.Errorf("failed to read response body: %s", err)
 		}
 
-		if err := ioutil.WriteFile(localFilePath, body, 0644); err != nil {
-			return fmt.Errorf("Failed to write to local file: %s", err)
+		if err := os.WriteFile(localFilePath, body, 0644); err != nil {
+			return fmt.Errorf("failed to write to local file: %s", err)
 		}
 	}
 
@@ -197,7 +196,7 @@ func Getenv(key, fallback string) string {
 
 func GitCloneAuth(privateSshKeyFile string) transport.AuthMethod {
 	var auth transport.AuthMethod
-	sshKey, _ := ioutil.ReadFile(privateSshKeyFile)
+	sshKey, _ := os.ReadFile(privateSshKeyFile)
 	signer, _ := ssh.ParsePrivateKey([]byte(sshKey))
 	auth = &gitssh.PublicKeys{
 		User:   "git",
@@ -209,7 +208,7 @@ func GitCloneAuth(privateSshKeyFile string) transport.AuthMethod {
 	return auth
 }
 
-// Define a function to clone a git repo to specific directory
+// GitCloneToDir Define a function to clone a git repo to specific directory
 func GitCloneToDir(repoUrl, repoRef, targetDir string) error {
 	log.Debugf("Cloning git repo %s to %s", repoUrl, targetDir)
 
@@ -262,7 +261,7 @@ func GenRegistryAuthFile(registry, authToken, authFile string) error {
 		return fmt.Errorf("failed to render registry auth template: %v", err)
 	}
 	// write file
-	err = ioutil.WriteFile(authFile, buf.Bytes(), 0644)
+	err = os.WriteFile(authFile, buf.Bytes(), 0644)
 	if err != nil {
 		return fmt.Errorf("failed to write registry auth file: %v", err)
 	}
@@ -356,19 +355,19 @@ func KindDeleteCluster(clusterName string) error {
 func ValidateDockerRegistryAuth(registry, username, password string) error {
 	req, err := http.NewRequest("HEAD", fmt.Sprintf("https://%s/v2/", registry), nil)
 	if err != nil {
-		return fmt.Errorf("Error creating request: %v", err)
+		return fmt.Errorf("error creating request: %v", err)
 	}
 
 	req.SetBasicAuth(username, password)
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return fmt.Errorf("Error making request: %v", err)
+		return fmt.Errorf("error making request: %v", err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("Failed to authenticate docker registry '%s' , status code: %d", registry, resp.StatusCode)
+		return fmt.Errorf("failed to authenticate docker registry '%s' , status code: %d", registry, resp.StatusCode)
 	}
 
 	log.Debugf("Successfully authenticated to docker registry <%s>", registry)

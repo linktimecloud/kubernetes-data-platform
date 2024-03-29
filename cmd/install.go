@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,14 +19,13 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	
 
 	"kdp/pkg/utils"
 	"kdp/pkg/vela"
 
-	"github.com/spf13/cobra"
 	log "github.com/sirupsen/logrus"
-	"golang.org/x/crypto/ssh/terminal"
+	"github.com/spf13/cobra"
+	"golang.org/x/term"
 )
 
 // installCmd represents the install command
@@ -35,7 +34,7 @@ var installCmd = &cobra.Command{
 	Short: "Install KDP infrastructure",
 	Long: `Perform an install of KDP infrastructure. 
 By default the install process will skip components that already been installed.`,
-	
+
 	Example: `  Install KDP infrastructure to an exisiting Kunernetes cluster:
     kdp install 
   Install KDP infrastructure in local mode(using kind to create a local K8s cluster):
@@ -44,7 +43,7 @@ By default the install process will skip components that already been installed.
     kdp install --set namespace=<your-namespace>
   Install KDP infrastructure with specific root domain and TLS:
     kdp install --set ingress.domain=<your-ingress-domain> --set ingress.tlsSecretName=<your-ingress-tlsSecretName>`,
-	
+
 	Run: func(cmd *cobra.Command, args []string) {
 
 		log.Info("Ready to install KDP infrastructure, this may take a few minutes...")
@@ -60,28 +59,28 @@ By default the install process will skip components that already been installed.
 		log.Debug("##### ##### #####")
 
 		if forceReinstall {
-		    _, err := utils.ExecCmd(
+			_, err := utils.ExecCmd(
 				fmt.Sprintf(
-					"rm -rf %s && mv -f %s %s", 
+					"rm -rf %s && mv -f %s %s",
 					kdpSrcDirBak, kdpSrcDir, kdpSrcDirBak,
 				), true,
 			)
 			if err != nil {
-			    log.Errorf("Failed to backup KDP source codes: %v", err)
+				log.Errorf("Failed to backup KDP source codes: %v", err)
 				return
 			}
 		}
 		err := utils.GitCloneToDir(repoUrl, repoRef, kdpSrcDir)
 		if err != nil {
 			log.Errorf("Error installing KDP source codes: %v", err)
-		    return
+			return
 		}
 
 		if localMode {
 			log.Info("Local mode is enabled, creating a local kind cluster now")
-		    authFile := filepath.Join(kdpSrcDir, "e2e/config.json")
+			authFile := filepath.Join(kdpSrcDir, "e2e/config.json")
 			if _, err := os.Stat(authFile); os.IsNotExist(err) {
-			    var requireLogin string
+				var requireLogin string
 				var username string
 				var password []byte
 				doneLogin := false
@@ -90,45 +89,45 @@ By default the install process will skip components that already been installed.
 					log.Infof("Does docker registry <%s> require login? (y/n): ", dockerRegistry)
 					fmt.Scanln(&requireLogin)
 					switch requireLogin {
-						case "y", "yes":
-							for i := 0; i < 3; i++ {
-								log.Infof("Please enter username of docker registry <%s>: ", dockerRegistry)
-								fmt.Scanln(&username)
-								log.Infof("Please enter password of docker registry <%s>: ", dockerRegistry)
-								password, _ = terminal.ReadPassword(0)
-			
-								err = utils.ValidateDockerRegistryAuth(dockerRegistry, username, string(password))
-								if err != nil {
-									log.Warn("Unable to authenticate docker registry, please try again.")
-								} else {
-									break
-								}
+					case "y", "yes":
+						for i := 0; i < 3; i++ {
+							log.Infof("Please enter username of docker registry <%s>: ", dockerRegistry)
+							fmt.Scanln(&username)
+							log.Infof("Please enter password of docker registry <%s>: ", dockerRegistry)
+							password, _ = term.ReadPassword(0)
+
+							err = utils.ValidateDockerRegistryAuth(dockerRegistry, username, string(password))
+							if err != nil {
+								log.Warn("Unable to authenticate docker registry, please try again.")
+							} else {
+								break
 							}
-							doneLogin = true
-						case "n", "no":
-							log.Info("Skipping docker registry authentication.")
-							username = "anonymous"
-							password = []byte("anonymous")
-							doneLogin = true
-							err = nil
-						default:
-							log.Warn("Invalid input, please input 'y/yes' or 'n/no' and try again.")
+						}
+						doneLogin = true
+					case "n", "no":
+						log.Info("Skipping docker registry authentication.")
+						username = "anonymous"
+						password = []byte("anonymous")
+						doneLogin = true
+						err = nil
+					default:
+						log.Warn("Invalid input, please input 'y/yes' or 'n/no' and try again.")
 					}
 
 					if doneLogin {
-					    break
+						break
 					}
 				}
-				
+
 				if err != nil {
-				    log.Error(err)
+					log.Error(err)
 					return
 				}
 
 				authToken := utils.GenRegistryAuthToken(username, string(password))
 				err = utils.GenRegistryAuthFile(dockerRegistry, authToken, authFile)
 				if err != nil {
-				    log.Error(err)
+					log.Error(err)
 					return
 				}
 			}
@@ -136,7 +135,7 @@ By default the install process will skip components that already been installed.
 			kindClusterConfig := filepath.Join(kdpSrcDir, "e2e/kind-cluster.yaml")
 			err = utils.KindCreateCluster(kdpLocalCluster, kindClusterConfig)
 			if err != nil {
-			    log.Error(err)
+				log.Error(err)
 				return
 			}
 		}
@@ -144,7 +143,7 @@ By default the install process will skip components that already been installed.
 		err = vela.VelaInstall(artifactServer, dockerRegistry, kdpCacheDir, kdpBinDir, velaVersion, false)
 		if err != nil {
 			log.Errorf("Error installing KDP vela: %v", err)
-		    return
+			return
 		}
 
 		reservedParams := []string{fmt.Sprintf("helmURL=%s", helmRepo), fmt.Sprintf("registry=%s", dockerRegistry)}
@@ -152,7 +151,7 @@ By default the install process will skip components that already been installed.
 		err = vela.VelaAddonLocalInstall(kdpInfraAddons, mergedParams, kdpInfraDir, kdpBinDir, forceReinstall)
 		if err != nil {
 			log.Errorf("Error installing KDP vela addons: %v", err)
-		    return
+			return
 		}
 
 		log.Info("KDP infrastructure has been installed successfully!")
@@ -163,11 +162,11 @@ By default the install process will skip components that already been installed.
 
 func init() {
 	installCmd.Flags().StringVar(&repoUrl, "kdp-repo", defaultKdpRepoUrl, "URL of kubernetes-data-platform git repository")
-	installCmd.Flags().StringVar(&repoRef,"kdp-repo-ref", defaultKdpRepoRef, "Branch/Tag of kubernetes-data-platform git repository")
-	installCmd.Flags().StringVar(&artifactServer,"artifact-server", defaultArtifactServer, "KDP artifact server URL")
-	installCmd.Flags().StringVar(&helmRepo,"helm-repository", defaultHelmRepoisotry, "KDP helm repository URL")
-	installCmd.Flags().StringVar(&dockerRegistry,"docker-registry", defaultDockerRegistry, "KDP docker registry URL")
+	installCmd.Flags().StringVar(&repoRef, "kdp-repo-ref", defaultKdpRepoRef, "Branch/Tag of kubernetes-data-platform git repository")
+	installCmd.Flags().StringVar(&artifactServer, "artifact-server", defaultArtifactServer, "KDP artifact server URL")
+	installCmd.Flags().StringVar(&helmRepo, "helm-repository", defaultHelmRepoisotry, "KDP helm repository URL")
+	installCmd.Flags().StringVar(&dockerRegistry, "docker-registry", defaultDockerRegistry, "KDP docker registry URL")
 	installCmd.Flags().StringArrayVar(&setParameters, "set", []string{}, "Set runtime parameters by 'key=value', for example '--set key1=value1 --set key2=value2 ...'.")
-	installCmd.Flags().BoolVar(&forceReinstall,"force-reinstall", false, "Force re-install of KDP infrastructure. BE CAREFUL USING THIS FLAG AS IT WILL OVERWRITE EXISTING INSTALLATION!!!")
+	installCmd.Flags().BoolVar(&forceReinstall, "force-reinstall", false, "Force re-install of KDP infrastructure. BE CAREFUL USING THIS FLAG AS IT WILL OVERWRITE EXISTING INSTALLATION!!!")
 	installCmd.Flags().BoolVar(&localMode, "local-mode", false, "Install KDP infrastructure in local mode(generally used for development or quick start). In this mode, a kind(https://sigs.k8s.io/kind) K8s cluster will be created locally and KDP will be installed to this local K8s cluster.")
 }
