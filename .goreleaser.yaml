@@ -16,7 +16,7 @@ builds:
       - arm64
     main: ./main.go
     ldflags:
-      - -s -w -X kdp/cmd.CliVersion={{ .Version }} -X kdp/cmd.CliGitCommit={{.ShortCommit}} -X kdp/cmd.CliBuiltAt={{ .CommitDate }} -X kdp/cmd.CliOSArch={{ .Runtime.Goarch }}
+      - -s -w -X kdp/cmd.CliVersion={{ .Version }} -X kdp/cmd.CliGoVersion={{ .Env.GO_VERSION }} -X kdp/cmd.CliGitCommit={{.ShortCommit}} -X kdp/cmd.CliBuiltAt={{ .CommitDate }} -X kdp/cmd.CliOSArch={{ .Runtime.Goarch }}
     env:
       - CGO_ENABLED=0
 
