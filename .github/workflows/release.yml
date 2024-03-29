@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  release:
     permissions:
       contents: write
       actions: read
@@ -31,6 +31,25 @@ jobs:
         with:
           fetch-depth: 0
       - run: git fetch --force --tags
+      - name: Build CLI and Push CLI
+        run: |
+          make kdp-cli-push SERVER_USER=${{ secrets.REG_USER }} SERVER_PASSWORD=${{ secrets.REG_PASSWD }} SERVER_URL= ${{ secrets.ARTIFACT_SERVER_PULL }}
+
+      - name: Docker Login
+        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
+        with:
+          username: ${{ secrets.REG_USER }}
+          password: ${{ secrets.REG_PASSWD }}
+
+      - name: Build Images
+        id: build
+        run: |
+          make docker-build IMG_REGISTRY=${{ secrets.CONTAINER_REGISTRY }}
+
+      - name: Push Images
+        run: |
+          make docker-push IMG_REGISTRY=${{ secrets.CONTAINER_REGISTRY }}
+
       - name: Set up Go
         uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491
         with:
