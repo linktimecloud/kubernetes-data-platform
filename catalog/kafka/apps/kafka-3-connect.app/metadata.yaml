@@ -1,0 +1,15 @@
+version: v1.0.0-0.34.0-3-kafka-3.4.1
+invisible: false
+alias: Kafka Connect
+description: Kafka Connect旨在简化数据集成和数据流处理，用于将外部系统和数据源与Kafka集成。
+isGlobal: false
+i18n:
+  en:
+    description: >-
+      Kafka Connect aims to simplify data integration and data stream processing
+      for integrating external systems and data sources with Apache Kafka.
+dashboard:
+  - id: kdpKafkaConnect2023
+    name: kafka connect监控面板
+    i18n:
+      en: kafka connect Dashboard

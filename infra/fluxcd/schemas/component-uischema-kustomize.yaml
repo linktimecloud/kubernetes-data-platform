@@ -1,0 +1,30 @@
+- jsonKey: repoType
+  label: Repo Type
+  uiType: Select
+  sort: 1
+  validate:
+    required: true
+    defaultValue: git
+    options:
+      - label: Git
+        value: git
+      - label: Oss
+        value: oss
+      - label: Oci
+        value: oci  
+- jsonKey: url
+  label: Repo URL
+  sort: 2
+  validate:
+    required: true
+- jsonKey: path
+  label: Path
+  sort: 3
+  validate:
+    required: true
+- jsonKey: pullInterval
+  label: PullInterval
+  sort: 4
+  validate:
+    required: true
+    defaultValue: 5m

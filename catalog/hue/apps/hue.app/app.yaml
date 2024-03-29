@@ -1,0 +1,15 @@
+apiVersion: bdc.kdp.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    app.core.bdos/catalog: hue
+    reloader.stakater.com/auto: "true"
+    app.core.bdos/extra-image: "hue:v1.0.0-4.10.0"
+  labels:
+    app: hue
+    app.core.bdos/type: system
+spec:
+  name: hue
+  type: hue
+  properties:
+    replicas: 1

@@ -1,0 +1,12 @@
+name: plg-stack
+version: 56.21.1-5.43.4
+description: PLG-Stack is the combination of Prometheus, Loki and Grafana
+url: https://github.com/prometheus-community/helm-charts
+
+dependencies:
+  - name: fluxcd
+  - name: openebs
+
+tags:
+  - Helm
+  - KDP System

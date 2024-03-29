@@ -1,0 +1,16 @@
+- jsonKey: caFile
+  sort: 11
+  uiType: CertBase64
+  description: The ca certificate of helm repository. Please encode this data with base64.
+- jsonKey: url
+  sort: 5
+  label: URL
+- jsonKey: username
+  sort: 8
+  style:
+    colSpan: 12
+- jsonKey: password
+  sort: 9
+  style:
+    colSpan: 12
+  uiType: Password

@@ -1,0 +1,63 @@
+apiVersion: bdc.kdp.io/v1alpha1
+kind: Application
+metadata:
+  labels:
+    app: kafka-3-cluster
+    app.core.bdos/type: system
+  annotations:
+    app.core.bdos/catalog: kafka
+    app.core.bdos/extra-image: "kafka/kafka:v1.0.0-0.34.0-3-kafka-3.4.1"
+    definition.bdc.kdp.io/description: kafka-3-cluster
+spec:
+  type: kafka-3-cluster
+  properties:
+    image: kafka/kafka:v1.0.0-0.34.0-3-kafka-3.4.1
+    replicas: 3
+    resources:
+      requests:
+        cpu: "0.2"
+        memory: 2048Mi
+      limits:
+        cpu: "1"
+        memory: 2048Mi
+    storage:
+      size: 10Gi
+    config:
+      log.retention.bytes: -1
+      num.partitions: 10 #__PARTITIONS__
+      num.recovery.threads.per.data.dir: 1
+      default.replication.factor: 3 #REPLICATION
+      min.insync.replicas: 2
+      offsets.topic.replication.factor: 3 #__SYSTEM_TOPIC_REPLICATION__
+      transaction.state.log.replication.factor: 3 # __SYSTEM_TOPIC_REPLICATION__
+      transaction.state.log.min.isr: 2
+      log.retention.hours: 168 #__LOG_RETENTION_HOURS__
+      log.segment.bytes: 1073741824 #__LOG_SEGMENT_MAX_BYTES__
+      num.network.threads: 6
+      num.io.threads: 8
+      num.replica.fetchers: 6
+      group.initial.rebalance.delay.ms: 0
+      auto.create.topics.enable: true
+      delete.topic.enable: true
+      controller.quorum.election.timeout.ms: 1000
+      controller.quorum.fetch.timeout.ms: 5000
+      controller.quorum.request.timeout.ms: 30000
+      controller.socket.timeout.ms: 30000
+      fetch.max.wait.ms: 30000
+      replica.fetch.wait.max.ms: 30000
+      offsets.commit.timeout.ms: 30000
+      broker.session.timeout.ms: 30000
+      initial.broker.registration.timeout.ms: 90000
+      replica.lag.time.max.ms: 30000
+      replica.socket.timeout.ms: 30000
+    zookeeper:
+      replicas: 3
+      resources:
+        requests:
+          cpu: "0.2"
+          memory: 2048Mi
+        limits:
+          cpu: "1"
+          memory: 2048Mi
+      storage:
+        size: 5Gi

@@ -1,0 +1,8 @@
+name: hive
+category: 系统/大数据开发工具
+description: Apache Hive 是一个建立在Hadoop架构之上的数据仓库。它能够提供数据的精炼，查询和分析。
+i18n:
+  en:
+    category: system.dataManagement
+    description: >-
+      Apache Hive is a data warehouse software project built on top of Apache Hadoop for providing data query and analysis.

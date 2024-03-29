@@ -1,0 +1,11 @@
+name: openebs
+version: 3.10.0
+description: OpenEBS is the most widely deployed and easy to use open-source storage solution for Kubernetes.
+url: https://github.com/openebs/openebs
+
+dependencies:
+- name: fluxcd
+
+tags:
+  - Helm
+  - KDP System

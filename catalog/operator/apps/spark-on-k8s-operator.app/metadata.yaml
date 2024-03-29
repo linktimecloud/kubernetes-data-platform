@@ -1,0 +1,8 @@
+version: v1.0.0-1.1.27
+alias: Spark Operator
+description: Spark Operator用于Kubernetes集群中管理spark应用。
+isGlobal: false
+i18n:
+  en:
+    description: >-
+      Spark Operator is used to manage spark application in Kubernetes cluster.

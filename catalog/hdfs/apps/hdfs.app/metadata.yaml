@@ -1,0 +1,13 @@
+version: v1.0.0-3.1.1
+alias: HDFS
+description: HDFS是Hadoop的分布式文件系统（Hadoop Distributed File System），实现大规模数据可靠的分布式读写、存储。
+isGlobal: false
+i18n:
+  en:
+    description: >-
+      HDFS is Hadoop's distributed file system, which realizes reliable distributed reading, writing and storage of large-scale data.
+dashboard:
+  - id: hdfs
+    name: HDFS 监控面板
+    i18n:
+      en: HDFS Dashboard

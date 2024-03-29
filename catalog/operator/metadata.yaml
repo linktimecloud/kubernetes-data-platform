@@ -1,0 +1,8 @@
+name: Operator
+category: 系统/大数据开发工具
+description: Operator 是 Kubernetes 的扩展软件， 它利用定制资源管理应用及其组件。
+i18n:
+  en:
+    category: system.dataManagement
+    description: >-
+      Operators are software extensions to Kubernetes that make use of custom resources to manage applications and their components.

@@ -1,0 +1,22 @@
+apiVersion: bdc.kdp.io/v1alpha1
+kind: Application
+metadata:
+  labels:
+    app: kafka-manager
+    app.core.bdos/type: system
+  annotations:
+    app.core.bdos/catalog: kafka
+    app.core.bdos/extra-image: "kafka/kafka-manager:v1.0.0-0.24.0"
+    definition.bdc.kdp.io/description: kafka-manager
+spec:
+  type: kafka-manager
+  properties:
+    image: kafka/kafka-manager:v1.0.0-0.24.0
+    replicas: 1
+    resources:
+      requests:
+        cpu: "0.2"
+        memory: 1024Mi
+      limits:
+        cpu: "1"
+        memory: 1024Mi

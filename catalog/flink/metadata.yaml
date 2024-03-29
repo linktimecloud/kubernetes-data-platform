@@ -1,0 +1,9 @@
+name: Flink
+category: 系统/计算/流处理引擎
+description: Apache Flink 是由Apache软件基金会开发的开源流处理框架，其核心是用Java和Scala编写的分布式流数据流引擎。
+i18n:
+  en:
+    category: system.computation.stream
+    description: >-
+      Apache Flink is an open-source, unified stream-processing and batch-processing framework developed by the Apache Software Foundation. The core of Apache Flink is a distributed streaming data-flow engine written in Java and Scala.
+      

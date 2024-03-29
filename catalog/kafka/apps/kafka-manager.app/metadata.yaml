@@ -1,0 +1,10 @@
+version: v1.0.0-0.24.0
+invisible: false
+alias: Kafka Manager
+description: Kafka Manager是一个用于管理和监控Kafka、Kafka Connect、Schema Registry的web应用。
+isGlobal: false
+i18n:
+  en:
+    description: >-
+      Kafka Manager is a web application for managing and monitoring Kafka,Kafka Connect, Schema Registry.
+

@@ -1,0 +1,48 @@
+# This is an example .goreleaser.yml file with some sensible defaults.
+# Make sure to check the documentation at https://goreleaser.com
+before:
+  hooks:
+    - go mod download
+    - go mod tidy
+builds:
+  - id: kdp-cli
+    binary: kdp
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    main: ./main.go
+    ldflags:
+      - -s -w -X kdp/cmd.CliVersion={{ .Version }} -X kdp/cmd.CliGitCommit={{.ShortCommit}} -X kdp/cmd.CliBuiltAt={{ .CommitDate }} -X kdp/cmd.CliOSArch={{ .Runtime.Goarch }}
+    env:
+      - CGO_ENABLED=0
+
+archives:
+  - format: tar.gz
+    id: kdp-cli-tgz
+    wrap_in_directory: '{{ .Os }}-{{ .Arch }}'
+    builds:
+      - kdp-cli
+    name_template: '{{ trimsuffix .ArtifactName ".exe" }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}'
+    files: [ LICENSE, README.md ]
+  - format: zip
+    id: kdp-cli-zip
+    builds:
+      - kdp-cli
+    wrap_in_directory: '{{ .Os }}-{{ .Arch }}'
+    name_template: '{{ trimsuffix .ArtifactName ".exe" }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}'
+    files: [ LICENSE, README.md ]
+
+
+checksum:
+  name_template: 'sha256sums.txt'
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+

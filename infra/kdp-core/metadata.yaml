@@ -1,0 +1,11 @@
+name: kdp-core
+version: v1.0.0
+description: KDP Core is the backend service stack of KDP system. 
+url: ""
+
+dependencies:
+- name: fluxcd
+
+tags:
+  - KDP System
+  - Extended Workload

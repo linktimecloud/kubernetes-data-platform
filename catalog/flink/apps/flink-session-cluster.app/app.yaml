@@ -1,0 +1,24 @@
+apiVersion: bdc.kdp.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    app.core.bdos/catalog: "flink"
+    app.core.bdos/extra-image: flink/flink:v1.0.0-1.17.1_scala_2.12
+  labels:
+    app: flink-session-cluster
+    app.core.bdos/type: system
+spec:
+  name: flink-session-cluster
+  type: flink
+  properties:
+    extraFlinkConfiguration:
+      "kubernetes.jobmanager.cpu.limit-factor": "10.0"
+      "kubernetes.jobmanager.memory.limit-factor": "1.0"
+      "kubernetes.taskmanager.cpu.limit-factor": "2.0"
+      "kubernetes.taskmanager.memory.limit-factor": "1.0"
+      "taskmanager.numberOfTaskSlots": "2"
+      "state.checkpoints.num-retained": "3"
+      "execution.checkpointing.timeout": "1200000"
+      "execution.checkpointing.mode": "EXACTLY_ONCE"
+      "execution.checkpointing.interval": "10s"
+      "execution.checkpointing.externalized-checkpoint-retention": "RETAIN_ON_CANCELLATION"

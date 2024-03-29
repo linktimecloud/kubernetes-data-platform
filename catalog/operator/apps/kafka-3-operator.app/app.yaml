@@ -1,0 +1,21 @@
+apiVersion: bdc.kdp.io/v1alpha1
+kind: Application
+metadata:
+  labels:
+    app: kafka-3-operator
+    app.core.bdos/type: system
+  annotations:
+    definition.bdc.kdp.io/description: kafka-3-operator
+    app.core.bdos/catalog: operator
+    app.core.bdos/extra-image: "kafka/operator:v1.0.0-0.34.0"
+spec:
+  type: kafka-3-operator
+  properties:
+    version: v1.0.0-0.34.0-3
+    resources:
+      requests:
+        cpu: "0.2"
+        memory: 1024Mi
+      limits:
+        cpu: "1"
+        memory: 1024Mi

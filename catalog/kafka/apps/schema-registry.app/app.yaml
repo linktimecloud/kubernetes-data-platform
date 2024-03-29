@@ -1,0 +1,22 @@
+apiVersion: bdc.kdp.io/v1alpha1
+kind: Application
+metadata:
+  labels:
+    app: schema-registry
+    app.core.bdos/type: system
+  annotations:
+    definition.bdc.kdp.io/description: schema-registry
+    app.core.bdos/catalog: kafka
+    app.core.bdos/extra-image: "kafka/schema-registry:v1.0.0-6.2.0"
+spec:
+  type: schema-registry
+  properties:
+    image: kafka/schema-registry:v1.0.0-6.2.0
+    replicas: 1
+    resources:
+      requests:
+        cpu: "0.1"
+        memory: 1024Mi
+      limits:
+        cpu: "1"
+        memory: 1024Mi

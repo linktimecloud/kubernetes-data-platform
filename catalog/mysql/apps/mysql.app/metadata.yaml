@@ -1,0 +1,9 @@
+version: 8.0.22
+alias: Mysql
+description: MySQL主从架构的容器化实现，默认创建一套MySQL主从服务，MySQL exporter服务
+isGlobal: false
+i18n:
+  en:
+    description: >-
+      A containerized implementation of MySQL primary/secondary. By default this
+      application delivers MySQL P/S services, exporter services.

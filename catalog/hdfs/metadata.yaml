@@ -1,0 +1,8 @@
+name: HDFS
+category: 系统/存储系统
+description: Hadoop Distributed File System，简称 HDFS，是一个分布式文件系统，它是Apache Hadoop的核心存储模块。
+i18n:
+  en:
+    category: system.storage
+    description: >-
+      The Hadoop Distributed File System ( HDFS ) is a distributed file system designed to run on commodity hardware.

@@ -1,2 +1,4 @@
-# template-project
-This is the template project for initializing other LTC projects. 
+# Kubernetes Data Platform
+
+## Quick Start
+For quick start of KDP, please refer to [QuickStart](docs/QuickStart.md)
