@@ -1,6 +1,6 @@
 module kdp
 
-go 1.21.8
+go 1.21
 
 require (
 	github.com/go-git/go-git/v5 v5.11.0
