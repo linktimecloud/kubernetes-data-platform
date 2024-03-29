@@ -1,5 +1,5 @@
 
-IMG			   ?= kubernetes-data-platform:$(VERSION)
+IMG			   ?= linktimecloud/kubernetes-data-platform:$(VERSION)
 IMG_REGISTRY   ?= ""
 
 ##@ Build
