@@ -31,10 +31,6 @@ jobs:
         with:
           fetch-depth: 0
       - run: git fetch --force --tags
-#      - name: Build CLI and Push CLI
-#        run: |
-#          make kdp-cli-build
-#          make kdp-cli-push SERVER_USER=${{ secrets.REG_USER }} SERVER_PASSWORD=${{ secrets.REG_PASSWD }} SERVER_URL=${{ secrets.ARTIFACT_SERVER_PULL }}
 
       - name: Docker Login
         uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0

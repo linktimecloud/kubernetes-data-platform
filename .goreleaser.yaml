@@ -27,14 +27,14 @@ archives:
     builds:
       - kdp-cli
     name_template: '{{ trimsuffix .ArtifactName ".exe" }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}'
-    files: [ LICENSE, README.md ]
+    files: [ LICENSE, README.md, docs/QuickStart.md ]
   - format: zip
     id: kdp-cli-zip
     builds:
       - kdp-cli
     wrap_in_directory: '{{ .Os }}-{{ .Arch }}'
     name_template: '{{ trimsuffix .ArtifactName ".exe" }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}'
-    files: [ LICENSE, README.md ]
+    files: [ LICENSE, README.md, docs/QuickStart.md ]
 
 
 checksum:
