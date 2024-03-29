@@ -18,9 +18,11 @@ jobs:
       packages: write
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
+      - name: Checkout
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
         with:
-          submodules: true
+          fetch-depth: 0
+      - run: git fetch --force --tags
 
       - name: Build CLI and Push CLI
         run: |
