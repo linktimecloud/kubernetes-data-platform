@@ -1,0 +1,72 @@
+#####
+# kind release page: https://github.com/kubernetes-sigs/kind/releases
+######
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: kdp-e2e
+networking:
+  # the default CNI will not be installed
+  # disableDefaultCNI: true
+  kubeProxyMode: "ipvs"
+kubeadmConfigPatches:
+- |
+  apiVersion: kubeproxy.config.k8s.io/v1alpha1
+  kind: KubeProxyConfiguration
+  metricsBindAddress: 0.0.0.0:10249
+nodes:
+- role: control-plane
+  image: kindest/node:v1.26.3
+  kubeadmConfigPatches:
+  - |
+    kind: ClusterConfiguration
+    apiServer:
+      certSANs:
+        - 127.0.0.1
+        - apiserver.kdp-e2e.io
+  extraPortMappings:  
+    - containerPort: 6443
+      hostPort: 6443
+      protocol: TCP
+  extraMounts:
+    - hostPath: test/config.json
+      containerPath: /var/lib/kubelet/config.json
+      readOnly: true
+- role: worker
+  image: kindest/node:v1.26.3
+  extraMounts:
+    - hostPath: test/config.json
+      containerPath: /var/lib/kubelet/config.json
+      readOnly: true
+    - hostPath: /tmp/udev
+      containerPath: /run/udev
+  extraPortMappings:
+    - containerPort: 80
+      hostPort: 80
+      protocol: TCP
+    - containerPort: 443
+      hostPort: 443
+      protocol: TCP
+- role: worker
+  image: kindest/node:v1.26.3
+  extraMounts:
+    - hostPath: test/config.json
+      containerPath: /var/lib/kubelet/config.json
+      readOnly: true
+    - hostPath: /tmp/udev
+      containerPath: /run/udev
+- role: worker
+  image: kindest/node:v1.26.3
+  extraMounts:
+    - hostPath: test/config.json
+      containerPath: /var/lib/kubelet/config.json
+      readOnly: true
+    - hostPath: /tmp/udev
+      containerPath: /run/udev
+- role: worker
+  image: kindest/node:v1.26.3
+  extraMounts:
+    - hostPath: test/config.json
+      containerPath: /var/lib/kubelet/config.json
+      readOnly: true
+    - hostPath: /tmp/udev
+      containerPath: /run/udev

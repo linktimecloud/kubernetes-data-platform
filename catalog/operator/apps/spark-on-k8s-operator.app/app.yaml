@@ -1,0 +1,23 @@
+apiVersion: bdc.kdp.io/v1alpha1
+kind: Application
+metadata:
+  labels:
+    app: spark-on-k8s-operator
+    app.core.bdos/type: system
+  annotations:
+    definition.bdc.kdp.io/description: spark-operator
+    app.core.bdos/catalog: operator
+    app.core.bdos/extra-image: spark-operator/spark-operator:4.3-230605
+spec:
+  type: spark-operator
+  properties:
+    chartVersion: v1.0.0-1.1.27
+    imageTag: v1.0.0-1.1.27
+    replicas: 2
+    resources:
+      requests:
+        cpu: "0.1"
+        memory: 64Mi
+      limits:
+        cpu: "1"
+        memory: 512Mi

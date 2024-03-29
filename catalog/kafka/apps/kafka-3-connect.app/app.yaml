@@ -1,0 +1,22 @@
+apiVersion: bdc.kdp.io/v1alpha1
+kind: Application
+metadata:
+  labels:
+    app: kafka-3-connect
+    app.core.bdos/type: system
+  annotations:
+    app.core.bdos/catalog: kafka
+    app.core.bdos/extra-image: "kafka/kafka-connect:v1.0.0-0.34.0-3-kafka-3.4.1"
+    definition.bdc.kdp.io/description: kafka-3-connect
+spec:
+  type: kafka-3-connect
+  properties:
+    image: kafka/kafka-connect:v1.0.0-0.34.0-3-kafka-3.4.1
+    replicas: 1
+    resources:
+      requests:
+        cpu: "0.1"
+        memory: 1024Mi
+      limits:
+        cpu: "1"
+        memory: 1024Mi

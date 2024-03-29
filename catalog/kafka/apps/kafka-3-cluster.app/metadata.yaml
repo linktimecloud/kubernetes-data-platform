@@ -1,0 +1,16 @@
+version: v1.0.0-0.34.0-3-kafka-3.4.1
+invisible: false
+alias: Kafka Cluster
+description: Kafka是一个分布式、高吞吐、可扩展的事件流平台应用。
+isGlobal: false
+i18n:
+  en:
+    description: >-
+      Kafka is a distributed event streaming platform used by thousands of
+      companies for high-performance data pipelines, streaming analytics, data
+      integration, and mission-critical applications.
+dashboard:
+  - id: kdpKafkaDashboard2023
+    name: Kafka监控面板
+    i18n:
+      en: Kafka Dashboard

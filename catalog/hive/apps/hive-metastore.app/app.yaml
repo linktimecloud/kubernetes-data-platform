@@ -1,0 +1,31 @@
+apiVersion: bdc.kdp.io/v1alpha1
+kind: Application
+metadata:
+  labels:
+    app: hive-metastore
+    app.core.bdos/type: system
+  annotations:
+    app.core.bdos/catalog: hive
+    app.core.bdos/extra-image: prometheuscommunity/json-exporter:v0.4.0
+    definition.bdc.kdp.io/description: Hive Metastore
+spec:
+  type: hive-metastore
+  properties:
+    image: "ltc-hms:v1.0.0-3.1.3"
+    replicas: 2
+    resources:
+      requests:
+        cpu: "0.1"
+        memory: "1024Mi"
+      limits:
+        cpu: "1.0"
+        memory: "1024Mi"
+    hiveConf:
+      hive.execution.engine: spark
+      hive.scratch.dir.permission: "733"
+      hive.security.authorization.manager: org.apache.hadoop.hive.ql.security.authorization.plugin.sqlstd.SQLStdHiveAuthorizerFactory
+      hive.security.authenticator.manager: org.apache.hadoop.hive.ql.security.HadoopDefaultAuthenticator
+      hive.metastore.warehouse.dir: /user/hive/warehouse
+      hive.metastore.metrics.enabled: "true"
+      hive.cluster.delegation.token.store.class: org.apache.hadoop.hive.thrift.DBTokenStore
+      

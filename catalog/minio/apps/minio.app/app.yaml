@@ -1,0 +1,14 @@
+apiVersion: bdc.kdp.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    app.core.bdos/catalog: minio
+    app.core.bdos/extra-image: bitnami/minio:2022.9.7-debian-11-r4
+  labels:
+    app: minio
+    app.core.bdos/type: system
+spec:
+  name: minio
+  type: minio
+  properties:
+    mode: distributed

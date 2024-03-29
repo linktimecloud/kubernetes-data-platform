@@ -1,0 +1,26 @@
+apiVersion: bdc.kdp.io/v1alpha1
+kind: Application
+metadata:
+  labels:
+    app: spark-history-server
+    app.core.bdos/type: system
+  annotations:
+    app.core.bdos/catalog: spark
+    definition.bdc.kdp.io/description: Spark history server
+spec:
+  type: spark-history-server
+  properties:
+    image: "ltc-spark:v1.0.0-3.3.0"
+    replicas: 1
+    resources:
+      requests:
+        cpu: '0.1'
+        memory: '1024Mi'
+      limits:
+        cpu: '0.5'
+        memory: '1024Mi'
+    logDirectory: "hdfs:///historyservice"
+    cleaner:
+      enabled: true
+      interval: "1d"
+      maxAge: "30d"

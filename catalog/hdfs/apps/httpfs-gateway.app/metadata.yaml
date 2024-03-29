@@ -1,0 +1,13 @@
+version: v1.0.0-2.8.5
+alias: HttpFS Gateway
+description: HttpFS是一个支持所有HDFS文件系统操作（读和写）的REST HTTP服务。
+isGlobal: false
+i18n:
+  en:
+    description: >-
+      HttpFS is a server that provides a REST HTTP gateway supporting all HDFS File System operations (read and write).
+dashboard:
+  - id: httpfs_gateway
+    name: HttpFS Gateway 监控面板
+    i18n:
+      en: HttpFS Gateway Dashboard

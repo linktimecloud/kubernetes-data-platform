@@ -1,0 +1,50 @@
+apiVersion: bdc.kdp.io/v1alpha1
+kind: Application
+metadata:
+  labels:
+    app: hive-server2
+    app.core.bdos/type: system
+  annotations:
+    app.core.bdos/catalog: hive
+    app.core.bdos/extra-image: "ltc-spark:v1.0.0-3.3.0-hos"
+    definition.bdc.kdp.io/description: Hive Server2
+spec:
+  type: hive-server2
+  properties:
+    image: "ltc-hs2:v1.0.0-3.1.3"
+    replicas: 1
+    spark:
+      image: "ltc-spark:v1.0.0-3.3.0-hos"
+      volcanoEnabled: false
+      sparkDefaults:
+        spark.kryoserializer.buffer.max: 128m
+        spark.eventLog.enabled: "true"
+        spark.eventLog.dir: "hdfs:///historyservice"
+        spark.driver.cores: "1"
+        spark.driver.memory: "1g"
+        spark.executor.cores: "1"
+        spark.executor.memory: "1g"
+        spark.executor.instances: "2"
+    dataLocality: true
+    resources:
+      requests:
+        cpu: "0.1"
+        memory: "2048Mi"
+      limits:
+        cpu: "4.0"
+        memory: "2048Mi"
+    hiveConf:
+      hive.execution.engine: spark
+      hive.zookeeper.kerberos.enabled: "false"
+      hive.scratch.dir.permission: "733"
+      hive.spark.client.rpc.server.port: "10010-10020"
+      hive.security.authorization.sqlstd.confwhitelist.append: |-
+        "mapreduce\.job\..*|dfs\..*|hive\.zookeeper\..*|fs\.s3a\..*|spark\..*|hive\.exec\.scratchdir|hive\.metastore\.warehouse\.dir|hive\.query\.results\.cache\.directory"
+      hive.server2.metrics.enabled: "true"
+      hive.server2.support.dynamic.service.discovery: "true"
+      hive.exec.local.scratchdir: "/tmp/hive"
+      hive.metastore.warehouse.dir: "/user/hive/warehouse"
+      hive.materializedview.rewriting: "false"
+      hive.server2.session.check.interval: "15m"
+      hive.server2.idle.session.timeout: "4h"
+      hive.server2.idle.operation.timeout: "2h"

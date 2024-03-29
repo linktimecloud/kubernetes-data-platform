@@ -1,0 +1,8 @@
+version: v1.0.0-1.6.0
+alias: Flink Operator
+description: Flink Kubernetes Operator是一个基于Kubernetes平台的Apache Flink应用程序的自动化部署、管理和扩缩容工具。
+isGlobal: false
+i18n:
+  en:
+    description: >-
+      Flink Kubernetes Operator is a tool to automate the deployment, management, and scaling of Apache Flink applications on Kubernetes.

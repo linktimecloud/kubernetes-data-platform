@@ -58,5 +58,5 @@ jobs:
           key: ${{ runner.os }}-pkg-${{ hashFiles('**/go.sum') }}
           restore-keys: ${{ runner.os }}-pkg-
 
-      # - name: Run Make test
-      #   run: make test
+      - name: Run Make test
+        run: make test

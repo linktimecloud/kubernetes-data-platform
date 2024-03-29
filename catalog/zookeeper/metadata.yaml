@@ -1,0 +1,9 @@
+name: zookeeper
+category: 系统/大数据开发工具
+description: Apache ZooKeeper 是一个提供高可靠的分布式协调的开源服务器。
+i18n:
+  en:
+    category: system.dataManagement
+    description: >-
+      Apache ZooKeeper is an effort to develop and maintain an open-source server 
+      which enables highly reliable distributed coordination.

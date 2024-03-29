@@ -1,0 +1,11 @@
+name: kong
+version: 2.29.0
+description: Kong or Kong API Gateway is a cloud-native, platform-agnostic, scalable API Gateway distinguished for its high performance and extensibility via plugins.
+url: https://github.com/Kong/charts/tree/main/charts/kong
+
+dependencies:
+- name: fluxcd
+
+tags:
+  - Helm
+  - KDP System

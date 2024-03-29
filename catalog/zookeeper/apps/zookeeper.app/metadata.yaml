@@ -1,0 +1,14 @@
+version: v1.0.0-3.8.3
+alias: Zookeeper
+description: Apache ZooKeeper 致力于开发和维护高度可靠的分布式协调的服务。
+isGlobal: false
+i18n:
+  en:
+    description: >-
+      Apache ZooKeeper is an effort to develop and maintain an open-source server 
+      which enables highly reliable distributed coordination.
+dashboard:
+  - id: zookeeper
+    name: Zookeeper 监控面板
+    i18n:
+      en: Zookeeper Dashboard

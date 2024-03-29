@@ -1,0 +1,13 @@
+version: v1.0.0-1.17.1_scala_2.12
+alias: Flink Session Cluster
+description: Apache Flink 是一个分布式高性能流处理框架，可用于实时和批量数据处理。
+isGlobal: false
+i18n:
+  en:
+    description: >-
+      Apache Flink is a distributed, high-performance stream processing framework for real-time and batch data processing.
+dashboard:
+  - id: flink
+    name: flink 监控面板
+    i18n:
+      en: flink Dashboard

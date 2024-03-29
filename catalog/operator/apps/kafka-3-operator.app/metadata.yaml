@@ -1,0 +1,14 @@
+version: v1.0.0-0.34.0-3
+invisible: false
+alias: Kafka Operator
+description: Kafka Operator用于在Kubernetes集群中管理Kafka及相关组件。
+isGlobal: true
+i18n:
+  en:
+    description: >-
+      Kafka Operator is used to manage Kafka cluster and related components in Kubernetes cluster.
+dashboard:
+  - id: kdpKafkaDashboard2023
+    name: Kafka监控面板
+    i18n:
+      en: Kafka Dashboard

@@ -1,0 +1,92 @@
+- jsonKey: repoType
+  label: Repo Type
+  sort: 1
+  validate:
+    required: true
+    defaultValue: helm
+    options:
+      - label: Git
+        value: git
+      - label: Helm
+        value: helm
+      - label: Oss
+        value: oss
+      - label: Oci
+        value: oci        
+- jsonKey: url
+  label: Repo URL
+  uiType: HelmRepoSelect
+  description: Please input or select the helm or git repo address.
+  sort: 2
+  validate:
+    required: true
+    pattern: ^(http|git).*$
+- jsonKey: chart
+  uiType: HelmChartSelect
+  sort: 3
+  label: Chart
+  description: Please select the chart or input the chart path.
+  conditions:
+    - jsonKey: url
+      op: "!="
+      value: ""
+- jsonKey: version
+  uiType: HelmChartVersionSelect
+  sort: 4
+  label: Version
+  validate:
+    required: false
+    defaultValue: "*"
+  conditions:
+    - jsonKey: repoType
+      op: "!="
+      value: "git"
+    - jsonKey: chart
+      op: "!="
+      value: ""
+    - jsonKey: url
+      op: "!="
+      value: ""
+- jsonKey: git
+  sort: 5
+  label: Git
+  description: git repoType detail configuration
+  validate:
+    required: true
+  conditions:
+    - jsonKey: repoType
+      op: "=="
+      value: "git"
+- jsonKey: oss
+  sort: 6
+  label: OSS
+  description: oss repoType detail configuration
+  disable: true
+- jsonKey: values
+  uiType: HelmValues
+  description: Set the custom values configuration.
+  sort: 7
+  validate:
+    required: false
+  conditions:
+    - jsonKey: version
+      op: "!="
+      value: ""
+    - jsonKey: chart
+      op: "!="
+      value: ""
+    - jsonKey: url
+      op: "!="
+      value: ""
+- jsonKey: installTimeout
+  disable: true
+- jsonKey: interval
+  disable: true
+- jsonKey: pullInterval
+  disable: true
+- jsonKey: releaseName
+  disable: true
+- jsonKey: targetNamespace
+  disable: true
+- jsonKey: timeout
+  disable: true

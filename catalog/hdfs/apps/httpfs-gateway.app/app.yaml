@@ -1,0 +1,14 @@
+apiVersion: bdc.kdp.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    app.core.bdos/catalog: hdfs
+    definition.bdc.kdp.io/description: "Hadoop HttpFS Gateway"
+    app.core.bdos/extra-image: httpfs-gateway:v1.0.0-2.8.5
+  labels:
+    app: httpfs-gateway
+    app.core.bdos/type: system
+spec:
+  type: httpfs
+  properties:
+    replicas: 1
