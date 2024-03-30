@@ -38,7 +38,8 @@
 ## - loki.enabled={true|false}
 
 ## specify '--set prometheus.enabled=false --set loki.enabled=false' to disable prometheus and loki on limited resources environment
-kdp install --local-mode --force-reinstall --set dnsService.name=kube-dns 
+## specify '--debug' to enable verbose logging
+kdp install --local-mode --set dnsService.name=kube-dns
 
 ```
 
