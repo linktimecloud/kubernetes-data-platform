@@ -11,7 +11,7 @@ metadata:
 spec:
   type: mysql
   properties:
-    version: "9.6.0"
+    version: "9.23.0"
     architecture: "replication"
     auth:
       rootPassword: Kdp@mysql123

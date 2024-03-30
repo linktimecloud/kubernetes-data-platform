@@ -5,7 +5,7 @@ _loki: {
     type: "helm"
     properties: {
         url: "\(parameter.helmURL)"
-        repoType: "helm"
+        repoType: "oci"
         chart: "loki"
         releaseName: parameter.namePrefix + "loki"
         targetNamespace: "\(parameter.namespace)"
@@ -56,7 +56,7 @@ _promtail: {
     type: "helm"
     properties: {
         url: "\(parameter.helmURL)"
-        repoType: "helm"
+        repoType: "oci"
         chart: "promtail"
         releaseName: parameter.namePrefix + "promtail"
         targetNamespace: "\(parameter.namespace)"

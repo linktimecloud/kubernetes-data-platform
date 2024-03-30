@@ -30,7 +30,7 @@ template: {
 					"properties": {
 						"chart":           "strimzi-kafka-operator"
 						"releaseName":     context["name"]
-						"repoType":        "helm"
+						"repoType":        "oci"
 						"targetNamespace": context["namespace"]
 						"url":             context["helm_repo_url"]
 						"values": {

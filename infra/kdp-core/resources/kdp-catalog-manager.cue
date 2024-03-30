@@ -51,7 +51,7 @@ _kdpCatalogManager: {
 							initContainers: [
 								{
 									name: "prep-catalog"
-									image: "\(parameter.registry)/kubernetes-data-platform:\(_version.kdp)"
+									image: "\(parameter.registry)/linktimecloud/kubernetes-data-platform:\(_version.kdp)"
 									imagePullPolicy: "IfNotPresent"
 									command: ["sh", "-c", "cp -vrf catalog/* /opt"]
 									volumeMounts: [
@@ -63,7 +63,7 @@ _kdpCatalogManager: {
 								},
 								{
 									name: "apply-xdef"
-									image: "\(parameter.registry)/kdp-oam-operator/bdcctl:\(_version.operator)"
+									image: "\(parameter.registry)/linktimecloud/kdp-oam-bdcctl:\(_version.operator)"
 									imagePullPolicy: "IfNotPresent"
 									command: ["sh", "-c", "for c in `find /opt/*/x-definitions/*.cue`; do bdcctl def apply $c; done"]
 									volumeMounts: [
@@ -77,7 +77,7 @@ _kdpCatalogManager: {
 							containers: [
 								{
 									name: _CatalogManagerName
-									image: "\(parameter.registry)/kdp-catalog-manager:\(_version.catalogManager)"
+									image: "\(parameter.registry)/linktimecloud/kdp-catalog-manager:\(_version.catalogManager)"
 									imagePullPolicy: "IfNotPresent"
 									command: ["/bin/bash", "-c", "$RUNTIME_HOME/entrypoint.sh"]
 									ports: [

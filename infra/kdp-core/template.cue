@@ -23,8 +23,8 @@ if parameter.grafana.externalUrl != "" {
 _version: {
 	kdp: parameter.kdpVersion
 	operator: "v1.0.0"
-	catalogManager: "v1.0.0"
-	ux: "v1.0.0-240326"
+	catalogManager: "v1.0.0-rc1"
+	ux: "v1.0.0-240329"
 }
 
 _ns: {

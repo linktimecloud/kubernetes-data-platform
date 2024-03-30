@@ -9,7 +9,7 @@ _configReplicator: {
 		url: "\(parameter.helmURL)"
 		chart: "kubernetes-replicator"
 		releaseName: parameter.namePrefix + _ConfigReplicatorName
-		repoType: "helm"
+		repoType: "oci"
 		targetNamespace: "\(parameter.namespace)"
 		version: "2.9.2"
 		values: {

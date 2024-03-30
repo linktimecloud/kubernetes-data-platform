@@ -18,7 +18,7 @@ _openebs: {
 		chart:           "openebs"
 		version: 		 "3.10.0"
 		releaseName:     parameter.namePrefix + "openebs"
-		repoType:        "helm"
+		repoType:        "oci"
 		targetNamespace: "\(parameter.namespace)"
 		values: {
             release: version: "3.10.0"

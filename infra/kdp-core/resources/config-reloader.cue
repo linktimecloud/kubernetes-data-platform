@@ -9,7 +9,7 @@ _configReloader: {
 		url: "\(parameter.helmURL)"
 		chart: "reloader"
 		releaseName: parameter.namePrefix + _ConfigReloaderName
-		repoType: "helm"
+		repoType: "oci"
 		targetNamespace: "\(parameter.namespace)"
 		version: "1.0.69"
 		values: {

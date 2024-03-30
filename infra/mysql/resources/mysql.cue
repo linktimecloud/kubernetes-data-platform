@@ -100,7 +100,7 @@ mysql: {
 		url: "\(parameter.helmURL)"
 		chart: "mysql"
 		releaseName: parameter.namePrefix + "mysql"
-		repoType: "helm"
+		repoType: "oci"
 		targetNamespace: "\(parameter.namespace)"
 		values: {
 			global: {

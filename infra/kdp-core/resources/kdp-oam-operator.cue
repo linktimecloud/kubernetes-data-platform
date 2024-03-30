@@ -9,9 +9,9 @@ _kdpOAMOperator: {
 	type: "helm"
 	properties: {
 		url:             "\(parameter.helmURL)"
-		chart:           _OperatorName
+		chart:           _OperatorName + "-chart"
 		releaseName:     parameter.namePrefix + _OperatorName
-		repoType:        "helm"
+		repoType:        "oci"
 		targetNamespace: "\(parameter.namespace)"
 		version:         "\(_version.operator)"
 		values: {

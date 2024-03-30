@@ -45,7 +45,7 @@ _kdpUX: {
 							containers: [
 								{
 									name: _UXName
-									image: "\(parameter.registry)/kdp-ux:\(_version.ux)"
+									image: "\(parameter.registry)/linktimecloud/kdp-ux:\(_version.ux)"
 									imagePullPolicy: "IfNotPresent"
 									command: ["npm", "start"]
 									ports: [

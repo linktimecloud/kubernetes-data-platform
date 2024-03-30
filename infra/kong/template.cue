@@ -18,7 +18,7 @@ _kong: {
 		chart:           "kong"
 		version: 		 "2.29.0"
 		releaseName:     parameter.namePrefix + "kong"
-		repoType:        "helm"
+		repoType:        "oci"
 		targetNamespace: "\(parameter.namespace)"
 		values: {
 			deployment: {

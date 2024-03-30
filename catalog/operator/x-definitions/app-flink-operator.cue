@@ -30,7 +30,7 @@ template: {
 					properties: {
 						chart:           "flink-kubernetes-operator"
 						releaseName:     context["name"]
-						repoType:        "helm"
+						repoType:        "oci"
 						targetNamespace: context["namespace"]
 						url:             context["helm_repo_url"]
 						values: {

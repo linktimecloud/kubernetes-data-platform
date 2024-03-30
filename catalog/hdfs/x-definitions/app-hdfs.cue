@@ -49,7 +49,7 @@ template: {
 						"chart":           "hdfs-k8s"
 						"version":         parameter.chartVersion
 						"url":             context["helm_repo_url"]
-						"repoType":        "helm"
+						"repoType":        "oci"
 						"releaseName":     context.name
 						"targetNamespace": context.namespace
 						"values": {

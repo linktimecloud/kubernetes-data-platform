@@ -31,7 +31,7 @@ template: {
 						"chart":           "spark-operator"
 						"version":         parameter.chartVersion
 						"url":             context.helm_repo_url
-						"repoType":        "helm"
+						"repoType":        "oci"
 						"releaseName":     "spark-operator"
 						"targetNamespace": context.namespace
 						"values": {

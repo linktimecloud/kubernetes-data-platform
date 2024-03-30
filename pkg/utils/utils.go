@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-	http://www.apache.org/licenses/LICENSE-2.0
+    http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,64 +16,67 @@ limitations under the License.
 package utils
 
 import (
-	"archive/tar"
 	"bytes"
-	"compress/gzip"
 	"encoding/base64"
 	"fmt"
+	"archive/tar"
+	"compress/gzip"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"os"
-	"os/exec"
 	"os/user"
+	"os/exec"
 	"path/filepath"
+	"regexp"
+	"text/template"
 	"runtime"
 	"strings"
-	"text/template"
 	"time"
 
+	"golang.org/x/crypto/ssh"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/plumbing/transport"
 	gitssh "github.com/go-git/go-git/v5/plumbing/transport/ssh"
+	githttp "github.com/go-git/go-git/v5/plumbing/transport/http"
 	log "github.com/sirupsen/logrus"
-	"golang.org/x/crypto/ssh"
 )
 
 var usr, _ = user.Current()
 
 func ArrayJoin(arr []string, delimeter string) string {
 	return strings.Join([]string(arr), delimeter)
-}
+ }
 
 func DownloadFile(url string, targetDir string) error {
 	log.Debugf("Downloading file %s to %s", url, targetDir)
 	if err := os.MkdirAll(targetDir, 0755); err != nil {
-		return fmt.Errorf("failed to create target directory: %v", err)
+		return fmt.Errorf("Failed to create target directory: %v", err)
 	}
 
 	client := &http.Client{}
 	resp, err := client.Head(url)
 	if err != nil {
-		return fmt.Errorf("failed to fetch headers of remote file: %s", err)
+		return fmt.Errorf("Failed to fetch headers of remote file: %s", err)
 	}
 	defer resp.Body.Close()
 
 	remoteModTime, err := time.Parse(time.RFC1123, resp.Header.Get("Last-Modified"))
 	if err != nil {
-		return fmt.Errorf("failed to stat remote file: %s", err)
+		return fmt.Errorf("Failed to stat remote file: %s", err)
 	}
 
 	localFilePath := filepath.Join(targetDir, filepath.Base(url))
 	if _, err := os.Stat(localFilePath); !os.IsNotExist(err) {
 		localFileInfo, err := os.Stat(localFilePath)
 		if err != nil {
-			return fmt.Errorf("failed to stat local file: %s", err)
+			return fmt.Errorf("Failed to stat local file: %s", err)
 		}
 
 		if !remoteModTime.Before(localFileInfo.ModTime()) {
 			if err := os.Remove(localFilePath); err != nil {
-				return fmt.Errorf("failed to remove local file: %s", err)
+				return fmt.Errorf("Failed to remove local file: %s", err)
 			}
 		}
 	}
@@ -81,17 +84,17 @@ func DownloadFile(url string, targetDir string) error {
 	if _, err := os.Stat(localFilePath); os.IsNotExist(err) {
 		resp, err = client.Get(url)
 		if err != nil {
-			return fmt.Errorf("failed to download file: %s", err)
+			return fmt.Errorf("Failed to download file: %s", err)
 		}
 		defer resp.Body.Close()
-
-		body, err := io.ReadAll(resp.Body)
+		
+		body, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
-			return fmt.Errorf("failed to read response body: %s", err)
+			return fmt.Errorf("Failed to read response body: %s", err)
 		}
 
-		if err := os.WriteFile(localFilePath, body, 0644); err != nil {
-			return fmt.Errorf("failed to write to local file: %s", err)
+		if err := ioutil.WriteFile(localFilePath, body, 0644); err != nil {
+			return fmt.Errorf("Failed to write to local file: %s", err)
 		}
 	}
 
@@ -99,12 +102,12 @@ func DownloadFile(url string, targetDir string) error {
 }
 
 func ExecCmd(cmdStr string, suppressStdout bool) (int, error) {
-	cmd := exec.Command("sh", "-c", cmdStr)
+    cmd := exec.Command("sh", "-c", cmdStr)
 	log.Debugf("Exec command: %s", cmdStr)
 
-	if !suppressStdout {
+	if ! suppressStdout {
 		var stdoutBuf bytes.Buffer
-		// var stdoutBuf, stderrBuf bytes.Buffer
+	    // var stdoutBuf, stderrBuf bytes.Buffer
 		cmd.Stdout = io.MultiWriter(os.Stdout, &stdoutBuf)
 		cmd.Stderr = cmd.Stdout
 		// cmd.Stderr = io.MultiWriter(os.Stderr, &stderrBuf)
@@ -114,26 +117,26 @@ func ExecCmd(cmdStr string, suppressStdout bool) (int, error) {
 	if err != nil {
 		return 1, fmt.Errorf("failed to start command: %v", err)
 	}
-
+	
 	err = cmd.Wait()
 	if err != nil {
 		return 1, fmt.Errorf("failed to wait command: %v", err)
 	}
-
+	
 	return 0, nil
 }
 
 func ExtractTarGZ(tarBallFile, targetDir, pathInTar string) error {
 	// create targetDir if not exists
 	if _, err := os.Stat(targetDir); os.IsNotExist(err) {
-		err := os.MkdirAll(targetDir, 0755)
-		if err != nil {
-			return fmt.Errorf("failed to create target directory: %v", err)
-		}
+	    err := os.MkdirAll(targetDir, 0755)
+	    if err != nil {
+	        return fmt.Errorf("failed to create target directory: %v", err)
+	    }
 	}
 
 	// open tar.gz file
-	file, err := os.Open(tarBallFile)
+    file, err := os.Open(tarBallFile)
 	if err != nil {
 		return fmt.Errorf("failed to open file %s: %v", tarBallFile, err)
 	}
@@ -162,44 +165,44 @@ func ExtractTarGZ(tarBallFile, targetDir, pathInTar string) error {
 		}
 
 		switch header.Typeflag {
-		case tar.TypeDir:
-			if _, err := os.Stat(filepath.Join(targetDir, filepath.Base(header.Name))); os.IsNotExist(err) {
-				err := os.MkdirAll(filepath.Join(targetDir, filepath.Base(header.Name)), 0755)
-				if err != nil {
-					return fmt.Errorf("failed to create directory: %v", err)
+			case tar.TypeDir:
+				if _, err := os.Stat(filepath.Join(targetDir, filepath.Base(header.Name))); os.IsNotExist(err) {
+					err := os.MkdirAll(filepath.Join(targetDir, filepath.Base(header.Name)), 0755)
+					if err != nil {
+						return fmt.Errorf("failed to create directory: %v", err)
+					}
 				}
-			}
-		case tar.TypeReg:
-			targetFile, err := os.Create(filepath.Join(targetDir, filepath.Base(header.Name)))
-			if err != nil {
-				return fmt.Errorf("failed to create target file: %v", err)
-			}
-			defer targetFile.Close()
-			if _, err := io.Copy(targetFile, tarReader); err != nil {
-				return fmt.Errorf("failed to write target file: %v", err)
-			}
-		default:
-			return fmt.Errorf("unsupported tar entry type: %s in : %s", string(header.Typeflag), header.Name)
+			case tar.TypeReg:
+				targetFile, err := os.Create(filepath.Join(targetDir, filepath.Base(header.Name)))
+				if err != nil {
+				    return fmt.Errorf("failed to create target file: %v", err)
+				}
+				defer targetFile.Close()
+				if _, err := io.Copy(targetFile, tarReader); err != nil {
+				    return fmt.Errorf("failed to write target file: %v", err)
+				}
+			default:
+				return fmt.Errorf("unsupported tar entry type: %s in : %s", header.Typeflag, header.Name)
 		}
 	}
 
 	return nil
 }
 
-func Getenv(key, fallback string) string {
-	value := os.Getenv(key)
-	if len(value) == 0 {
-		return fallback
-	}
-	return value
+func GetEnv(key, fallback string) string {
+    value := os.Getenv(key)
+    if len(value) == 0 {
+        return fallback
+    }
+    return value
 }
 
-func GitCloneAuth(privateSshKeyFile string) transport.AuthMethod {
+func GitCloneSSHAuth(privateSshKeyFile string) transport.AuthMethod {
 	var auth transport.AuthMethod
-	sshKey, _ := os.ReadFile(privateSshKeyFile)
+	sshKey, _ := ioutil.ReadFile(privateSshKeyFile)
 	signer, _ := ssh.ParsePrivateKey([]byte(sshKey))
 	auth = &gitssh.PublicKeys{
-		User:   "git",
+		User: "git", 
 		Signer: signer,
 		HostKeyCallbackHelper: gitssh.HostKeyCallbackHelper{
 			HostKeyCallback: ssh.InsecureIgnoreHostKey(),
@@ -208,10 +211,20 @@ func GitCloneAuth(privateSshKeyFile string) transport.AuthMethod {
 	return auth
 }
 
-// GitCloneToDir Define a function to clone a git repo to specific directory
-func GitCloneToDir(repoUrl, repoRef, targetDir string) error {
-	log.Debugf("Cloning git repo %s to %s", repoUrl, targetDir)
+func GitCloneHTTPAuth(username, password string) transport.AuthMethod {
+	var auth transport.AuthMethod
+	auth = &githttp.BasicAuth{
+		Username: username,
+		Password: password,
+	}
+	return auth
+}
 
+// Define a function to clone a git repo to specific directory
+func GitCloneToDir(repoUrl, repoRef, targetDir string) error {
+	var auth transport.AuthMethod
+	log.Debugf("Cloning git repo %s to %s", repoUrl, targetDir)
+	
 	if _, err := os.Stat(targetDir); !os.IsNotExist(err) {
 		_, err := git.PlainOpen(targetDir)
 		if err != nil {
@@ -226,11 +239,26 @@ func GitCloneToDir(repoUrl, repoRef, targetDir string) error {
 		if err != nil {
 			return err
 		}
-		_, err := git.PlainClone(targetDir, false, &git.CloneOptions{
-			URL:           repoUrl,
-			Progress:      os.Stdout,
-			Auth:          GitCloneAuth(usr.HomeDir + "/.ssh/id_rsa"),
-			ReferenceName: plumbing.ReferenceName(repoRef),
+
+		authType := ValidateRepoAuthType(repoUrl)
+		switch authType {
+		case "ssh":
+			log.Info("Using SSH auth method for git clone")
+			auth = GitCloneSSHAuth(usr.HomeDir + "/.ssh/id_rsa")
+		case "http":
+			log.Info("Using HTTP auth method for git clone. Set env 'export KDP_SRC_ACCESS_TOKEN=<your_token>' if using your private fork to pull KDP source codes.")
+			gitAccessToken := GetEnv("KDP_SRC_ACCESS_TOKEN", "")
+			auth = GitCloneHTTPAuth("anybody", gitAccessToken)
+		default:
+			log.Info("Using NO auth method for git clone")
+			auth = nil
+		}
+
+		_, err = git.PlainClone(targetDir, false, &git.CloneOptions{
+			URL:      		repoUrl,
+			Progress: 		os.Stdout,
+			Auth:			auth,
+			ReferenceName: 	plumbing.ReferenceName(repoRef),
 		})
 		if err != nil {
 			return err
@@ -254,19 +282,19 @@ func GenRegistryAuthFile(registry, authToken, authFile string) error {
 	// render template
 	var buf bytes.Buffer
 	err := template.Must(template.New("config").Parse(tmpl)).Execute(&buf, map[string]interface{}{
-		"Registry":  registry,
+	    "Registry": registry,
 		"AuthToken": authToken,
 	})
 	if err != nil {
-		return fmt.Errorf("failed to render registry auth template: %v", err)
+	    return fmt.Errorf("failed to render registry auth template: %v", err)
 	}
 	// write file
-	err = os.WriteFile(authFile, buf.Bytes(), 0644)
+	err = ioutil.WriteFile(authFile, buf.Bytes(), 0644)
 	if err != nil {
-		return fmt.Errorf("failed to write registry auth file: %v", err)
+	    return fmt.Errorf("failed to write registry auth file: %v", err)
 	}
 
-	return nil
+    return nil
 }
 
 func GenRegistryAuthToken(username, password string) string {
@@ -274,7 +302,7 @@ func GenRegistryAuthToken(username, password string) string {
 }
 
 func GetOsType() (string, error) {
-	var osType string
+    var osType string
 
 	switch runtime.GOOS {
 	case "darwin":
@@ -303,34 +331,34 @@ func GetOsArch() (string, error) {
 	return osArch, nil
 }
 
-func checkKindCommand() error {
-	if _, err := exec.LookPath("kind"); err != nil {
-		return fmt.Errorf("kind command not found, please install kind first")
-	}
+func checkKindCommand () error {
+    if _, err := exec.LookPath("kind"); err != nil {
+        return fmt.Errorf("kind command not found, please install kind first")
+    }
 	return nil
 }
 
 func KindCreateCluster(clusterName, clusterConfig string) error {
-	err := checkKindCommand()
+    err := checkKindCommand()
 	if err != nil {
-		return err
+	    return err
 	}
 
 	if rc, _ := ExecCmd(
 		fmt.Sprintf("kind get clusters | grep %s", clusterName),
 		true,
 	); rc == 0 {
-		log.Infof("Kind cluster '%s' already exists, skip creating kind cluster", clusterName)
+	    log.Infof("Kind cluster '%s' already exists, skip creating kind cluster", clusterName)
 		return nil
 	}
-
+	
 	if rc, err := ExecCmd(
-		fmt.Sprintf("kind create cluster --wait 300s --config %s", clusterConfig),
+		fmt.Sprintf("kind create cluster --wait 600s --config %s", clusterConfig),
 		false,
 	); rc != 0 {
-		return fmt.Errorf("failed to create kind cluster: %v", err)
+	    return fmt.Errorf("failed to create kind cluster: %v", err)
 	}
-
+	
 	log.Infof("Kind cluster has been created successfully!")
 	return nil
 }
@@ -338,36 +366,49 @@ func KindCreateCluster(clusterName, clusterConfig string) error {
 func KindDeleteCluster(clusterName string) error {
 	err := checkKindCommand()
 	if err != nil {
-		return err
+	    return err
 	}
 
 	if rc, err := ExecCmd(
 		fmt.Sprintf("kind delete cluster -n %s", clusterName),
 		false,
 	); rc != 0 {
-		return fmt.Errorf("failed to delete kind cluster: %v", err)
+	    return fmt.Errorf("failed to delete kind cluster: %v", err)
 	}
 
 	log.Debugf("Kind cluster has been deleted successfully!")
 	return nil
 }
 
+func ValidateRepoAuthType(repoUrl string) string {
+	regexSSH := regexp.MustCompile(`^(git@([a-zA-Z0-9.-]+)/*([a-zA-Z0-9-]+)*/*([a-zA-Z0-9-]+):([a-zA-Z0-9-]+)*/*([a-zA-Z0-9-]+).git|)$`)
+	regexHTTP := regexp.MustCompile(`^(https?://([a-zA-Z0-9.-]+)/([a-zA-Z0-9-]+)/*([a-zA-Z0-9-]+)*/*([a-zA-Z0-9-]+).git)$`)
+
+	if regexSSH.MatchString(repoUrl) {
+		return "ssh"
+	} else if regexHTTP.MatchString(repoUrl) {
+		return "http"
+	} else {
+		return "unkown"
+	}
+}
+
 func ValidateDockerRegistryAuth(registry, username, password string) error {
 	req, err := http.NewRequest("HEAD", fmt.Sprintf("https://%s/v2/", registry), nil)
 	if err != nil {
-		return fmt.Errorf("error creating request: %v", err)
+		return fmt.Errorf("Error creating request: %v", err)
 	}
 
 	req.SetBasicAuth(username, password)
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return fmt.Errorf("error making request: %v", err)
+		return fmt.Errorf("Error making request: %v", err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("failed to authenticate docker registry '%s' , status code: %d", registry, resp.StatusCode)
+		return fmt.Errorf("Failed to authenticate docker registry '%s' , status code: %d", registry, resp.StatusCode)
 	}
 
 	log.Debugf("Successfully authenticated to docker registry <%s>", registry)

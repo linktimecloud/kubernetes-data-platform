@@ -13,9 +13,9 @@ spec:
   properties:
     dependencies:
       zookeeperParentZnode: /hadoop-ha/hdfs-k8s
-    chartVersion: "v1.0.0-3.1.1"
+    chartVersion: "v1.0.1-3.1.1"
     logsPromtailEnabled: true
-    imageTag: v1.0.0-3.1.1
+    imageTag: v1.0.1-3.1.1
     coreSite:
       hadoop.tmp.dir: "/usr/local/hadoop/tmp"
       fs.trash.interval: "1440"

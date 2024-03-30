@@ -7,22 +7,22 @@
 parameter: {
 	// +usage=NamePrefix is a prefix appended to resources
 	namePrefix: *"" | string
-	// +usage=Specify the image repository that the KDP application use, e.g. bdos-docker-registry-svc
-	registry: *"bdos-docker-registry-svc" | string
-	// +usage=Specify the helm chart repository that the KDP application use, e.g. bdos-artifacts-svc
-	helmURL: *"http://bdos-artifacts-svc/" | string
+	// +usage=Specify the image registry that the KDP application use
+	registry: *"registry-cr.linktimecloud.com" | string
+	// +usage=Specify the helm repository that the KDP application use
+	helmURL: *"oci://registry-cr.linktimecloud.com/linktimecloud" | string
 	// +usage=Specify image pull secret for your service
-	imagePullSecret: *"devregistry" | string
+	imagePullSecret: *"" | string
 	// +usage=Specify namespace of the application to be installed
 	namespace: *"kdp-system" | string
 	// +usage=Specify KDP version
-	kdpVersion: *"v1.0.0" | string
+	kdpVersion: *"v1.0.0-240329" | string
 	// +usage=Ingress settings
 	ingress: {
 		// +usage=Specify ingressClassName
 		class: *"kong" | string
 		// +usage=Specify the domain you want to expose
-		domain: *"kdp.io" | string
+		domain: *"kdp-e2e.io" | string
 		// +usage=Specify the TLS secret of the domain
 		tlsSecretName: *"" | string
 	}

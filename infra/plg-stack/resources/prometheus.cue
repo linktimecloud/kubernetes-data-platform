@@ -8,7 +8,7 @@ _prometheus: {
 		chart:           "kube-prometheus-stack"
 		version: 		 "56.21.1"
 		releaseName:     parameter.namePrefix + "prometheus"
-		repoType:        "helm"
+		repoType:        "oci"
 		targetNamespace: "\(parameter.namespace)"
 		values: {
 			fullnameOverride: parameter.namePrefix + "kps"

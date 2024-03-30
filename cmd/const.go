@@ -16,10 +16,10 @@ limitations under the License.
 package cmd
 
 const (
-	defaultKdpRepoUrl = "git@gitlab.linktimecloud.com:linktimeclouddev/LinkTimeCloud-BackEnd/kubernetes-data-platform.git"
-    defaultKdpRepoRef = "dev"
+	defaultKdpRepoUrl = "https://github.com/linktimecloud/kubernetes-data-platform.git"
+    defaultKdpRepoRef = "main"
     defaultArtifactServer = "https://registry.linktimecloud.com/repository/raw/vela"
-    defaultHelmRepoisotry = "https://registry.linktimecloud.com/repository/helm/"
+    defaultHelmRepoisotry = "oci://registry-cr.linktimecloud.com/linktimecloud/"
     defaultDockerRegistry = "registry-cr.linktimecloud.com"
 	velaVersion = "1.9.9"
 )

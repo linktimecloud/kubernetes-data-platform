@@ -36,7 +36,7 @@ template: {
 						"properties": {
 							"chart":           "mysql"
 							"releaseName":     "mysql"
-							"repoType":        "helm"
+							"repoType":        "oci"
 							"targetNamespace": context["namespace"]
 							"url":             context["helm_repo_url"]
 							"values": {
@@ -57,14 +57,12 @@ template: {
 								"image": {
 									"debug":      parameter.debug
 									"pullPolicy": "IfNotPresent"
-									"tag":        "8.0.22"
 								}
 								"initdbScriptsConfigMap": "mysql-initdb"
 								"metrics": {
 									"enabled": true
 									"image": {
 										"pullPolicy": "IfNotPresent"
-										"tag":        "0.14.0-debian-11-r93"
 									}
 									"resources": {
 										"limits": {
@@ -339,7 +337,7 @@ template: {
 		// +ui:description=mysql套件版本
 		// +ui:order=1
 		// +ui:options={"disabled": true}
-		version: *"9.6.0" | string
+		version: *"9.23.0" | string
 		// +ui:description=mysql 镜像是否开启debug模式，默认不开启
 		// +ui:order=2
 		debug: *false | bool

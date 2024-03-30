@@ -7,12 +7,12 @@
 parameter: {
 	// +usage=NamePrefix is a prefix appended to resources
 	namePrefix: *"" | string
-	// +usage=Specify the image repository that the KDP application use, e.g. bdos-docker-registry-svc
-	registry: *"bdos-docker-registry-svc" | string
-	// +usage=Specify the helm chart repository that the KDP application use, e.g. bdos-artifacts-svc
-	helmURL: *"http://bdos-artifacts-svc/" | string
+	// +usage=Specify the image registry that the KDP application use
+	registry: *"registry-cr.linktimecloud.com" | string
+	// +usage=Specify the helm repository that the KDP application use
+	helmURL: *"oci://registry-cr.linktimecloud.com/linktimecloud" | string
 	// +usage=Specify image pull secret for your service
-	imagePullSecret: *"devregistry" | string
+	imagePullSecret: *"" | string
 	// +usage=Specify namespace of the application to be installed
 	namespace: *"kdp-system" | string
 }
