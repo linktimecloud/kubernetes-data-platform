@@ -13,7 +13,7 @@ help: ## Display this help.
 ##@ Test
 ## test: Run tests
 test: cli-gen-test
-	@$(OK) suite test pass
+	@$(OK)
 
 cli-gen-test: ## Run CLI tests
 	go test $(shell go list ./...) -coverprofile coverage.out && go tool cover -func=coverage.out
