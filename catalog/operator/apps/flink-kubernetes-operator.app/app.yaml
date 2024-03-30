@@ -1,0 +1,16 @@
+apiVersion: bdc.kdp.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    app.core.bdos/catalog: operator
+    app.core.bdos/extra-image: flink/flink-kubernetes-operator:v1.0.0-1.6.0
+  labels:
+    app: flink-kubernetes-operator
+    app.core.bdos/type: system
+spec:
+  name: flink-kubernetes-operator
+  type: flink-operator
+  properties:
+    resources:
+      requests:
+        cpu: 200m

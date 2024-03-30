@@ -1,0 +1,27 @@
+apiVersion: bdc.kdp.io/v1alpha1
+kind: Application
+metadata:
+  labels:
+    app: zookeeper
+    app.core.bdos/type: system
+  annotations:
+    definition.bdc.kdp.io/description: zookeeper
+    app.core.bdos/catalog: zookeeper
+    app.core.bdos/extra-image: bitnami/zookeeper:3.8.2,grafana/promtail:2.5.0
+spec:
+  type: zookeeper
+  properties:
+    chartVersion: "7.6.2"
+    imageTag: "3.8.3"
+    replicaCount: 3
+    resources:
+      requests:
+        cpu: "0.1"
+        memory: 512Mi
+      limits:
+        cpu: "1.0"
+        memory: 512Mi
+    heapSize: 384
+    autopurge:
+      snapRetainCount: 3
+      purgeInterval: 1

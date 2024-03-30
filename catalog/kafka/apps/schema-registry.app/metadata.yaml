@@ -1,0 +1,15 @@
+version: v1.0.0-6.2.0
+invisible: false
+alias: Schema Registry
+description: Schema Registry是一个用于管理与存储 Avro、JSON和Protobuf类型schema服务。
+isGlobal: false
+i18n:
+  en:
+    description: >-
+      Schema Registry is a service for managing and storing metadata of Avro,
+      JSON schema and Protobuf schema types.
+dashboard:
+  - id: SchemaRegistry
+    name: Schema Registry监控面板
+    i18n:
+      en: Schema Registry Dashboard

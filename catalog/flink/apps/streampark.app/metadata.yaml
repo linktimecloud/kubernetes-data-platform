@@ -1,0 +1,13 @@
+version: v1.0.0-2.1.2
+alias: StreamPark
+description: 流处理极速开发框架, 简单易用的流处理计算平台
+isGlobal: false
+i18n:
+  en:
+    description: >-
+      Flow processing speed development framework, easy to use flow processing computing platform
+dashboard:
+  - id: springboot
+    name: SpringBoot 监控面板
+    i18n:
+      en: SpringBoot Dashboard

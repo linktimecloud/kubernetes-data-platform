@@ -1,0 +1,13 @@
+version: v1.0.0-4.10.0
+alias: Hue
+description: Hue是一个WebUI平台，用于访问和操作大数据生态系统中的各种工具和服务。例如操作HDFS上的数据，运行MapReduce Job，执行Hive的SQL语句等。
+isGlobal: false
+i18n:
+  en:
+    description: >-
+      Hue is a WebUI platform for accessing and operating various tools and services in the big data ecosystem. For example, operating data on HDFS, running MapReduce Jobs, executing Hive SQL statements, etc.
+dashboard:
+  - id: hue
+    name: Hue 监控面板
+    i18n:
+      en: Hue Dashboard

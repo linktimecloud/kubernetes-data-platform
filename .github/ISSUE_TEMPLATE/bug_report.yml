@@ -1,0 +1,48 @@
+# https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository#creating-issue-forms
+# https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-githubs-form-schema
+name: Bug Report
+description: Create a report to help KDP to improve
+title: "[Bug]:"
+labels:
+  - bug
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for your interest in KDP! 🚀
+        
+        Please follow these instructions, fill every question, and do every step. 🙏
+  - type: input
+    id: KDP-version
+    attributes:
+      label: KDP version
+      description: |
+        What version of KDP are you using?
+      placeholder: ex. KDP :0.0.1
+    validations:
+      required: true
+  
+  - type: textarea
+    id: what-did-you-do
+    attributes:
+      label: "What did you do?"
+      description: "If possible, provide a recipe for reproducing the error. A complete procedure is good."
+    validations:
+      required: true
+  
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: "What did you see happen?"
+      description: The interface where the error occurred, the error message, and so on can describe the exception condition of the error
+    validations:
+      required: true
+  
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: "What did you expect to see?"
+      description: Why is the current output incorrect, and any additional context we may need to understand the issue.
+    validations:
+      required: true

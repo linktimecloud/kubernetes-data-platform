@@ -1,0 +1,80 @@
+apiVersion: bdc.kdp.io/v1alpha1
+kind: Application
+metadata:
+  labels:
+    app: hdfs
+    app.core.bdos/type: system
+  annotations:
+    app.core.bdos/catalog: hdfs
+    app.core.bdos/extra-image: busybox:1.28,hadoop:v1.0.0-3.1.1,hadoop-initial-job:v1.0.0-3.1.1,grafana/promtail:2.5.0
+    definition.bdc.kdp.io/description: HDFS
+spec:
+  type: hdfs
+  properties:
+    dependencies:
+      zookeeperParentZnode: /hadoop-ha/hdfs-k8s
+    chartVersion: "v1.0.1-3.1.1"
+    logsPromtailEnabled: true
+    imageTag: v1.0.1-3.1.1
+    coreSite:
+      hadoop.tmp.dir: "/usr/local/hadoop/tmp"
+      fs.trash.interval: "1440"
+      fs.permissions.umask-mode: "037"
+      hadoop.proxyuser.ec2-user.groups: "*"
+      hadoop.proxyuser.ec2-user.hosts: "*"
+      hadoop.proxyuser.root.groups: "*"
+      hadoop.proxyuser.root.hosts: "*"
+      hadoop.proxyuser.sqoop.groups: "*"
+      hadoop.proxyuser.sqoop.hosts: "*"
+      hadoop.proxyuser.hue.groups: "*"
+      hadoop.proxyuser.hue.hosts: "*"
+      hadoop.proxyuser.zeppelin.groups: "*"
+      hadoop.proxyuser.zeppelin.hosts: "*"
+      hadoop.proxyuser.hive.groups: "*"
+      hadoop.proxyuser.hive.hosts: "*"
+      hadoop.proxyuser.httpfs.groups: "*"
+      hadoop.proxyuser.httpfs.hosts: "*"
+      hadoop.proxyuser.livy.groups: "*"
+      hadoop.proxyuser.livy.hosts: "*"
+      hadoop.proxyuser.dcos.groups: "*"
+      hadoop.proxyuser.dcos.hosts: "*"
+    hdfsSite:
+      dfs.block.access.token.enable: "true"
+      dfs.permissions.ContentSummary.subAccess: "true"
+      dfs.namenode.name.dir: "file:///hadoop/dfs/name"
+      dfs.datanode.max.transfer.threads: "8192"
+    namenode:
+      HAEnabled: true
+      resources:
+        requests:
+          cpu: '0.1'
+          memory: 1024Mi
+        limits:
+          cpu: '2.0'
+          memory: 1024Mi
+      maxRAMPercentage: '60.0'
+      persistence:
+        size: 10Gi
+    journalnode:
+      quorumSize: 3
+      resources:
+        requests:
+          cpu: '0.1'
+          memory: 512Mi
+        limits:
+          cpu: '1.0'
+          memory: 512Mi
+      persistence:
+        size: 10Gi
+    datanode:
+      resources:
+        requests:
+          cpu: '0.1'
+          memory: 1024Mi
+        limits:
+          cpu: '1.0'
+          memory: 1024Mi
+      replicas: 3
+      maxRAMPercentage: '60.0'
+      persistence:
+        size: 20Gi

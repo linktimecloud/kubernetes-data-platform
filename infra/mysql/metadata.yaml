@@ -1,0 +1,12 @@
+name: mysql
+version: 9.23.0
+description: "MySQL is a widely used relational database management system (RDBMS)."
+url: https://github.com/bitnami/charts/tree/main/bitnami/mysql
+
+dependencies: 
+  - name: fluxcd
+  - name: openebs
+
+tags:
+  - Helm
+  - KDP System

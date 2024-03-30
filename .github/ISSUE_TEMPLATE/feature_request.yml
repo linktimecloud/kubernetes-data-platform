@@ -1,0 +1,37 @@
+# https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository#creating-issue-forms
+# https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-githubs-form-schema
+name: Feature Request
+description: Suggest an idea for this project
+title: "[Feature]:"
+labels:
+  - enhancement
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping us improve! 🙏 Please answer these questions and provide as much information as possible about your problem.
+  
+  - type: textarea
+    id: implemented-function
+    attributes:
+      label: "Implemented function"
+      description: "Describe the function to be implemented. If yes, describe the scope and scenario of the function in detail."
+    validations:
+      required: true
+  
+  - type: textarea
+    id: problem-solve
+    attributes:
+      label: "What problem to solve?"
+      description: Describe what problem does this feature solve.
+    validations:
+      required: true
+  
+  - type: textarea
+    id: version-completed
+    attributes:
+      label: "What version is expected to be completed?"
+      description: Expect it to be resolved in which version.
+    validations:
+      required: true

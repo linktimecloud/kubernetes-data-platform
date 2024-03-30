@@ -1,0 +1,13 @@
+version: v1.0.0-3.1.3
+alias: Hive Metastore
+description: Hive Metastore(HMS)是一个元数据存储系统。
+isGlobal: false
+i18n:
+  en:
+    description: >-
+      Hive Metastore(HMS) is a metadata storage system.
+dashboard:
+  - id: t5_CsYCnzqq
+    name: Hive Metastore 监控面板
+    i18n:
+      en: Hive Metastore Dashboard
