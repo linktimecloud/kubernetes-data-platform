@@ -111,7 +111,7 @@ jobs:
         run: make kdp-cli-build
 
       - name: Cleanup binary
-        run: make kdp-cli-cleanup
+        run: make kdp-cli-clean
 
   check-image-build:
     runs-on: ubuntu-22.04

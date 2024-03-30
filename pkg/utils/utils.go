@@ -22,7 +22,6 @@ import (
 	"archive/tar"
 	"compress/gzip"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"os/user"
@@ -88,12 +87,12 @@ func DownloadFile(url string, targetDir string) error {
 		}
 		defer resp.Body.Close()
 		
-		body, err := ioutil.ReadAll(resp.Body)
+		body, err := io.ReadAll(resp.Body)
 		if err != nil {
 			return fmt.Errorf("failed to read response body: %s", err)
 		}
 
-		if err := ioutil.WriteFile(localFilePath, body, 0644); err != nil {
+		if err := os.WriteFile(localFilePath, body, 0644); err != nil {
 			return fmt.Errorf("failed to write to local file: %s", err)
 		}
 	}
@@ -198,7 +197,7 @@ func GetEnv(key, fallback string) string {
 }
 
 func GitCloneSSHAuth(privateSshKeyFile string) transport.AuthMethod {
-	sshKey, _ := ioutil.ReadFile(privateSshKeyFile)
+	sshKey, _ := os.ReadFile(privateSshKeyFile)
 	signer, _ := ssh.ParsePrivateKey([]byte(sshKey))
 	var auth = &gitssh.PublicKeys{
 		User: "git", 
@@ -286,7 +285,7 @@ func GenRegistryAuthFile(registry, authToken, authFile string) error {
 	    return fmt.Errorf("failed to render registry auth template: %v", err)
 	}
 	// write file
-	err = ioutil.WriteFile(authFile, buf.Bytes(), 0644)
+	err = os.WriteFile(authFile, buf.Bytes(), 0644)
 	if err != nil {
 	    return fmt.Errorf("failed to write registry auth file: %v", err)
 	}
@@ -393,19 +392,19 @@ func ValidateRepoAuthType(repoUrl string) string {
 func ValidateDockerRegistryAuth(registry, username, password string) error {
 	req, err := http.NewRequest("HEAD", fmt.Sprintf("https://%s/v2/", registry), nil)
 	if err != nil {
-		return fmt.Errorf("Error creating request: %v", err)
+		return fmt.Errorf("error creating request: %v", err)
 	}
 
 	req.SetBasicAuth(username, password)
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return fmt.Errorf("Error making request: %v", err)
+		return fmt.Errorf("error making request: %v", err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("Failed to authenticate docker registry '%s' , status code: %d", registry, resp.StatusCode)
+		return fmt.Errorf("failed to authenticate docker registry '%s' , status code: %d", registry, resp.StatusCode)
 	}
 
 	log.Debugf("Successfully authenticated to docker registry <%s>", registry)
