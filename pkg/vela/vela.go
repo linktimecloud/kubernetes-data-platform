@@ -50,13 +50,13 @@ func VelaInstall(artifactServer, dockerRegistry, cacheDir, binDir, velaVersion s
 	var remoteTarBall = fmt.Sprintf("%s/%s", artifactServer, velaTarBall)
 	err = utils.DownloadFile(remoteTarBall, cacheDir)
 	if err != nil {
-	    return fmt.Errorf("Error downloading vela tarball: %v", err)
+	    return fmt.Errorf("error downloading vela tarball: %v", err)
 	}
 
 	// Download vela-core chart to cache dir
 	err = utils.DownloadFile(fmt.Sprintf("%s/%s", artifactServer, velaChart), cacheDir)
 	if err != nil {
-	    return fmt.Errorf("Error downloading vela chart: %v", err)
+	    return fmt.Errorf("error downloading vela chart: %v", err)
 	}
 
 	// Extract vela-cli tarball
@@ -67,19 +67,19 @@ func VelaInstall(artifactServer, dockerRegistry, cacheDir, binDir, velaVersion s
 		), true,
 	)
 	if err != nil {
-	    return fmt.Errorf("Error extracting vela-cli tarball: %v", err)
+	    return fmt.Errorf("error extracting vela-cli tarball: %v", err)
 	}
 
 	// Set vela-cli executable permission
 	_, err = utils.ExecCmd(fmt.Sprintf("chmod +x %s", velaCli), true)
 	if err != nil {
-	    return fmt.Errorf("Error setting vela-cli executable permission: %v", err)
+	    return fmt.Errorf("error setting vela-cli executable permission: %v", err)
 	}
 
 	// Check vela-cli version
 	_, err = utils.ExecCmd(fmt.Sprintf("%s version", velaCli), true)
 	if err != nil {
-	    return fmt.Errorf("Error executing vela-cli commands: %v", err)
+	    return fmt.Errorf("error executing vela-cli commands: %v", err)
 	}
 
 	rc, _ := utils.ExecCmd(fmt.Sprintf("%s system info -s kubevela-vela-core", velaCli), true)
@@ -95,9 +95,9 @@ func VelaInstall(artifactServer, dockerRegistry, cacheDir, binDir, velaVersion s
 		)
 		if err != nil {
 			if upgrade {
-			    return fmt.Errorf("Error upgrading vela-core: %v", err)
+			    return fmt.Errorf("error upgrading vela-core: %v", err)
 			} else {
-				return fmt.Errorf("Error installing vela-core: %v", err)
+				return fmt.Errorf("error installing vela-core: %v", err)
 			}
 		}
 	}
@@ -133,7 +133,7 @@ func VelaAddonLocalInstall(addons, setParameters []string, addonLocalDir , binDi
 		cmd := fmt.Sprintf("%s addon enable --yes --override-definitions %s %s", velaCli, addonLocalPath, addonParams)
 		_, err := utils.ExecCmd(cmd, false)
 		if err != nil {
-			return fmt.Errorf("Error installing addon %s: %v", addon, err)
+			return fmt.Errorf("error installing addon %s: %v", addon, err)
 		}
 	}
 
@@ -152,7 +152,7 @@ func VelaAddonLocalUpgrade(addons, setParameters []string, addonLocalDir , binDi
 		cmd := fmt.Sprintf("%s addon upgrade --yes --override-definitions %s %s", velaCli, addonLocalPath, addonParams)
 		_, err := utils.ExecCmd(cmd, false)
 		if err != nil {
-			return fmt.Errorf("Error installing addon %s: %v", addon, err)
+			return fmt.Errorf("error installing addon %s: %v", addon, err)
 		}
 	}
 

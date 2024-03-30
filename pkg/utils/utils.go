@@ -52,31 +52,31 @@ func ArrayJoin(arr []string, delimeter string) string {
 func DownloadFile(url string, targetDir string) error {
 	log.Debugf("Downloading file %s to %s", url, targetDir)
 	if err := os.MkdirAll(targetDir, 0755); err != nil {
-		return fmt.Errorf("Failed to create target directory: %v", err)
+		return fmt.Errorf("failed to create target directory: %v", err)
 	}
 
 	client := &http.Client{}
 	resp, err := client.Head(url)
 	if err != nil {
-		return fmt.Errorf("Failed to fetch headers of remote file: %s", err)
+		return fmt.Errorf("failed to fetch headers of remote file: %s", err)
 	}
 	defer resp.Body.Close()
 
 	remoteModTime, err := time.Parse(time.RFC1123, resp.Header.Get("Last-Modified"))
 	if err != nil {
-		return fmt.Errorf("Failed to stat remote file: %s", err)
+		return fmt.Errorf("failed to stat remote file: %s", err)
 	}
 
 	localFilePath := filepath.Join(targetDir, filepath.Base(url))
 	if _, err := os.Stat(localFilePath); !os.IsNotExist(err) {
 		localFileInfo, err := os.Stat(localFilePath)
 		if err != nil {
-			return fmt.Errorf("Failed to stat local file: %s", err)
+			return fmt.Errorf("failed to stat local file: %s", err)
 		}
 
 		if !remoteModTime.Before(localFileInfo.ModTime()) {
 			if err := os.Remove(localFilePath); err != nil {
-				return fmt.Errorf("Failed to remove local file: %s", err)
+				return fmt.Errorf("failed to remove local file: %s", err)
 			}
 		}
 	}
@@ -84,17 +84,17 @@ func DownloadFile(url string, targetDir string) error {
 	if _, err := os.Stat(localFilePath); os.IsNotExist(err) {
 		resp, err = client.Get(url)
 		if err != nil {
-			return fmt.Errorf("Failed to download file: %s", err)
+			return fmt.Errorf("failed to download file: %s", err)
 		}
 		defer resp.Body.Close()
 		
 		body, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
-			return fmt.Errorf("Failed to read response body: %s", err)
+			return fmt.Errorf("failed to read response body: %s", err)
 		}
 
 		if err := ioutil.WriteFile(localFilePath, body, 0644); err != nil {
-			return fmt.Errorf("Failed to write to local file: %s", err)
+			return fmt.Errorf("failed to write to local file: %s", err)
 		}
 	}
 
@@ -182,7 +182,7 @@ func ExtractTarGZ(tarBallFile, targetDir, pathInTar string) error {
 				    return fmt.Errorf("failed to write target file: %v", err)
 				}
 			default:
-				return fmt.Errorf("unsupported tar entry type: %s in : %s", header.Typeflag, header.Name)
+				return fmt.Errorf("unsupported tar entry type: %v in : %v", header.Typeflag, header.Name)
 		}
 	}
 
@@ -198,10 +198,9 @@ func GetEnv(key, fallback string) string {
 }
 
 func GitCloneSSHAuth(privateSshKeyFile string) transport.AuthMethod {
-	var auth transport.AuthMethod
 	sshKey, _ := ioutil.ReadFile(privateSshKeyFile)
 	signer, _ := ssh.ParsePrivateKey([]byte(sshKey))
-	auth = &gitssh.PublicKeys{
+	var auth = &gitssh.PublicKeys{
 		User: "git", 
 		Signer: signer,
 		HostKeyCallbackHelper: gitssh.HostKeyCallbackHelper{
@@ -212,15 +211,13 @@ func GitCloneSSHAuth(privateSshKeyFile string) transport.AuthMethod {
 }
 
 func GitCloneHTTPAuth(username, password string) transport.AuthMethod {
-	var auth transport.AuthMethod
-	auth = &githttp.BasicAuth{
+	var auth = &githttp.BasicAuth{
 		Username: username,
 		Password: password,
 	}
 	return auth
 }
 
-// Define a function to clone a git repo to specific directory
 func GitCloneToDir(repoUrl, repoRef, targetDir string) error {
 	var auth transport.AuthMethod
 	log.Debugf("Cloning git repo %s to %s", repoUrl, targetDir)
