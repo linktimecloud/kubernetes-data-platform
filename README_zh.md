@@ -8,8 +8,8 @@
 
 # Kubernetes Data Platform
 
-English | [简体中文](./README_zh.md)
+[English](./README.md) | 简体中文
 <br>
 
-## Quick Start
-For quick start of KDP, please refer to [QuickStart](./docs/en/installation/quick-start.md)
+## 快速启动
+快速体验 KDP 请参考 [快速启动](./docs/zh/installation/quick-start.md)

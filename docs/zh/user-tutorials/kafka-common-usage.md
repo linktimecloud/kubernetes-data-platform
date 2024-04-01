@@ -205,7 +205,7 @@ kafka 集群域名格式为：`<kafka-broker>.<namespace>.svc.<cluster-domain>`�
 ![kafka-topic-create-pv.png](..%2Fresources%2Fkafka-topic-create-pv.png)
 
 点击`pageviews` topic右侧放大镜进入topic详情页，点击`Produce to topic`按钮，将一下数据**逐条**发送到topic中。
-![img.png](../resources/kafka-topic-produce.png)
+![img.png](./images/kafka-topic-produce.png)
 ```json
 {"user_id": 1, "page_id": 1, "user_region": "China"}
 {"user_id": 2, "page_id": 1, "user_region": "US"}
@@ -224,15 +224,15 @@ kafka 集群域名格式为：`<kafka-broker>.<namespace>.svc.<cluster-domain>`�
 
 1. 找到应用目录Flink下Streampark应用，进入点击名称应用详情页，点击“访问地址”按钮，进入Streampark管理页面，输入**固定**用户名(admin)密码(streampark)登录。
    在`设计中心`添加`Flink版本`配置:当前仅支持flink 1.17.1版本，在streampark默认路径为`/streampark/flink/flink-1.17.1`。
-   ![img.png](../resources/flink-streampark-flink-version.png)
+   ![img.png](./images/flink-streampark-flink-version.png)
 
 2. 在`设计中心`添加`Flink集群`配置:当前仅支持flink 1.17.1版本。KDP flink默认访问地址为：http://flink-session-cluster-rest:8081
-   ![img.png](../resources/flink-streampark-flink-cluster.png)
+   ![img.png](./images/flink-streampark-flink-cluster.png)
 
 ### 3.3.2. Flink任务编写
 1. 选择`实时任务`->`作业管理`点击`添加`，
 2. 执行模式选择`remote`，选择`Flink版本`与`Flink集群`选择3.3.1中配置的内容
-   ![img.png](../resources/flink-streampark-job-add.png)
+   ![img.png](./images/flink-streampark-job-add.png)
 3. flink sql填入如下内容：
 ```sql
 CREATE TABLE pageviews_per_region (
@@ -277,4 +277,4 @@ GROUP BY user_region;
 回到kafka manager页面查看`pageviews_per_region` topic数据，可以看到数据已经写入到`pageviews_per_region` topic中。
 可点击`pageviews_per_region` topic右侧放大镜进入topic详情页，查看写入数据内容。
 
-![img.png](../resources/kafka-topic-manager2.png)
+![img.png](./images/kafka-topic-manager2.png)
