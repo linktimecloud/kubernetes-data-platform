@@ -81,7 +81,7 @@ INSERT INTO employee_sink SELECT * FROM employee_source;
 
 这时就创建了一个实时同步的作业，可以在 Flink Dashboard 中看到这个运行中的作业。
 
-![img.png](../resources/mysql-cdc-flink-dashboard.png)
+![img.png](./images/mysql-cdc-flink-dashboard.png)
 
 如果安装了 Kafka Manager，可以打开 Live Tail 页面观测新进入 topic 的数据。
 
@@ -99,6 +99,6 @@ INSERT INTO my_database.employee VALUES (1234, 'scott', 23, 'M');
 
 观测到新进入 topic 的数据：
 
-![img](../resources/mysql-cdc-live-tail.png)
+![img](./images/mysql-cdc-live-tail.png)
 
-![img](../resources/mysql-cdc-console-consumer.png)
+![img](./images/mysql-cdc-console-consumer.png)

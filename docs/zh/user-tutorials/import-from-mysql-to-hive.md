@@ -23,10 +23,10 @@
 
 1. 找到应用目录 Flink 下 Streampark 应用，进入点击名称应用详情页，点击“访问地址”按钮，进入 Streampark 管理页面，输入 **固定** 用户名(admin)密码(streampark)登录。
    在 `设置中心` 添加 `Flink版本` 配置: 当前仅支持 flink 1.17.1 版本，在 streampark 默认路径为 `/streampark/flink/flink-1.17.1`。
-   ![img.png](../resources/flink-streampark-flink-version.png)
+   ![img.png](./images/flink-streampark-flink-version.png)
 
 2. 在 `设置中心` 添加 `Flink集群` 配置: 当前仅支持 flink 1.17.1 版本。KDP flink 默认访问地址为：`http://flink-session-cluster-rest:8081`
-   ![img.png](../resources/flink-streampark-flink-cluster.png)
+   ![img.png](./images/flink-streampark-flink-cluster.png)
 
 ## Hue 配置（可选）
 
@@ -134,7 +134,7 @@ INSERT OVERWRITE hive_catalog.my_database.employee SELECT * FROM mysql_catalog.m
 
 在 StreamPark 中创建作业可以参考下图：
 
-![img.png](../resources/flink-streampark-mysql-to-hive.png)
+![img.png](./images/flink-streampark-mysql-to-hive.png)
 
 # 在 Hive 中浏览数据
 
