@@ -5,6 +5,10 @@ on:
     branches:
       - main
       - release-*
+  pull_request:
+    branches:
+      - main
+      - release-*
 
 permissions:
   id-token: write # This is required for requesting the JWT.https://github.com/actions/checkout/issues/1555
