@@ -79,15 +79,22 @@ This is the common action to update parameters of KDP infrastructure components.
 			}
 		}
 		
-		reservedParams := []string{fmt.Sprintf("helmURL=%s", helmRepo), fmt.Sprintf("registry=%s", dockerRegistry)}
-		mergedParams := append(reservedParams, setParameters...)
+		mergedParams := setParameters
+		if helmRepo != "" {
+		    helmParam := []string{fmt.Sprintf("helmURL=%s", helmRepo)}
+			mergedParams = append(mergedParams, helmParam...)
+		}
+		if dockerRegistry != "" {
+		    dockerParam := []string{fmt.Sprintf("registry=%s", dockerRegistry)}
+			mergedParams = append(mergedParams, dockerParam...)
+		}
 		err := vela.VelaAddonLocalUpgrade(kdpInfraAddons, mergedParams, kdpInfraDir, kdpBinDir)
 		if err != nil {
 			log.Errorf("Error upgrading KDP vela addons: %v", err)
 		    return
 		}
 
-		log.Info("KDP infrastructure has been upraded successfully!")
+		log.Info("KDP infrastructure has been upgraded successfully!")
 
 	},
 }
@@ -96,8 +103,8 @@ func init() {
 	upgradeCmd.Flags().StringVar(&repoUrl, "kdp-repo", defaultKdpRepoUrl, "URL of kubernetes-data-platform git repository")
 	upgradeCmd.Flags().StringVar(&repoRef,"kdp-repo-ref", defaultKdpRepoRef, "Branch/Tag of kubernetes-data-platform git repository")
 	upgradeCmd.Flags().StringVar(&artifactServer,"artifact-server", defaultArtifactServer, "KDP artifact server URL")
-	upgradeCmd.Flags().StringVar(&helmRepo,"helm-repository", defaultHelmRepoisotry, "KDP helm repository URL")
-	upgradeCmd.Flags().StringVar(&dockerRegistry,"docker-registry", defaultDockerRegistry, "KDP docker registry URL")
+	upgradeCmd.Flags().StringVar(&helmRepo,"helm-repository", "", "KDP helm repository URL")
+	upgradeCmd.Flags().StringVar(&dockerRegistry,"docker-registry", "", "KDP docker registry URL")
 	upgradeCmd.Flags().BoolVar(&srcUpgrade,"src-upgrade", false, "Perform an upgrade of KDP source codes, by default it will not be upgraded")
 	upgradeCmd.Flags().BoolVar(&velaUpgrade,"vela-upgrade", false, "Perform an upgrade of KDP vela, by default it will not be upgraded")
 	upgradeCmd.Flags().StringArrayVar(&setParameters, "set", []string{}, "Set runtime parameters by 'key=value', for example '--set key1=value1 --set key2=value2 ...'. The specified parameters will be merged with existing runtime parameters.")
