@@ -12,7 +12,7 @@ parameter: {
 	// +usage=Specify the helm repository that the KDP application use
 	helmURL: *"oci://registry-cr.linktimecloud.com/linktimecloud" | string
 	// +usage=Specify image pull secret for your service
-	imagePullSecret: *"" | string
+	imagePullSecret: *"cr-secret" | string
 	// +usage=Specify namespace of the application to be installed
 	namespace: *"kdp-system" | string
 	// +usage=Specify storage settings

@@ -37,11 +37,7 @@ mysqlWorkflowSteps: [
 _mysqlK8sObjects: {
 	name: parameter.namePrefix + "mysql-k8s-objects"
 	type: "k8s-objects"
-	properties: objects: [
-		if parameter.mysqlArch == "replication" {
-			_mysqlService,
-		}
-	] + _mysqlSecrets + _mysqlBackupSuits
+	properties: objects: _mysqlSecrets + _mysqlService + _mysqlBackupSuits
 }
 
 _myCnf: """
