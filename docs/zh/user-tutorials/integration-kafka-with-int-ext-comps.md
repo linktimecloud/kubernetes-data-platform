@@ -1,31 +1,31 @@
-# 1. 介绍
+# Kafka 与内外部组件集成
 
 KDP 提供的云原生 Kafka 是一个分布式的消息队列系统，具有高吞吐量、高可用性、高容错性等特点，适用于大规模数据处理场景。
 
-为支持用户快速搭建 Kafka 集群，KDP 提供了 Kafka 集群应用，用户可以通过 KDP-ux 一键创建 Kafka 集群，支持消息的生产和消费需求。
+为支持用户快速搭建 Kafka 集群，KDP 提供了 Kafka 集群应用，用户可以通过 KDP-ux 一键安装 Kafka 集群，支持消息的生产和消费需求。
 为支持用户进行云下数据转移到云上，KDP 为 Kafka 提供了 K8s 集群外部访问的能力，通过 K8s nodeport 方式暴露 Kafka 服务，用户可以将云下服务通过 Kafka 客户端连接到 KDP Kafka 集群。
 
-# 2. K8s外部访问
+## Kafka 与外部组件集成
 
 KDP 对 Kafka 进行了封装，用户服务在云上与运行访问 Kafka 集群的方式与云下基本一致，用户云下访问时只需将 Kafka 集群域名解析到 KDP Kafka 集群 K8s node IP 上，即可通过 Kafka 客户端连接到 KDP Kafka 集群。
 
-## 2.1. Kafka部署
+### Kafka部署
 
-通过 KDP-ux 创建 Kafka 集群应用，**listeners.type选择nodeport**。
+通过 KDP-ux 安装 Kafka 集群应用，**listeners.type选择nodeport**。
 
-## 2.2. 网络打通
+### 网络打通
 
 安装 Kafka 集群应用后，需要确保 KDP Kafka 集群 K8s node 网络与用户服务所在网络打通，以便用户服务通过 Kafka 客户端连接到 KDP Kafka 集群。
 请用户自行配置DNS服务器或者本地hosts文件，将Kafka集群域名解析到KDP Kafka集群K8s node IP上。
 
-## 2.3. 配置Kafka域名解析
+### 配置Kafka域名解析
 
 KDP Kafka 集群应用会自动创建一个 Kafka 集群域名，用户需要将 Kafka 集群域名解析到 KDP Kafka 集群 K8s node IP 上。
 kafka 集群域名格式为：`<kafka-broker>.<namespace>.svc.<cluster-domain>`，例如：`kafka-3-cluster-kafka-plain-0.kdp-data.svc.cluster.local`。
 
 注：KDP Kafka 地址与端口信息可以通过 KDP-ux 集群信息-应用使用配置页查看。默认情况下 Kafka 三节点broker会占用 NodePort 31091-31094 端口。
 
-## 2.4. Kafka客户端连接
+### Kafka客户端连接
 
 用户服务通过 Kafka 客户端连接到 KDP Kafka 集群，需要配置 Kafka 客户端连接信息，包括 Kafka 集群域名、Kafka 集群端口等信息。
 
@@ -199,15 +199,15 @@ kafka 集群域名格式为：`<kafka-broker>.<namespace>.svc.<cluster-domain>`�
    }
 ```
 
-# 3. 大数据场景实践
+## Kafka 与内部组件集成
 
 在KDP下提供一个通过Flink读Kafka数据写入Kafka的示例供用户参考。
 
-## 3.1. 组件部署
+### 组件部署
 
-在KDP-ux上分别创建Kafka cluster、kafka-manager、flink cluster、streampark应用。
+在KDP-ux上分别安装Kafka cluster、kafka-manager、flink cluster、streampark应用。
 
-## 3.2. topic创建与数据准备
+### topic创建与数据准备
 
 找到应用目录kafka下kafka-manager应用，点击名称进入应用详情页，点击“访问地址”按钮，进入kafka-manager管理页面，创建一个名为`pageviews`、一个名为`pageviews_per_region`的topic。kafka manager topic管理与创建页面如下：
 ![kafka-topic-manager.png](..%2Fresources%2Fkafka-topic-manager.png)
@@ -229,9 +229,9 @@ kafka 集群域名格式为：`<kafka-broker>.<namespace>.svc.<cluster-domain>`�
 {"user_id": 10, "page_id": 4, "user_region": "UK"}
 ```
 
-## 3.3. Flink读写kafka
+### Flink 读写 Kafka
 
-### 3.3.1. streampark配置
+#### Streampark 配置
 
 若已完成配置可跳过
 
@@ -242,7 +242,7 @@ kafka 集群域名格式为：`<kafka-broker>.<namespace>.svc.<cluster-domain>`�
 2. 在`设计中心`添加`Flink集群`配置:当前仅支持flink 1.17.1版本。KDP flink默认访问地址为：<http://flink-session-cluster-rest:8081>
    ![img.png](./images/flink-streampark-flink-cluster.png)
 
-### 3.3.2. Flink任务编写
+#### Flink任务编写
 
 1. 选择`实时任务`->`作业管理`点击`添加`，
 2. 执行模式选择`remote`，选择`Flink版本`与`Flink集群`选择3.3.1中配置的内容
@@ -289,7 +289,7 @@ GROUP BY user_region;
 4. 输入作业名称`kafka-to-kafka`，点击`确定`。
 5. 在`作业管理`页面找到刚才添加的`kafka-to-kafka`作业点击操作中的`提交`与`启动`，等待任务启动成功。
 
-## 3.4. 结果验证
+### 结果验证
 
 回到kafka manager页面查看`pageviews_per_region` topic数据，可以看到数据已经写入到`pageviews_per_region` topic中。
 可点击`pageviews_per_region` topic右侧放大镜进入topic详情页，查看写入数据内容。
