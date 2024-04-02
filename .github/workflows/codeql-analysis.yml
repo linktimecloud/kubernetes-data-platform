@@ -7,6 +7,7 @@ on:
       - release-*
 
 permissions:
+  id-token: write # This is required for requesting the JWT.https://github.com/actions/checkout/issues/1555
   contents: read
 
 jobs:
@@ -25,15 +26,18 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
+        uses: actions/checkout@v4
 
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@959cbb7472c4d4ad70cdfe6f4976053fe48ab394 # v2.1.37
-        with:
-          languages: ${{ matrix.language }}
-
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@959cbb7472c4d4ad70cdfe6f4976053fe48ab394 # v2.1.37
-
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@959cbb7472c4d4ad70cdfe6f4976053fe48ab394 # v2.1.37
+# Requirements for using default setup: It is publicly visible.
+# Once this repository is set up publicly, we will release the following steps
+# https://docs.github.com/en/code-security/code-scanning/enabling-code-scanning/configuring-default-setup-for-code-scanning#requirements-for-using-default-setup
+#      - name: Initialize CodeQL
+#        uses: github/codeql-action/init@959cbb7472c4d4ad70cdfe6f4976053fe48ab394 # v2.1.37
+#        with:
+#          languages: ${{ matrix.language }}
+#
+#      - name: Autobuild
+#        uses: github/codeql-action/autobuild@959cbb7472c4d4ad70cdfe6f4976053fe48ab394 # v2.1.37
+#
+#      - name: Perform CodeQL Analysis
+#        uses: github/codeql-action/analyze@959cbb7472c4d4ad70cdfe6f4976053fe48ab394 # v2.1.37
