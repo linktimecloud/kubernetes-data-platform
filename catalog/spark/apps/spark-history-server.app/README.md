@@ -20,7 +20,7 @@ kdp界面->系统应用，找到 "spark-history-server" 并点击，点击右上
 - 执行日志
 
 ### 3. 常见问题自检
-问题一：web ui看不到spark应用
+问题一：WebUI看不到spark应用
 排查：
 1. spark.eventLog.enabled 是否设置为true
 2. spark.eventLog.dir和spark.history.fs.logDirectory是否相同

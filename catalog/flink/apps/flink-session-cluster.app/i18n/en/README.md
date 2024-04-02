@@ -5,7 +5,7 @@ The core user facing API of the Flink Kubernetes Operator is the FlinkDeployment
 
 Custom Resources are extensions of the Kubernetes API and define new object types. In our case the FlinkDeployment CR defines Flink Application and Session cluster deployments. The FlinkSessionJob CR defines the session job on the Session cluster and each Session cluster can run multiple FlinkSessionJob.
 
-The `flink-session-cluster` application is based on the FlinkDeployment CR to create a session cluster. Users can submit Flink jobs to the session cluster through the Flink Web UI.
+The `flink-session-cluster` application is based on the FlinkDeployment CR to create a session cluster. Users can submit Flink jobs to the session cluster through the Flink WebUI.
 
 
 ### 2. Quick Start
@@ -13,18 +13,18 @@ The `flink-session-cluster` application is based on the FlinkDeployment CR to cr
 We will demonstrate how to submit a Flink job to the session cluster.
 Prerequisites:
 
-1. the endpoint of the session cluster is exposed to the outside of the cluster.(eg: Flink Web UI: `http://flink-session-cluster-ingress.yourdomain.com`)
+1. the endpoint of the session cluster is exposed to the outside of the cluster.(eg: Flink WebUI: `http://flink-session-cluster-ingress.yourdomain.com`)
 
 #### Flink Job Jar File
 you can dowload the Flink job jar file from [here](https://repo1.maven.org/maven2/org/apache/flink/flink-examples-streaming_2.12/1.17.1/flink-examples-streaming_2.12-1.17.1-WordCount.jar), file name is `flink-examples-streaming_2.12-1.17.1-WordCount`.
 
 #### Submit Flink Job to the Session Cluster  
-open the Flink Web UI, and submit a Flink job to the session cluster.
+open the Flink WebUI, and submit a Flink job to the session cluster.
 
-1. Open the Flink Web UI (eg: Flink Web UI: `http://flink-session-cluster-ingress.yourdomain.com`)
+1. Open the Flink WebUI (eg: Flink WebUI: `http://flink-session-cluster-ingress.yourdomain.com`)
 2. Click `Submit New Job` -> `Add New`, select the jar file you downloaded in the previous step, and submit the Flink job to the session cluster.
 
-You can see the Flink job running in the Flink Web UI later.
+You can see the Flink job running in the Flink WebUI later.
 
 ### 3. FQA
 

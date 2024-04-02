@@ -20,7 +20,7 @@ Through the browser, users can obtain the following information:
 - Application logs and many more
 
 ### 3. FAQS
-Q1：The web ui cannot see the spark application
+Q1：The WebUI cannot see the spark application
 Check：
 1. Whether spark.eventLog.enabled is set to true
 2. Are spark.eventLog.dir and spark.history.fs.logDirectory the same?
