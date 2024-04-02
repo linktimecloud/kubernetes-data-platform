@@ -19,15 +19,15 @@ KDP(Kubernetes Data Platform) delivers a modern, hybrid and cloud-native data pl
 ![KDP](https://linktime-public.oss-cn-qingdao.aliyuncs.com/linktime-homepage/kdp/kdp-archi-en.png)
 
 ## Highlights
-* 开箱即用的 Kubernetes 大数据平台
-  * 主流大数据计算、存储引擎的 K8s 化改造及优化
-  * 大数据组件的标准化配置管理，简化了大数据组件配置依赖管理的复杂性
-* 提供标准化的大数据应用集成框架
-  * 基于[OAM](https://oam.dev/)的应用交付引擎，简化大数据应用的交付和开发
-  * 可扩展的应用层运维能力：可观测性、弹性伸缩、灰度发布等
-* 大数据集群及应用目录的模型概念
-  * 大数据集群：在K8s上以“集群”的形式管理大数据组件，提供同一个大数据集群下大数据应用统一的生命周期管理
-  * 应用目录：将相关的单体大数据组件组合成一个应用目录，提供从应用层到容器层的统一管理视图
+* Out-of-the-box Kubernetes data platform with:
+  * K8s-native integration and optimization of mainstream big data computing and storage engines
+  * The standardized configuration management of big data components which simplifies the complexity of configuration dependency management of big data components
+* Standardized big data application integration framework with:
+  * The application delivery engine based on [OAM](https://oam.dev/) which simplifies the delivery and development of big data applications
+  * Scalable application layer operation and maintenance capabilities: observability, elastic scaling, gray scale publishing, etc
+* Model concept of big data cluster and application catalog:
+  * Big Data cluster: Manage big data components in the form of "cluster" on K8s, providing unified life cycle management of big data applications in the same big data cluster
+  * Application Catalog: Combines individual big data components into an application catalog, providing a unified management view from the application layer to the container layer
 
 ## Getting Started
 * [Overview](./docs/en/getting-started/overview.md)
