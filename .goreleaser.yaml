@@ -10,7 +10,6 @@ builds:
     goos:
       - linux
       - darwin
-      - windows
     goarch:
       - amd64
       - arm64
@@ -26,15 +25,15 @@ archives:
     wrap_in_directory: '{{ .Os }}-{{ .Arch }}'
     builds:
       - kdp-cli
-    name_template: '{{ trimsuffix .ArtifactName ".exe" }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}'
-    files: [ LICENSE, README.md, docs/QuickStart.md ]
+    name_template: '{{ .ArtifactName }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}'
+    files: [ LICENSE, README.md, README_zh.md ]
   - format: zip
     id: kdp-cli-zip
     builds:
       - kdp-cli
     wrap_in_directory: '{{ .Os }}-{{ .Arch }}'
-    name_template: '{{ trimsuffix .ArtifactName ".exe" }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}'
-    files: [ LICENSE, README.md, docs/QuickStart.md ]
+    name_template: '{{ .ArtifactName }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}'
+    files: [ LICENSE, README.md, README_zh.md ]
 
 
 checksum:
