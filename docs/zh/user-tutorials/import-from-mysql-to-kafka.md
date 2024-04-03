@@ -10,7 +10,9 @@
 
 本案例需要在 KDP 上安装以下组件：
 
+- flink-kubernetes-operator
 - flink-session-cluster
+- kafka-3-operator
 - kafka-3-cluster
 - kafka-manager（可选）
 

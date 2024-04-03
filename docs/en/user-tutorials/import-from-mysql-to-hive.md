@@ -11,6 +11,7 @@ Requires the installation of the following components on KDP:
 - hdfs
 - hive-metastore
 - hive-server2
+- flink-kubernetes-operator
 - flink-session-cluster
 - streampark（optional. Note that Flink on Hive needs to be enabled.）
 - hue（optional）

@@ -11,6 +11,7 @@
 - hdfs
 - hive-metastore
 - hive-server2
+- flink-kubernetes-operator
 - flink-session-cluster
 - streampark（可选。注意需要启用 Flink on Hive。）
 - hue（可选）

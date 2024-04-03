@@ -10,7 +10,9 @@ This article introduces how to implement data synchronization in Flink SQL witho
 
 Requires the installation of the following components on KDP:
 
+- flink-kubernetes-operator
 - flink-session-cluster
+- kafka-3-operator
 - kafka-3-cluster
 - kafka-manager（optional）
 
