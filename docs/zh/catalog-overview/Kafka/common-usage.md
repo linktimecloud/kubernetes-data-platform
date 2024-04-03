@@ -66,7 +66,27 @@ kafka连接访问可以通过程序代码与shell命令行两种方式进行。
 
 --partitions  扩展到新的分区数
 
-**开启kerberos的kafka shell命令行**
+**不开启 kerberos 的 kafka shell 命令行**
+
+```shell
+export BOOTSTRAP=【kafka url】
+   export topic=【topic】
+   
+   echo '{
+   "topics": [
+   {"topic": "【replace to your topic name】"}
+   ],
+   "version": 1
+   }' > move-json-file.json 
+   
+   bin/kafka-reassign-partitions.sh --bootstrap-server ${bootstrap} --topics-to-move-json-file move-json-file.json --broker-list "0,1,2" --generate
+   # 将上一步得到的reassignment plan写入文件
+   echo '【上条命令的结果】' > reassignment-json-file.json
+   bin/kafka-reassign-partitions.sh --bootstrap-server ${bootstrap} --reassignment-json-file reassignment-json-file.json --execute
+
+```
+
+**开启 kerberos 的 kafka shell 命令行**
 
 ```shell
    echo 'KafkaClient {
@@ -96,24 +116,4 @@ kafka连接访问可以通过程序代码与shell命令行两种方式进行。
    echo '【上条命令的结果】' > reassignment-json-file.json
    bin/kafka-reassign-partitions.sh --bootstrap-server ${bootstrap} --command-config /tmp/client.conf --reassignment-json-file reassignment-json-file.json --execute
    
-```
-
-**不开启kerberos的kafka shell命令行**
-
-```shell
-export BOOTSTRAP=【kafka url】
-   export topic=【topic】
-   
-   echo '{
-   "topics": [
-   {"topic": "【replace to your topic name】"}
-   ],
-   "version": 1
-   }' > move-json-file.json 
-   
-   bin/kafka-reassign-partitions.sh --bootstrap-server ${bootstrap} --topics-to-move-json-file move-json-file.json --broker-list "0,1,2" --generate
-   # 将上一步得到的reassignment plan写入文件
-   echo '【上条命令的结果】' > reassignment-json-file.json
-   bin/kafka-reassign-partitions.sh --bootstrap-server ${bootstrap} --reassignment-json-file reassignment-json-file.json --execute
-
 ```

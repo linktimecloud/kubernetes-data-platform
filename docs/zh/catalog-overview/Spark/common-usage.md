@@ -32,6 +32,6 @@ spec:
 
 ### 查看 Spark 执行历史
 
-进入 Spark History Server Web UI页面，查看 Spark 任务执行情况。例如执行一个简单的数据处理任务后，查看执行情况：
+进入 Spark History Server WebUI页面，查看 Spark 任务执行情况。例如执行一个简单的数据处理任务后，查看执行情况：
 
 <img src="./images/Usage-2024-03-25-15-51-03.png" />

@@ -1,16 +1,19 @@
+# Flink 开发指南
 
-### 1. 目标
 本文主要介绍一一下如何使用`Flink DataStream API`和`Flink SQL`开发Flink应用程序。更多请参考[Flink API 介绍](https://nightlies.apache.org/flink/flink-docs-release-1.17/docs/concepts/overview/#flinks-apis)。同时，将介绍如何使用 Flink 作业管理平台提交和运行 Flink 应用程序。
 
 前置条件：
+
 - 确保已经在KDP上部署了Flink Operator, Flink session cluster和Flink作业管理平台Streampark。
 - 根据Flink文档完成快速开始指南，确保Flink集群正常运行。
 - 根据Streampark的文档，配置了Flink作业管理平台的相关参数, demo 作业运行成功
 
-### 2. Flink DataStream API 应用开发
+## Flink DataStream API 应用开发
+
 `Flink DataStream API`是一种用于处理无界数据流的高级API。它提供了许多操作符，可以用于处理数据流。例如，`map`、`filter`、`keyBy`、`reduce`、`window`等。下面是一个简单的示例，展示如何使用`Flink DataStream API`开发一个简单的`WordCount`应用程序。
 
-#### 2.1 程序开发
+### 程序开发
+
 ```java
 
 package org.apache.flink.streaming.examples.socket;
@@ -127,55 +130,59 @@ public class SocketWindowWordCount {
 
 这个程序的主要功能是从指定的socket读取文本数据流，对窗口内的单词进行实时计数，并将结果打印到控制台。
 
+源代码地址：<https://github.com/apache/flink/tree/release-1.17/flink-examples/flink-examples-streaming>
 
-源代码地址：https://github.com/apache/flink/tree/release-1.17/flink-examples/flink-examples-streaming
+程序构建的jar包下载地址：<https://repo1.maven.org/maven2/org/apache/flink/flink-examples-streaming_2.12/1.17.1/flink-examples-streaming_2.12-1.17.1-SocketWindowWordCount.jar>
 
-程序构建的jar包下载地址：https://repo1.maven.org/maven2/org/apache/flink/flink-examples-streaming_2.12/1.17.1/flink-examples-streaming_2.12-1.17.1-SocketWindowWordCount.jar
-
-
-#### 2.2 提交应用程序到Flink集群
+### 提交应用程序到 Flink 集群
 
 介绍二种方式，一种是通过Flink CLI提交应用程序，另一种是通过Flink作业管理平台Streampark提交应用程序。
 
-#### 2.2.1 通过Flink CLI提交应用程序
+#### 通过 Flink CLI 提交应用程序
 
 进入 flink session cluster 容器，执行以下命令：
 
 ```shell
 ./bin/flink run -d ./examples/streaming/SocketWindowWordCount.jar --hostname `(grep 'flink-session-cluster' /etc/hosts | head -n 1 | awk '{print $1}')` --port 9999 && nc -l 9999
 ```
+
 执行成功后，进入nc命令行，输入文本数据, 然后回车; 输入多条文本数据，查看flink session cluster控制台输出结果。
-也可以到flink web ui 查看作业状态。
+也可以到flink WebUI 查看作业状态。
 
 清理作业：
 退出nc交互界面，执行以下命令：
+
 ```shell
 ./bin/flink list
-# 预期会输出job id
+## 预期会输出job id
 ./bin/flink cancel <job_id>
 ```
 
-#### 2.2.2 通过Flink作业管理平台Streampark提交应用程序
+#### 通过 Flink 作业管理平台 Streampark 提交应用程序
 
-3.2.1 准备：
+**准备**
+
 进入 flink session cluster 容器查看ip地址，执行以下命令：
+
 ```shell
 grep 'flink-session-cluster' /etc/hosts | head -n 1 | awk '{print $1}'
-# 记录输出的flink容器ip地址(如：10.233.114.142)，streampark 作业参数会用到
+## 记录输出的flink容器ip地址(如：10.233.114.142)，streampark 作业参数会用到
 
-# 起socket服务
+## 起socket服务
 nc -l 9999
-# 在成功发布作业后，输入文本数据，查看flink session cluster控制台输出结果
+## 在成功发布作业后，输入文本数据，查看flink session cluster控制台输出结果
 
 ```
 
+**登录 Streampark WebUI 提交**
 
-3.2.2 登录Streampark web ui,  在左侧导航栏点击`实时开发` - `作业管理` - `添加`，在新的页面中按照如下信息填写，然后点击`提交`按钮。
+登录 Streampark WebUI ，在左侧导航栏点击`实时开发` - `作业管理` - `添加`，在新的页面中按照如下信息填写，然后点击`提交`按钮。
+
 - 作业模式：`Custom Code`
 - 执行模式: `remote`
 - 资源来源: `upload local job`
-- Flink版本: `flink-1.17.1` 
-- Flink集群: `demo` 
+- Flink版本: `flink-1.17.1`
+- Flink集群: `demo`
 - Program Jar: 选择上面构建的jar包或者下载的jar包
 - Program Main: `org.apache.flink.streaming.examples.socket.SocketWindowWordCount`
 - 作业名称: `Socket Window WordCount`
@@ -183,17 +190,17 @@ nc -l 9999
 
 添加成功后会跳转到作业管理页面
 
-3.2.3 运行作业
+**运行作业**
+
 - 在作业管理页面，点击`datagen-print`作业的`发布作业`按钮，稍等片刻，发布状态变为`Done` `Success`
 - 点击`datagen-print`作业的`启动作业`按钮，关闭弹窗中的`from savepoin`, 点击`应用`, 作业将提交到Flink session集群运行, 运行状态依次变为`Starting` `Running` `Finished`
 - 最后不需要运行时，作业的`停止作业`按钮，停止作业。
 
-
-### 3. Flink SQL 应用开发
+## Flink SQL 应用开发
 
 `Flink SQL`是一种用于处理无界和有界数据流的高级API。它提供了类似于SQL的查询语言，可以用于处理数据流。下面是一个简单的示例，展示如何使用`Flink SQL`,开发一个简单应用程序。用于模拟生成订单数据，并计算每个用户的总金额，然后将结果打印输出。
 
-#### 3.1 程序开发
+### 程序开发
 
 ```java
 Flink SQL 如下：
@@ -240,35 +247,35 @@ UserMoneyAmount表用于存储每个用户的总金额，包含用户ID（user_i
 - 数据插入操作：
 使用insert into语句从UserOrder表中选择数据，并按照user_id进行分组，然后计算每个用户的总金额（使用sum函数），将结果插入到UserMoneyAmount表中。
 
-#### 3.2 提交应用程序到Flink集群
+### 提交应用程序到Flink集群
 
 介绍二种方式，一种是通过Flink CLI提交应用程序，另一种是通过Flink作业管理平台Streampark提交应用程序。
 
-#### 3.2.1 通过Flink CLI提交应用程序
+#### 通过Flink CLI提交应用程序
 
 进入 flink session cluster 容器，执行以下命令：
 
 ```shell
-# 启动sql-client
+## 启动sql-client
 ./bin/sql-client.sh 
-# 在flink sql交互终端中输入上面的三条sql语句， 需要单条执行，然后回车，不支持多条语句同时执行
+## 在flink sql交互终端中输入上面的三条sql语句， 需要单条执行，然后回车，不支持多条语句同时执行
 
-# 预期三条语句执行成功，job 提交成功并输出 job id, 记录id稍后用于取消作业
+## 预期三条语句执行成功，job 提交成功并输出 job id, 记录id稍后用于取消作业
 
-# 访问Flink web ui 查看作业状态
+## 访问Flink WebUI 查看作业状态
 
-# 返回flink sql 交互终端，取消作业
+## 返回flink sql 交互终端，取消作业
 ./bin/flink cancel <job_id>
 
 ```
 
+#### 通过 Flink 作业管理平台 Streampark 提交应用程序
 
-#### 3.2.2 通过Flink作业管理平台Streampark提交应用程序
 在左侧导航栏点击`实时开发` - `作业管理` - `添加`，在新的页面中按照如下信息填写，然后点击`提交`按钮。
 
 - 执行模式: `remote`
-- Flink版本: `flink-1.17.1` 
-- Flink集群: `demo` 
+- Flink版本: `flink-1.17.1`
+- Flink集群: `demo`
 - Flink SQL:
   
 ```sql
@@ -309,5 +316,6 @@ group by
 添加成功后会跳转到作业管理页面
 
 运行作业
+
 - 在作业管理页面，点击该作业的`发布作业`按钮，稍等片刻，发布状态变为`Done` `Success`
 - 点击该作业的`启动作业`按钮，关闭弹窗中的`from savepoin`, 点击`应用`, 作业将提交到Flink session集群运行, 运行状态依次变为`Starting` `Running` `Finished`
