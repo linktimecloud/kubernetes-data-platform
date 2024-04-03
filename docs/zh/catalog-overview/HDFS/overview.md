@@ -1,4 +1,3 @@
-
 # HDFS 概述
 
 HDFS（Hadoop Distributed File System）是一种 Hadoop 分布式文件系统，具备高度容错特性，支持高吞吐量数据访问，可以在处理海量数据（TB 或 PB 级别以上）的同时最大可能的降低成本。HDFS 适用于大规模数据的分布式读写，特别是读多写少的场景。

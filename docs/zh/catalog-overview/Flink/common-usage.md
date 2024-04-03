@@ -15,7 +15,7 @@
 
 ### 将 Flink 作业提交到会话集群
 
-打开 Flink Web UI（例如：`http://flink-session-cluster:8081`），将 Flink 作业提交到会话集群。
+打开 Flink WebUI（例如：`http://flink-session-cluster:8081`），将 Flink 作业提交到会话集群。
 
 1. 点击 `Submit New Job` -> `Add New`，选择本地机器上的 jar 文件上传。
 2. 点击上传的 jar 文件名称，将 `org.apache.flink.examples.java.wordcount.WordCount` 填写到 `Entry Class` 字段中，将 `--output "/tmp/word-count.txt"` 填写到 `Program Arguments` 字段中，点击 `Submit` 将 Flink 作业提交到会话集群。

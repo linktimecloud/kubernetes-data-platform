@@ -66,7 +66,7 @@ KDP 页面安装 Flink 为 session 模式。后续会开放 Application 模式�
 
 安装 streampark 依赖 MySQL。
 
-<img src="./images/Overview-2024-03-25-16-33-50.png" />
+<img src="./images/overview-2024-04-02-13-40-42.png" />
 
 ## 应用安装
 

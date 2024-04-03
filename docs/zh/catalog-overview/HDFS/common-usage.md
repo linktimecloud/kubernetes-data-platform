@@ -48,7 +48,7 @@ hdfs dfs -get /hdfs路径 /本地路径
 
 ### 操作步骤
 
-通过 Web UI 查看 NameNode 状态，确认 standby 状态的 Namenode。
+通过 WebUI 查看 NameNode 状态，确认 standby 状态的 Namenode。
 
 进入需要恢复的 Namenode 容器。以 namespace `default` 下的 `hdfs-namenode-1` 为例：
 

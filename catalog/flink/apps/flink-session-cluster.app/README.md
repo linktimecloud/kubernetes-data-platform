@@ -3,24 +3,24 @@ Flink Kubernetes Operator 的核心用户面向 API 是 FlinkDeployment 和 Flin
 
 自定义资源（Custom Resources）是 Kubernetes API 的扩展，定义了新的对象类型。在我们的案例中，FlinkDeployment CR 定义了 Flink 应用程序和会话集群部署。FlinkSessionJob CR 定义了会话集群上的会话作业，每个会话集群可以运行多个 FlinkSessionJob。
 
-应用程序 `flink-session-cluster` 基于 FlinkDeployment CR 创建会话集群。用户可以通过 Flink Web UI 将 Flink 作业提交到会话集群。
+应用程序 `flink-session-cluster` 基于 FlinkDeployment CR 创建会话集群。用户可以通过 Flink WebUI 将 Flink 作业提交到会话集群。
 
 
 ### 2. 快速开始
-我们将演示如何通过Flink Web UI将 Flink 作业提交到会话集群。
+我们将演示如何通过Flink WebUI将 Flink 作业提交到会话集群。
 
 前提条件：
 
-1. 会话集群Ingress可以访问。（例如Flink Web UI：`http://flink-session-cluster-ingress.yourdomain.com`）
+1. 会话集群Ingress可以访问。（例如Flink WebUI：`http://flink-session-cluster-ingress.yourdomain.com`）
 
 #### 获取 Flink 作业 Jar 文件
 1. 您可以从[这里](https://repo1.maven.org/maven2/org/apache/flink/flink-examples-streaming_2.12/1.17.1/flink-examples-streaming_2.12-1.17.1-WordCount.jar)下载 Flink 作业 jar 文件，文件名为 `flink-examples-streaming_2.12-1.17.1-WordCount`。
 
 #### 将 Flink 作业提交到会话集群
-1. 打开 Flink Web UI（（例如Flink Web UI：`http://flink-session-cluster-ingress.yourdomain.com`）
+1. 打开 Flink WebUI（（例如Flink WebUI：`http://flink-session-cluster-ingress.yourdomain.com`）
 2. 点击 `Submit New Job` -> `Add New`，选择上一步下载的 jar 文件上传, 将 Flink 作业提交到会话集群。
 
-稍后您可以在 Flink Web UI 中看到 Flink 作业正在运行。
+稍后您可以在 Flink WebUI 中看到 Flink 作业正在运行。
 
 ### 3. FQA
 
