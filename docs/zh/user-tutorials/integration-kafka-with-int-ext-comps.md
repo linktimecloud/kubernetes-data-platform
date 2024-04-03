@@ -210,8 +210,8 @@ kafka 集群域名格式为：`<kafka-broker>.<namespace>.svc.<cluster-domain>`�
 ### topic创建与数据准备
 
 找到应用目录kafka下kafka-manager应用，点击名称进入应用详情页，点击“访问地址”按钮，进入kafka-manager管理页面，创建一个名为`pageviews`、一个名为`pageviews_per_region`的topic。kafka manager topic管理与创建页面如下：
-![kafka-topic-manager.png](..%2Fresources%2Fkafka-topic-manager.png)
-![kafka-topic-create-pv.png](..%2Fresources%2Fkafka-topic-create-pv.png)
+
+![img.png](./images/kafka-topic-manager.png)
 
 点击`pageviews` topic右侧放大镜进入topic详情页，点击`Produce to topic`按钮，将一下数据**逐条**发送到topic中。
 ![img.png](./images/kafka-topic-produce.png)

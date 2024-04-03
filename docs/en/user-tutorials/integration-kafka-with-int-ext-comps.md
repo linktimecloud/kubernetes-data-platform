@@ -216,8 +216,7 @@ Find the application directory under Kafka and click on the kafka-manager applic
 
 Kafka Manager Topic Management and Creation
 
-![kafka-topic-manager.png](..%2Fresources%2Fkafka-topic-manager.png)
-![kafka-topic-create-pv.png](..%2Fresources%2Fkafka-topic-create-pv.png)
+![img.png](./images/kafka-topic-manager.png)
 
 
 Click the magnifying glass on the right side of the `pageviews` topic to enter the topic details page. Click the "`Produce to topic`" button to send the following data to the topic one by one.
