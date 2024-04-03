@@ -12,7 +12,7 @@ Requires the installation of the following components on KDP:
 - hive-metastore
 - hive-server2
 - flink-session-cluster
-- streampark（optional）
+- streampark（optional. Note that Flink on Hive needs to be enabled.）
 - hue（optional）
 
 Please install the above components in order.
