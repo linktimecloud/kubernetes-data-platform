@@ -104,9 +104,9 @@ You can add a new parameter ·dfs.datanode.failed.volumes.tolerated· in the hdf
 | ------ | ----------- | ------ |
 | dfs.datanode.failed.volumes.tolerated | The number of volumes allowed to fail before DataNode stops providing services. By default, at least one valid volume is required. | 0 |
 
-### 使用 Balancer 进行容量均衡
+### Using Balancer for capacity balancing
 
-HDFS 集群可能出现 DataNode 节点间磁盘利用率不平衡的情况，例如集群中添加新 DataNode 的场景。如果 HDFS 出现数据不平衡的状况，则可能导致个别 DataNode 压力过大。
+In an HDFS cluster, there may be situations where the disk utilization among DataNode nodes is unbalanced, such as when adding new DataNodes to the cluster. If HDFS experiences data imbalance, it may lead to excessive pressure on individual DataNodes.
 
 Using Balancer for Capacity Balancing
 
@@ -143,7 +143,8 @@ The trash is an encapsulation of the Hadoop Shell or some applications (such as 
 
 Taking the hadoop rm command as an example, the Hadoop Trash process flowchart is shown below.
 
-<img src='./images/05-best-practices-1.png'>
+
+<img src="./images/best-practice-2024-04-03-14-56-18.png" />
 
 ### Enable Trash
 

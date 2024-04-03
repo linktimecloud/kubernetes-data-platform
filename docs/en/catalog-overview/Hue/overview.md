@@ -26,7 +26,7 @@ graph TB
 ```
 
 - Hue UI is the user interface through which users can interact with the Hue Server, for example, by submitting queries or managing files. The user interface communicates with the backend Hue Server in the form of HTTP requests.
-- Hue Server 接收来自用户界面的请求，并根据这些请求与不同的后端系统进行通信。
+- Hue Server receives requests from the user interface and communicates with different backend systems based on these requests.
 - The Hue Server receives requests from the user interface and communicates with different backend systems based on these requests.
   - It sends SQL queries to Hive, which then executes these queries and returns the results.
   - It performs file operations on HDFS, including uploading, downloading, and managing files.

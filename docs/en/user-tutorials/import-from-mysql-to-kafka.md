@@ -22,7 +22,6 @@ After the installation of kafka-3-cluster is complete, please click on 'Big Data
 
 # Data Source Preparation
 
-> 注意：Flink cdc 需要读取 MySQL 的 binlog，请确保 MySQL 配置中的 `binlog_row_image=FULL`。源表必须要有主键。
 > Note: Flink CDC needs to read the MySQL binlog, please ensure that the `binlog_row_image` is set to `FULL` in the MySQL configuration. The source table must have a primary key.
 
 If there is an appropriate data source already, skip this step.

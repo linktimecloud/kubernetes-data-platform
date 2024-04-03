@@ -32,7 +32,7 @@ Please use the Kafka Manager provided by KDP or contact the administrator to cre
    ## Configure Kafka access point, obtained during permission acquisition.
    bootstrap.servers=【kafka url】
    ## Configure the Topic, applied during permission acquisition.
-   topic=【准备使用的topic】
+   topic=【The topic prepared】
    ## Configure the Consumer Group, a custom string with user id.
    group.id=【Custom consumer group name】
 ```

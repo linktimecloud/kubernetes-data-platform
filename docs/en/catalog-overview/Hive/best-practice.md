@@ -1,4 +1,4 @@
-# HDFS Best Practices
+# Hive Best Practices
 
 ## Hive Job Optimization
 
@@ -10,7 +10,7 @@
 
 ### Multiple Distinct Optimization
 
-优Before optimization code. With multiple Distincts, data can become bloated.
+Before optimization code. With multiple Distincts, data can become bloated.
 
 ```sql
 select k,count(distinct case when a > 1 then user_id) user1,

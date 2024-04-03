@@ -94,7 +94,7 @@ export BOOTSTRAP=【kafka url】
        useKeyTab=true
        storeKey=true
        useTicketCache=false
-       keyTab="【keytab文件路径】"
+       keyTab="【keytab file path】"
        principal="【principle】";
    };' > kafka_client_jaas.conf
    

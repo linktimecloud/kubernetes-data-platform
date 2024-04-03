@@ -101,6 +101,7 @@ Navigate to the streampark real-time data development platform WebUI page. The d
 
 <img src="./images/overview-2024-04-02-16-48-51.png" />
 
-应用实例详情页「更多操作」下，支持跳转 Grafana 监控面板，查看监控指标信息。
+
+On the application instance details page, under "More Actions," you could jumping to the Grafana monitoring dashboard to view monitoring metric information.
 
 <img src="./images/overview-2024-04-02-16-45-53.png" />
