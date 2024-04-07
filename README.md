@@ -2,11 +2,11 @@
 
 ![Tests](https://github.com/linktimecloud/kubernetes-data-platform/actions/workflows/unit-test.yml/badge.svg)
 ![Build](https://github.com/linktimecloud/kubernetes-data-platform/actions/workflows/ci-build.yml/badge.svg)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Releases](https://img.shields.io/github/release/linktimecloud/kubernetes-data-platform/all.svg?style=flat-square)](https://github.com/linktimecloud/kubernetes-data-platform/releases)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/linktimecloud/kubernetes-data-platform/total)
 ![GitHub Repo stars](https://img.shields.io/github/stars/linktimecloud/kubernetes-data-platform)
 ![GitHub forks](https://img.shields.io/github/forks/linktimecloud/kubernetes-data-platform)
-![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/linktimecloud/kubernetes-data-platform/total)
-[![Releases](https://img.shields.io/github/release/linktimecloud/kubernetes-data-platform/all.svg?style=flat-square)](https://github.com/linktimecloud/kubernetes-data-platform/releases)
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 # Kubernetes Data Platform
 
@@ -41,8 +41,8 @@ Full documentation is available at [KDP Website](https://linktimecloud.github.io
 We look forward to your contributions and suggestions! The easiest way to contribute is to participate in discussions on the Github Issues/Discussion.
 
 Reach out with any questions you may have and we'll make sure to answer them as soon as possible.
-* [DingTalk Group](https://www.dingtalk.com/en): `abcdefg`
-* [Wechat Group](https://www.wechat.com/en): `abcdefg`
+* [DingTalk Group](https://www.dingtalk.com/en): `PLACEHOLDER`
+* [Wechat Group](https://www.wechat.com/en): `PLACEHOLDER`
 
 ## Contributing
 Check out [Deverloper Guide](docs/en/developer-guide/developer-guide.md) to see how to develop with KDP.
