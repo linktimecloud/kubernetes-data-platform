@@ -10,7 +10,7 @@
 
 English | [简体中文](./README_zh.md)
 
-Full documentation is available at [KDP Website](https://linktimecloud.github.io/kubrenetes-data-platform).
+Full documentation is available at [KDP Website](https://linktimecloud.github.io/kubernetes-data-platform/).
 
 ## Introduction
 KDP(Kubernetes Data Platform) delivers a modern, hybrid and cloud-native data platform based on Kubernetes. It leverages the cloud-native capabilities of Kubernetes to manage data platform effectively.
