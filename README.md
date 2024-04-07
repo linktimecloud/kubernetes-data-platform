@@ -41,8 +41,8 @@ Full documentation is available at [KDP Website](https://linktimecloud.github.io
 We look forward to your contributions and suggestions! The easiest way to contribute is to participate in discussions on the Github Issues/Discussion.
 
 Reach out with any questions you may have and we'll make sure to answer them as soon as possible.
-* [DingTalk Group](https://www.dingtalk.com/en): `abcdefg`
-* [Wechat Group](https://www.wechat.com/en): `abcdefg`
+* [DingTalk Group](https://www.dingtalk.com/en): `PLACEHOLDER`
+* [Wechat Group](https://www.wechat.com/en): `PLACEHOLDER`
 
 ## Contributing
 Check out [Deverloper Guide](docs/en/developer-guide/developer-guide.md) to see how to develop with KDP.
