@@ -1,4 +1,4 @@
-![KDP](https://linktime-public.oss-cn-qingdao.aliyuncs.com/linktime-homepage/kdp/kdp-logo-black.png)
+![KDP](https://linktime-public.oss-cn-qingdao.aliyuncs.com/linktime-homepage/kdp/kdp-logo.png)
 
 ![Tests](https://github.com/linktimecloud/kubernetes-data-platform/actions/workflows/unit-test.yml/badge.svg)
 ![Build](https://github.com/linktimecloud/kubernetes-data-platform/actions/workflows/ci-build.yml/badge.svg)
@@ -8,12 +8,11 @@
 ![GitHub Repo stars](https://img.shields.io/github/stars/linktimecloud/kubernetes-data-platform)
 ![GitHub forks](https://img.shields.io/github/forks/linktimecloud/kubernetes-data-platform)
 
-# Kubernetes Data Platform
-
 [English](./README.md) | 简体中文
-<br>
 
-## 引言
+完整的文档可访问 [KDP 网站](https://linktimecloud.github.io/kubrenetes-data-platform).
+
+## 简介
 KDP(Kubernetes Data Platform) 提供了一个基于 Kubernetes 的现代化混合云原生数据平台。它能够利用 Kubernetes 的云原生能力来有效地管理数据平台。
 
 ![KDP](https://linktime-public.oss-cn-qingdao.aliyuncs.com/linktime-homepage/kdp/kdp-archi.png)
@@ -33,9 +32,8 @@ KDP(Kubernetes Data Platform) 提供了一个基于 Kubernetes 的现代化混�
 * [概述](./docs/zh/getting-started/overview.md)
 * [快速启动](./docs/zh/getting-started/quick-start.md)
 * [高级安装](./docs/zh/getting-started/advanced-install.md)
-
-## 文档
-完整的文档可访问 [KDP Website](https://linktimecloud.github.io/kubrenetes-data-platform)
+* [应用目录](./docs/zh/catalog-overview/catalogs.md)
+* [场景教程](./docs/zh/user-tutorials/tutorials.md)
 
 ## 社区
 
