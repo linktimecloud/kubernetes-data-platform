@@ -45,7 +45,7 @@ Hue 安装完成之后会自动连上 hive server2，无需进行额外配置。
 kubectl get pods -n kdp-data -l app=flink-session-cluster -l component=jobmanager -o name
 # 进入 flink-session-cluster 容器
 # flink-session-cluster-xxxxx 替换成 pod 真实名称
-kbuectl exec -it flink-session-cluster-xxxxx -n kdp-data -- bash
+kubuectl exec -it flink-session-cluster-xxxxx -n kdp-data -- bash
 # 启动 Flink SQL
 ./bin/sql-client.sh
 ```
