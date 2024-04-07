@@ -22,7 +22,7 @@ Please install the above components in order.
 
 If streampark is installed, Flink cluster configuration must be done first.
 
-1. Find Flink, go to the Streampark application, click on the application details page, click the "Access Address" button to enter the Streampark management page, and log in with the fixed username (`admin`) and password (`streampark`).
+1. Find Flink, go to the Streampark application, click the application instance name, click the "Access Address" button to enter the Streampark management page, and log in with the fixed username (`admin`) and password (`streampark`).
    In the `Settings Center`, add `Flink version` configuration: Currently, only Flink version 1.17.1 is supported, and the default path in streampark is `/streampark/flink/flink-1.17.1`.
 
    ![img.png](./images/flink-streampark-flink-version.png)
