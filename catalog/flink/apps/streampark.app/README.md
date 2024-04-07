@@ -19,7 +19,7 @@ KDP 集成 StreamPark 主要用于方便用户提交 Flink SQL 作业到 Flink s
 - 集群名称:`demo`
 - 执行模式: `remote`
 - Flink版本: `flink-1.17.1` (选择上一步添加的Flink版本)
-- JobManager URL: `http://flink-session-cluster-rest:8081` (Flink session集群的Rest地址, 也可以使用Ingress地址需要带上80端口)
+- JobManager URL: `http://flink-session-cluster-rest:8081` (注意：使用k8s内部service地址无法在浏览器访问；也可以使用Ingress地址需要带上80端口，如`http://flink-session-cluster-kdp-data.kdp-e2e.io:80`)
 
 
 #### 添加作业
@@ -31,35 +31,35 @@ KDP 集成 StreamPark 主要用于方便用户提交 Flink SQL 作业到 Flink s
 - Flink集群: `demo` (上面步骤添加的Flink集群)
 - Flink SQL:
   
-  ```sql
-  CREATE TABLE datagen (
-    f_sequence INT,
-    f_random INT,
-    f_random_str STRING,
-    ts AS localtimestamp,
-    WATERMARK FOR ts AS ts
+```sql
+CREATE TABLE datagen (
+  f_sequence INT,
+  f_random INT,
+  f_random_str STRING,
+  ts AS localtimestamp,
+  WATERMARK FOR ts AS ts
+) WITH (
+  'connector' = 'datagen',
+  -- optional options --
+  'rows-per-second'='5',
+  'fields.f_sequence.kind'='sequence',
+  'fields.f_sequence.start'='1',
+  'fields.f_sequence.end'='500',
+  'fields.f_random.min'='1',
+  'fields.f_random.max'='500',
+  'fields.f_random_str.length'='10'
+);
+
+CREATE TABLE print_table (
+  f_sequence INT,
+  f_random INT,
+  f_random_str STRING
   ) WITH (
-    'connector' = 'datagen',
-    -- optional options --
-    'rows-per-second'='5',
-    'fields.f_sequence.kind'='sequence',
-    'fields.f_sequence.start'='1',
-    'fields.f_sequence.end'='500',
-    'fields.f_random.min'='1',
-    'fields.f_random.max'='500',
-    'fields.f_random_str.length'='10'
-  );
+  'connector' = 'print'
+);
 
-  CREATE TABLE print_table (
-    f_sequence INT,
-    f_random INT,
-    f_random_str STRING
-    ) WITH (
-    'connector' = 'print'
-  );
-
-  INSERT INTO print_table select f_sequence,f_random,f_random_str from datagen;
-  ```
+INSERT INTO print_table select f_sequence,f_random,f_random_str from datagen;
+```
   
 - 作业名称: `datagen-print`
   
