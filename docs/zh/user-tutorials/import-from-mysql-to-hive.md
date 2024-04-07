@@ -11,8 +11,9 @@
 - hdfs
 - hive-metastore
 - hive-server2
+- flink-kubernetes-operator
 - flink-session-cluster
-- streampark（可选）
+- streampark（可选。注意需要启用 Flink on Hive。）
 - hue（可选）
 
 请依次安装上述组件。
@@ -21,7 +22,7 @@
 
 如果安装了 streampark，需要先进行 flink 集群配置。
 
-1. 找到应用目录 Flink 下 Streampark 应用，进入点击名称应用详情页，点击“访问地址”按钮，进入 Streampark 管理页面，输入 **固定** 用户名(admin)密码(streampark)登录。
+1. 找到应用目录 Flink 下 Streampark 应用，点击应用实例名称进入应用实例页，点击“访问地址”按钮，进入 Streampark 管理页面，输入 **固定** 用户名(admin)密码(streampark)登录。
    在 `设置中心` 添加 `Flink版本` 配置: 当前仅支持 flink 1.17.1 版本，在 streampark 默认路径为 `/streampark/flink/flink-1.17.1`。
    ![img.png](./images/flink-streampark-flink-version.png)
 
