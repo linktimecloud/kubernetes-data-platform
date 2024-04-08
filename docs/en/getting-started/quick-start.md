@@ -9,7 +9,7 @@ Users can quickly experience KDP functions on a stand-alone environment.
 * Below software already installed：
   - [Docker Engine](https://docs.docker.com/engine/install/) stable
   - [Kind](https://kind.sigs.k8s.io/docs/user/quick-start#installation) v0.18.0
-  - KDP CLI（select one of the following installation methods）
+  - KDP CLI(select one of the following installation methods)
     - Binary installation from [Release Page](https://github.com/linktimecloud/kubernetes-data-platform/releases)
     - Source code installation (requires [Go](https://go.dev/doc/install) 1.21+ installed locally): clone the project to the local, then run `go install` at project root
 
