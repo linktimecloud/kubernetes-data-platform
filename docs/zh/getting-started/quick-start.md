@@ -5,7 +5,7 @@
 ## 前提条件
 
 * 单机环境的系统要求：
-  - 资源配置：推荐 16C/32G内存/200G磁盘 以上（低配置环境可运行基础平台和部分大数据组件，无法运行所有大数据组件）
+  - 资源配置：推荐 16C/32G内存/200G磁盘 以上（低配置环境可运行基础设施层和部分大数据组件，无法运行所有大数据组件）
   - 操作系统：Mac OS/主流 Linux 发行版
 * 已安装以下软件：
   - [Docker Engine](https://docs.docker.com/engine/install/) stable
@@ -14,9 +14,9 @@
     - 从 [Release Page](https://github.com/linktimecloud/kubernetes-data-platform/releases) 安装二进制
     - 编译安装 (本地需要安装 [Go](https://go.dev/doc/install) 1.21+): 克隆项目到本地, 在项目根目录执行 `go install`
 
-## 安装KDP基础平台
+## 安装 KDP 基础设施层
 
-* 使用 KDP CLI 安装 KDP 基础平台：
+* 使用 KDP CLI 安装 KDP 基础设施层：
 ```bash
 # > 指定 "--debug" 以开启debug日志
 # > 指定 "--set ingress.domain=<YOUR_DOMAIN>" 单独/以及 "--set ingress.tlsSecretName=<YOUR_TLS_SECRET>" 以使用自定义域名以及TLS
