@@ -9,7 +9,9 @@ English | [简体中文](../../zh/getting-started/overview.md)
 KDP(Kubernetes Data Platform) delivers a modern, hybrid and cloud-native data platform based on Kubernetes. It leverages the cloud-native capabilities of Kubernetes to manage data platform effectively.
 
 ## Architecture
-![KDP](https://linktime-public.oss-cn-qingdao.aliyuncs.com/linktime-homepage/kdp/kdp-archi-en.png)
+<p align="left">
+<img width="800" height="600" src="https://linktime-public.oss-cn-qingdao.aliyuncs.com/linktime-homepage/kdp/kdp-archi-en.png" />
+</p>
 
 ## Advantages
 * More efficient big data cluster management: KDP simplifies the operation and maintenance of big data clusters through standardized processes, and provides a UI interface to further improve the efficiency of deployment, upgrade and other operations
