@@ -17,7 +17,7 @@ Full documentation is available at [KDP Website](https://linktimecloud.github.io
 ## Introduction
 KDP(Kubernetes Data Platform) delivers a modern, hybrid and cloud-native data platform based on Kubernetes. It leverages the cloud-native capabilities of Kubernetes to manage data platform effectively.
 
-<p align="center">
+<p align="left">
 <img width="800" height="600" src="https://linktime-public.oss-cn-qingdao.aliyuncs.com/linktime-homepage/kdp/kdp-archi-en.png" />
 </p>
 
