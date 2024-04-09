@@ -1,5 +1,7 @@
 # 开发指南
 
+[English](../../en/developer-guide/developer-guide.md) | 简体中文
+
 ## 基础设施层
 
 KDP 基础设施层主要包括 OAM 引擎，KDP 后端服务栈和 KDP 前端服务，具体为：

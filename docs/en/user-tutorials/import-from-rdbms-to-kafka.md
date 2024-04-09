@@ -1,5 +1,7 @@
 # MySQL Data Synchronization to Kafka
 
+English | [简体中文](../../zh/user-tutorials/import-from-rdbms-to-kafka.md)
+
 In complex computing scenarios, a table in MySQL may be used by multiple jobs (for example, a table that stores user information). When multiple tasks use the same MySQL table for processing, the MySQL database initiates multiple connections, putting significant pressure on the MySQL server and the network.
 
 To alleviate the pressure on the upstream MySQL database, it is possible to consider using Flink CDC to synchronize the MySQL table to Kafka, where the MySQL table is written to the corresponding topic in the form of Upsert Kafka. Then, instead of using the MySQL table directly, use the table in the Kafka JSON Catalog, thereby reducing the pressure on the MySQL database caused by multiple tasks.
