@@ -17,7 +17,7 @@
 ## 简介
 KDP(Kubernetes Data Platform) 提供了一个基于 Kubernetes 的现代化混合云原生数据平台。它能够利用 Kubernetes 的云原生能力来有效地管理数据平台。
 
-<p align="center">
+<p align="left">
 <img width="800" height="600" src="https://linktime-public.oss-cn-qingdao.aliyuncs.com/linktime-homepage/kdp/kdp-archi.png" />
 </p>
 
