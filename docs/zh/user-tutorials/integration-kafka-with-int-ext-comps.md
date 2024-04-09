@@ -1,5 +1,7 @@
 # Kafka 与内外部组件集成
 
+[English](../../en/user-tutorials/integration-kafka-with-int-ext-comps.md) | 简体中文
+
 KDP 提供的云原生 Kafka 是一个分布式的消息队列系统，具有高吞吐量、高可用性、高容错性等特点，适用于大规模数据处理场景。
 
 为支持用户快速搭建 Kafka 集群，KDP 提供了 Kafka 集群应用，用户可以通过 KDP-ux 一键安装 Kafka 集群，支持消息的生产和消费需求。

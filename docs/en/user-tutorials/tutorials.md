@@ -1,4 +1,10 @@
+---
+id: scene-tutorials
+---
+
 # Scene Tutorials
+
+English | [简体中文](../../zh/user-tutorials/tutorials.md)
 
 Users can refer to the following scenario tutorials to practice how to do data ingestion and developing through KDP:
 

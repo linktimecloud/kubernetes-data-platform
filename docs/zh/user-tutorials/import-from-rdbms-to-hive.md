@@ -1,5 +1,7 @@
 # 从关系型数据库将数据导入 Hive
 
+[English](../../en/user-tutorials/import-from-rbdms-to-hive.md) | 简体中文
+
 企业的大数据平台搭建好后，通常要先从散落在各个部门的数据库导入数据，消除数据孤岛。传统的主机模式大数据平台通常会用 sqoop 等 ETL 工具导入数据。在云原生大数据平台上，有更好的方法。
 
 本文介绍如何用 Flink SQL 将 MySQL 数据导入 Hive。Flink 的 Table & SQL API 可以处理 SQL 语言编写的查询语句，但是这些查询需要嵌入用 Java 或 Scala 编写的表程序中。此外，这些程序在提交到集群前需要用构建工具打包。我们可以用 Flink SQL Client 或 StreamPark 来编写、调试和提交表程序到 Flink 集群上，而无需写一行 Java 或 Scala 代码。这个步骤在 KDP 上可以非常容易的实现。

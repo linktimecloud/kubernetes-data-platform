@@ -1,4 +1,10 @@
+---
+id: developer-guide
+---
+
 # Developer Guide
+
+English | [简体中文](../../zh/developer-guide/developer-guide.md)
 
 ## Infrastructure layer
 

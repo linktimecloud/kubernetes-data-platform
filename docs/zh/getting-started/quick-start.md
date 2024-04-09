@@ -1,5 +1,7 @@
 # 快速启动
 
+[English](../../en/getting-started/quick-start.md) | 简体中文
+
 用户可以在单机环境上快速体验 KDP 功能。
 
 ## 前提条件

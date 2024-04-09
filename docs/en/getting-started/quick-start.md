@@ -1,4 +1,11 @@
+---
+id: quick-start
+---
+
 # Quick Start
+
+English | [简体中文](../../zh/getting-started/quick-start.md)
+
 Users can quickly experience KDP functions on a stand-alone environment.
 
 ## Pre-requisite

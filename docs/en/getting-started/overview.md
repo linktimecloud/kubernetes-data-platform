@@ -1,4 +1,10 @@
+---
+id: overview
+---
+
 # Overview
+
+English | [简体中文](../../zh/getting-started/overview.md)
 
 KDP(Kubernetes Data Platform) delivers a modern, hybrid and cloud-native data platform based on Kubernetes. It leverages the cloud-native capabilities of Kubernetes to manage data platform effectively.
 

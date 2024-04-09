@@ -1,4 +1,10 @@
+---
+id: advanced-install
+---
+
 # Advanced Installation
+
+English | [简体中文](../../zh/getting-started/advanced-install.md)
 
 Users can quickly deploy KDP on an existing Kubernetes cluster using the CLI.
 
