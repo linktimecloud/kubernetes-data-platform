@@ -51,8 +51,8 @@ By default the install process will skip components that already been installed.
 		log.Debugf("kdp-repo: %s", repoUrl)
 		log.Debugf("kdp-repo-ref: %s", repoRef)
 		log.Debugf("artifact-server: %s", artifactServer)
-		log.Debugf("helm-repository: %s", helmRepo)
-		log.Debugf("docker-registry: %s", dockerRegistry)
+		log.Debugf("helm-repository: %s", helmRepoInstall)
+		log.Debugf("docker-registry: %s", dockerRegistryInstall)
 		log.Debugf("set-parameters: %v", setParameters)
 		log.Debugf("force-reinstall: %v", forceReinstall)
 		log.Debugf("local-mode: %v", localMode)
@@ -81,7 +81,7 @@ By default the install process will skip components that already been installed.
 		    authFile := filepath.Join(kdpSrcDir, "e2e/config.json")
 			if _, err := os.Stat(authFile); os.IsNotExist(err) {
 				authToken := utils.GetEnv("KDP_CR_ACCESS_TOKEN", "")
-				err = utils.GenRegistryAuthFile(dockerRegistry, authToken, authFile)
+				err = utils.GenRegistryAuthFile(dockerRegistryInstall, authToken, authFile)
 				if err != nil {
 				    log.Error(err)
 					return
@@ -96,13 +96,13 @@ By default the install process will skip components that already been installed.
 			}
 		}
 
-		err = vela.VelaInstall(artifactServer, dockerRegistry, kdpCacheDir, kdpBinDir, velaVersion, false)
+		err = vela.VelaInstall(artifactServer, dockerRegistryInstall, kdpCacheDir, kdpBinDir, velaVersion, false)
 		if err != nil {
 			log.Errorf("Error installing KDP vela: %v", err)
 		    return
 		}
 
-		reservedParams := []string{fmt.Sprintf("helmURL=%s", helmRepo), fmt.Sprintf("registry=%s", dockerRegistry)}
+		reservedParams := []string{fmt.Sprintf("helmURL=%s", helmRepoInstall), fmt.Sprintf("registry=%s", dockerRegistryInstall)}
 		mergedParams := append(reservedParams, setParameters...)
 		err = vela.VelaAddonLocalInstall(kdpInfraAddons, mergedParams, kdpInfraDir, kdpBinDir, forceReinstall)
 		if err != nil {
@@ -120,8 +120,8 @@ func init() {
 	installCmd.Flags().StringVar(&repoUrl, "kdp-repo", defaultKdpRepoUrl, "URL of kubernetes-data-platform git repository")
 	installCmd.Flags().StringVar(&repoRef,"kdp-repo-ref", defaultKdpRepoRef, "Branch/Tag of kubernetes-data-platform git repository")
 	installCmd.Flags().StringVar(&artifactServer,"artifact-server", defaultArtifactServer, "KDP artifact server URL")
-	installCmd.Flags().StringVar(&helmRepo,"helm-repository", defaultHelmRepoisotry, "KDP helm repository URL")
-	installCmd.Flags().StringVar(&dockerRegistry,"docker-registry", defaultDockerRegistry, "KDP docker registry URL")
+	installCmd.Flags().StringVar(&helmRepoInstall,"helm-repository", defaultHelmRepoisotry, "KDP helm repository URL")
+	installCmd.Flags().StringVar(&dockerRegistryInstall,"docker-registry", defaultDockerRegistry, "KDP docker registry URL")
 	installCmd.Flags().StringArrayVar(&setParameters, "set", []string{}, "Set runtime parameters by 'key=value', for example '--set key1=value1 --set key2=value2 ...'.")
 	installCmd.Flags().BoolVar(&forceReinstall,"force-reinstall", false, "Force re-install of KDP infrastructure. BE CAREFUL USING THIS FLAG AS IT WILL OVERWRITE EXISTING INSTALLATION!!!")
 	installCmd.Flags().BoolVar(&localMode, "local-mode", false, "Install KDP infrastructure in local mode(generally used for development or quick start). In this mode, a kind(https://sigs.k8s.io/kind) K8s cluster will be created locally and KDP will be installed to this local K8s cluster.")
