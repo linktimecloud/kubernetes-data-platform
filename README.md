@@ -43,8 +43,11 @@ KDP(Kubernetes Data Platform) delivers a modern, hybrid and cloud-native data pl
 We look forward to your contributions and suggestions! The easiest way to contribute is to participate in discussions on the Github Issues/Discussion.
 
 Reach out with any questions you may have and we'll make sure to answer them as soon as possible.
-* [DingTalk Group](https://www.dingtalk.com/en): `PLACEHOLDER`
-* [Wechat Group](https://www.wechat.com/en): `PLACEHOLDER`
+* [Wechat Group](https://www.wechat.com/en): add broker wechat to invite you into the communication group.
+  <p align="left">
+  <img width="128" height="128" src="https://linktime-public.oss-cn-qingdao.aliyuncs.com/linktime-homepage/kdp/kdp-broker-wechat.png" />
+  </p>
+* [DingTalk Group](https://www.dingtalk.com/en): search for the public group no. `82250000662`
 
 ## Contributing
 Check out [Developer Guide](docs/en/developer-guide/developer-guide.md) to see how to develop with KDP.
