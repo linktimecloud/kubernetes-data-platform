@@ -140,18 +140,34 @@ public class SocketWindowWordCount {
 
 #### 通过 Flink CLI 提交应用程序
 
-进入 flink session cluster 容器，执行以下命令：
+进入flink session cluster容器
+```shell
+# pod 根据实际情况替换
+kubuectl exec -it flink-session-cluster-xxxxx -n kdp-data -- bash
+```
 
+在容器中执行以下命令：
 ```shell
 ./bin/flink run -d ./examples/streaming/SocketWindowWordCount.jar --hostname `(grep 'flink-session-cluster' /etc/hosts | head -n 1 | awk '{print $1}')` --port 9999 && nc -l 9999
 ```
+预期输出类似：
+```shell
+ERROR StatusLogger Reconfiguration failed: No configuration found for '6438a396' at 'null' in 'null'
+ERROR StatusLogger Reconfiguration failed: No configuration found for '510f3d34' at 'null' in 'null'
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.apache.flink.api.java.ClosureCleaner (file:/opt/flink/lib/flink-dist-1.17.1.jar) to field java.lang.String.value
+WARNING: Please consider reporting this to the maintainers of org.apache.flink.api.java.ClosureCleaner
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+Job has been submitted with JobID ff3008609a49c364e7b27f5e94f4f57b
+```
+`ERROR StatusLogger Reconfiguration failed` 不影响作业提交，可以忽略。
 
-执行成功后，进入nc命令行，输入文本数据, 然后回车; 输入多条文本数据，查看flink session cluster控制台输出结果。
+此时，作业提交成功，在nc命令的交互界面输入任意文本，回车后发送文字，可以多次发送文字。可以查看flink session cluster控制台输出结果。
 也可以到flink WebUI 查看作业状态。
 
 清理作业：
-退出nc交互界面，执行以下命令：
-
+退出nc交互界面（control+c），执行以下命令：
 ```shell
 ./bin/flink list
 ## 预期会输出job id
@@ -192,8 +208,8 @@ nc -l 9999
 
 **运行作业**
 
-- 在作业管理页面，点击`datagen-print`作业的`发布作业`按钮，稍等片刻，发布状态变为`Done` `Success`
-- 点击`datagen-print`作业的`启动作业`按钮，关闭弹窗中的`from savepoin`, 点击`应用`, 作业将提交到Flink session集群运行, 运行状态依次变为`Starting` `Running` `Finished`
+- 在作业管理页面，点击`Socket Window WordCount`作业的`发布作业`按钮，稍等片刻，发布状态变为`Done` `Success`
+- 点击`Socket Window WordCount`作业的`启动作业`按钮，关闭弹窗中的`from savepoint`, 点击`应用`, 作业将提交到Flink session集群运行, 运行状态依次变为`Starting` `Running`
 - 最后不需要运行时，作业的`停止作业`按钮，停止作业。
 
 ## Flink SQL 应用开发
@@ -318,4 +334,5 @@ group by
 运行作业
 
 - 在作业管理页面，点击该作业的`发布作业`按钮，稍等片刻，发布状态变为`Done` `Success`
-- 点击该作业的`启动作业`按钮，关闭弹窗中的`from savepoin`, 点击`应用`, 作业将提交到Flink session集群运行, 运行状态依次变为`Starting` `Running` `Finished`
+- 点击该作业的`启动作业`按钮，关闭弹窗中的`from savepoin`, 点击`应用`, 作业将提交到Flink session集群运行, 运行状态依次变为`Starting` `Running` 
+- 最后不需要运行时，作业的`停止作业`按钮，停止作业。
