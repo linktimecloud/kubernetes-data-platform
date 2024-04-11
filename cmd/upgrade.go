@@ -46,8 +46,8 @@ This is the common action to update parameters of KDP infrastructure components.
 		log.Debugf("kdp-repo: %s", repoUrl)
 		log.Debugf("kdp-repo-ref: %s", repoRef)
 		log.Debugf("artifact-server: %s", artifactServer)
-		log.Debugf("helm-repository: %s", helmRepo)
-		log.Debugf("docker-registry: %s", dockerRegistry)
+		log.Debugf("helm-repository: %s", helmRepoUpgrade)
+		log.Debugf("docker-registry: %s", dockerRegistryUpgrade)
 		log.Debugf("set-parameters: %v", setParameters)
 		log.Debugf("src-upgrade: %v", srcUpgrade)
 		log.Debugf("vela-upgrade: %v", velaUpgrade)
@@ -72,7 +72,7 @@ This is the common action to update parameters of KDP infrastructure components.
 		}
 		
 		if velaUpgrade {
-		    err := vela.VelaInstall(artifactServer, dockerRegistry, kdpCacheDir, kdpBinDir, velaVersion, true)
+		    err := vela.VelaInstall(artifactServer, dockerRegistryUpgrade, kdpCacheDir, kdpBinDir, velaVersion, true)
 			if err != nil {
 				log.Errorf("Error upgrading KDP vela: %v", err)
 				return
@@ -80,12 +80,12 @@ This is the common action to update parameters of KDP infrastructure components.
 		}
 		
 		mergedParams := setParameters
-		if helmRepo != "" {
-		    helmParam := []string{fmt.Sprintf("helmURL=%s", helmRepo)}
+		if helmRepoUpgrade != "" {
+		    helmParam := []string{fmt.Sprintf("helmURL=%s", helmRepoUpgrade)}
 			mergedParams = append(mergedParams, helmParam...)
 		}
-		if dockerRegistry != "" {
-		    dockerParam := []string{fmt.Sprintf("registry=%s", dockerRegistry)}
+		if dockerRegistryUpgrade != "" {
+		    dockerParam := []string{fmt.Sprintf("registry=%s", dockerRegistryUpgrade)}
 			mergedParams = append(mergedParams, dockerParam...)
 		}
 		err := vela.VelaAddonLocalUpgrade(kdpInfraAddons, mergedParams, kdpInfraDir, kdpBinDir)
@@ -103,8 +103,8 @@ func init() {
 	upgradeCmd.Flags().StringVar(&repoUrl, "kdp-repo", defaultKdpRepoUrl, "URL of kubernetes-data-platform git repository")
 	upgradeCmd.Flags().StringVar(&repoRef,"kdp-repo-ref", defaultKdpRepoRef, "Branch/Tag of kubernetes-data-platform git repository")
 	upgradeCmd.Flags().StringVar(&artifactServer,"artifact-server", defaultArtifactServer, "KDP artifact server URL")
-	upgradeCmd.Flags().StringVar(&helmRepo,"helm-repository", "", "KDP helm repository URL")
-	upgradeCmd.Flags().StringVar(&dockerRegistry,"docker-registry", "", "KDP docker registry URL")
+	upgradeCmd.Flags().StringVar(&helmRepoUpgrade,"helm-repository", "", "KDP helm repository URL")
+	upgradeCmd.Flags().StringVar(&dockerRegistryUpgrade,"docker-registry", "", "KDP docker registry URL")
 	upgradeCmd.Flags().BoolVar(&srcUpgrade,"src-upgrade", false, "Perform an upgrade of KDP source codes, by default it will not be upgraded")
 	upgradeCmd.Flags().BoolVar(&velaUpgrade,"vela-upgrade", false, "Perform an upgrade of KDP vela, by default it will not be upgraded")
 	upgradeCmd.Flags().StringArrayVar(&setParameters, "set", []string{}, "Set runtime parameters by 'key=value', for example '--set key1=value1 --set key2=value2 ...'. The specified parameters will be merged with existing runtime parameters.")

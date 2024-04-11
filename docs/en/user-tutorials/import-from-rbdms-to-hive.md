@@ -1,5 +1,7 @@
 # Importing Data from Relational Databases to Hive
 
+English | [简体中文](../../zh/user-tutorials/import-from-rdbms-to-hive.md)
+
 After setting up an enterprise's big data platform, it is usually necessary to import data from databases scattered across various departments to eliminate data silos. Traditional host-based big data platforms often use ETL tools like Sqoop to import data. On cloud-native big data platforms, there are better methods available.
 
 This article introduces how to use Flink SQL to import MySQL data into Hive. Flink's Table & SQL API can handle SQL queries written in the SQL language, but these queries need to be embedded in table programs written in Java or Scala. In addition, these programs need to be packaged with build tools before being submitted to the cluster. We can use Flink SQL Client or StreamPark to write, debug, and submit table programs to the Flink cluster without writing a single line of Java or Scala code. This step can be easily achieved on KDP.
@@ -11,8 +13,9 @@ Requires the installation of the following components on KDP:
 - hdfs
 - hive-metastore
 - hive-server2
+- flink-kubernetes-operator
 - flink-session-cluster
-- streampark（optional）
+- streampark（optional. Note that Flink on Hive needs to be enabled.）
 - hue（optional）
 
 Please install the above components in order.
@@ -21,7 +24,7 @@ Please install the above components in order.
 
 If streampark is installed, Flink cluster configuration must be done first.
 
-1. Find Flink, go to the Streampark application, click on the application details page, click the "Access Address" button to enter the Streampark management page, and log in with the fixed username (`admin`) and password (`streampark`).
+1. Find Flink, go to the Streampark application, click the application instance name, click the "Access Address" button to enter the Streampark management page, and log in with the fixed username (`admin`) and password (`streampark`).
    In the `Settings Center`, add `Flink version` configuration: Currently, only Flink version 1.17.1 is supported, and the default path in streampark is `/streampark/flink/flink-1.17.1`.
 
    ![img.png](./images/flink-streampark-flink-version.png)

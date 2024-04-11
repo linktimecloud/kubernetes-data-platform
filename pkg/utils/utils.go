@@ -244,7 +244,11 @@ func GitCloneToDir(repoUrl, repoRef, targetDir string) error {
 		case "http":
 			log.Info("Using HTTP auth method for git clone. Set env 'export KDP_SRC_ACCESS_TOKEN=<your_token>' if using your private fork to pull KDP source codes.")
 			gitAccessToken := GetEnv("KDP_SRC_ACCESS_TOKEN", "")
-			auth = GitCloneHTTPAuth("anybody", gitAccessToken)
+			if gitAccessToken == "" {
+			    auth = nil
+			} else {
+				auth = GitCloneHTTPAuth("anybody", gitAccessToken)
+			}
 		default:
 			log.Info("Using NO auth method for git clone")
 			auth = nil
@@ -252,6 +256,7 @@ func GitCloneToDir(repoUrl, repoRef, targetDir string) error {
 
 		_, err = git.PlainClone(targetDir, false, &git.CloneOptions{
 			URL:      		repoUrl,
+			Depth: 			1,
 			Progress: 		os.Stdout,
 			Auth:			auth,
 			ReferenceName: 	plumbing.ReferenceName(repoRef),

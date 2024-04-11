@@ -1,5 +1,7 @@
 # 从关系型数据库将数据导入 Hive
 
+[English](../../en/user-tutorials/import-from-rbdms-to-hive.md) | 简体中文
+
 企业的大数据平台搭建好后，通常要先从散落在各个部门的数据库导入数据，消除数据孤岛。传统的主机模式大数据平台通常会用 sqoop 等 ETL 工具导入数据。在云原生大数据平台上，有更好的方法。
 
 本文介绍如何用 Flink SQL 将 MySQL 数据导入 Hive。Flink 的 Table & SQL API 可以处理 SQL 语言编写的查询语句，但是这些查询需要嵌入用 Java 或 Scala 编写的表程序中。此外，这些程序在提交到集群前需要用构建工具打包。我们可以用 Flink SQL Client 或 StreamPark 来编写、调试和提交表程序到 Flink 集群上，而无需写一行 Java 或 Scala 代码。这个步骤在 KDP 上可以非常容易的实现。
@@ -11,8 +13,9 @@
 - hdfs
 - hive-metastore
 - hive-server2
+- flink-kubernetes-operator
 - flink-session-cluster
-- streampark（可选）
+- streampark（可选。注意需要启用 Flink on Hive。）
 - hue（可选）
 
 请依次安装上述组件。
@@ -21,7 +24,7 @@
 
 如果安装了 streampark，需要先进行 flink 集群配置。
 
-1. 找到应用目录 Flink 下 Streampark 应用，进入点击名称应用详情页，点击“访问地址”按钮，进入 Streampark 管理页面，输入 **固定** 用户名(admin)密码(streampark)登录。
+1. 找到应用目录 Flink 下 Streampark 应用，点击应用实例名称进入应用实例页，点击“访问地址”按钮，进入 Streampark 管理页面，输入 **固定** 用户名(admin)密码(streampark)登录。
    在 `设置中心` 添加 `Flink版本` 配置: 当前仅支持 flink 1.17.1 版本，在 streampark 默认路径为 `/streampark/flink/flink-1.17.1`。
    ![img.png](./images/flink-streampark-flink-version.png)
 

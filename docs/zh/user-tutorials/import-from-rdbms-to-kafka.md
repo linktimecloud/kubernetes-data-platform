@@ -1,5 +1,7 @@
 # MySQL 数据同步到 Kafka
 
+[English](../../en/user-tutorials/import-from-rdbms-to-kafka.md) | 简体中文
+
 在复杂的计算场景中，MySQL 中的一张表可能被多个作业使用（比如保存用户信息的表），当多个任务使用同一张 MySQL 表做处理时，MySQL 数据库会启动多个连接，对 MySQL 服务器和网络造成很大的压力。
 
 为了缓解对上游 MySQL 数据库的压力，可以考虑利用 Flink cdc 将 MySQL 表同步到 Kafka，MySQL 表以 Upsert Kafka 的方式写入对应 topic。然后直接使用 Kafka JSON Catalog 中的表代替 MySQL 表，从而降低多个任务对 MySQL 数据库造成的压力。
@@ -10,15 +12,17 @@
 
 本案例需要在 KDP 上安装以下组件：
 
+- flink-kubernetes-operator
 - flink-session-cluster
+- kafka-3-operator
 - kafka-3-cluster
 - kafka-manager（可选）
 
 请依次安装上述组件。
 
-Flink SQL 的使用方法请参考 [Flink SQL](./HiveDataImporting.md#flink-sql-使用方法)
+Flink SQL 的使用方法请参考 [Flink SQL](./import-from-mysql-to-hive.md#flink-sql-使用方法)
 
-kafka-3-cluster 安装完成后，请在 KDP 页面依次点击「大数据集群管理」-「集群信息」-「应用使用配置」-「kafka-3-cluster-kafka-context」，查看 `bootstrap_plain` 的值（通常为 `kafka-3-cluster-kafka-plain-0.kdp-data.svc.cluster.local:31092,kafka-3-cluster-kafka-plain-1.kdp-data.svc.cluster.local:31093,kafka-3-cluster-kafka-plain-2.kdp-data.svc.cluster.local:31094`）。这个值是 kafka bootstrap servers 地址，下面会用到。
+kafka-3-cluster 安装完成后，请在 KDP 页面依次点击「大数据集群管理」-「集群信息」-「应用使用配置」-「kafka-3-cluster-kafka-context」，查看 `bootstrap_plain` 的值（通常为 `kafka-3-cluster-kafka-0.kafka-3-cluster-kafka-brokers.kdp-data.svc.cluster.local:9092,kafka-3-cluster-kafka-1.kafka-3-cluster-kafka-brokers.kdp-data.svc.cluster.local:9092,kafka-3-cluster-kafka-2.kafka-3-cluster-kafka-brokers.kdp-data.svc.cluster.local:9092`）。这个值是 kafka bootstrap servers 地址，下面会用到。
 
 # 数据源准备
 

@@ -41,6 +41,7 @@ Thumbs.db
 *.tar
 *.gz
 *.zip
+**/check_images.ipynb
 
 # Large media files
 *.mp4
@@ -71,3 +72,4 @@ bin
 
 # build
 kdp
+
