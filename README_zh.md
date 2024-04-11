@@ -43,8 +43,12 @@ KDP(Kubernetes Data Platform) 提供了一个基于 Kubernetes 的现代化混�
 
 我们期待您的贡献和建议!最简单的贡献方式是参与Github议题/讨论的讨论。
 如果您有任何问题，请与我们联系，我们将确保尽快为您解答。
-* [钉钉群](https://www.dingtalk.com/): `PLACEHOLDER`
-* [微信群](https://www.wechat.com/): `PLACEHOLDER`
+* [微信群](https://www.wechat.com/)：添加小助手微信以拉您进入交流群
+  <p align="left">
+  <img width="128" height="128" src="https://linktime-public.oss-cn-qingdao.aliyuncs.com/linktime-homepage/kdp/kdp-broker-wechat.png" />
+  </p>
+
+* [钉钉群](https://www.dingtalk.com/)：搜索公开群组号 `82250000662`
 
 ## 贡献
 参考[开发者指南](docs/zh/developer-guide/developer-guide.md)，了解如何开发及贡献 KDP。
