@@ -331,7 +331,7 @@ group by
   
 After successful addition, you will be redirected to the job management page.
 
-Running the job
+Running the job:
 
 - On the job management page, click the `publish job` button for the job, and the publish status will change to `Done` `Success`.
 - Click the `start job` button for the job, close the from savepoint in the pop-up window, click `apply`, the job will be submitted to the Flink session cluster for running, and the running status will change to `Starting`, `Running`, in turn.
