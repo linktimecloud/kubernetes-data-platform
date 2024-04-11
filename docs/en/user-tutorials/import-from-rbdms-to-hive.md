@@ -51,7 +51,7 @@ Execute the following commands to enter Flink SQL:
 kubectl get pods -n kdp-data -l app=flink-session-cluster -l component=jobmanager -o name
 # Enter the flink-session-cluster container.
 # Replace 'flink-session-cluster-xxxxx' with the actual pod name.
-kbuectl exec -it flink-session-cluster-xxxxx -n kdp-data -- bash
+kubectl exec -it flink-session-cluster-xxxxx -n kdp-data -- bash
 # Start Flink SQL
 ./bin/sql-client.sh
 ```
