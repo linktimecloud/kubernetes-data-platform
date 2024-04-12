@@ -21,10 +21,10 @@ if parameter.grafana.externalUrl != "" {
 }
 
 _version: {
-	kdp: parameter.kdpVersion
+	kdp: "v1.0.0"
 	operator: "v1.0.0"
-	catalogManager: "v1.0.0-rc2"
-	ux: "v1.0.0-240329"
+	catalogManager: "v1.0.0"
+	ux: "v1.0.0"
 }
 
 _ns: {

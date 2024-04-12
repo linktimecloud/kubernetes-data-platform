@@ -20,48 +20,34 @@ Users can quickly experience KDP functions on a stand-alone environment.
     - Binary installation from [Release Page](https://github.com/linktimecloud/kubernetes-data-platform/releases)
     - Source code installation (requires [Go](https://go.dev/doc/install) 1.21+ installed locally): clone the project to the local, then run `go install` at project root
 
-## Install KDP
+## Install KDP Infrastructure
 
 * Use KDP CLI to install KDP infrastructure:
 ```bash
 # > specify "--debug" to enable verbose logging
-# > specify "--set ingress.domain=<YOUR_DOMAIN>" w/wo "--set ingress.tlsSecretName=<YOUR_TLS_SECRET>" to use your own domain w/wo TLS
-# > if the install breaks, you may run the command again and it will skip the steps already been done; you may also specify "--force-reinstall" to do a start-over force reinstallation
-
+# > if the install breaks, you may re-run the command to continue the install
 kdp install --local-mode --set dnsService.name=kube-dns
-
 ```
 
-## Domain resolution
+## Local Domain resolution
 
-All components running on the KDP are exposed to external access through the K8s Ingress. Therefore, domain name resolution must be configured after the installation.
+All components running on the KDP are exposed to external access through the K8s Ingress. We used a self-defined root domain `kdp-e2e.io` for the quick start, therefore, local domain resolution must be configured in order to visit those services:
+```bash
+# modify /etc/hosts requires sudo priviledge
+kdpDomain="kdp-e2e.io"
+kdpPrefix=("kdp-ux" "grafana" "prometheus" "alertmanager" "flink-session-cluster-kdp-data" "hdfs-namenode-0-kdp-data" "hdfs-namenode-1-kdp-data" "hue-kdp-data" "kafka-manager-kdp-data" "minio-kdp-data-api" "spark-history-server-kdp-data" "streampark-kdp-data")
+etcHosts="/etc/hosts"
 
-Below is a list of domains for all components on KDP by default:
+for prefix in "${kdpPrefix[@]}"; do
+  domain="$prefix.$kdpDomain"
+  if ! grep -q "$domain" ${etcHosts}; then
+    echo "127.0.0.1 $domain" | sudo tee -a ${etcHosts}
+  fi
+done
 ```
-kdp-ux.kdp-e2e.io
-grafana.kdp-e2e.io
-prometheus.kdp-e2e.io
-alertmanager.kdp-e2e.io
-flink-session-cluster-kdp-data.kdp-e2e.io
-hdfs-namenode-0-kdp-data.kdp-e2e.io
-hdfs-namenode-1-kdp-data.kdp-e2e.io
-hue-kdp-data.kdp-e2e.io
-kafka-manager-kdp-data.kdp-e2e.io
-minio-kdp-data-api.kdp-e2e.io
-spark-history-server-kdp-data.kdp-e2e.io
-streampark-kdp-data.kdp-e2e.io
-```
-
-You may refer to the following common scenarios for configuring domain resolution:
-- when installing with the default configuration, add the resolution of the above domains to the local `/etc/hosts` on the access end, pointing to the IP address of the stand-alone environment
-- if specified "--set ingress.domain=<YOUR_DOMAIN>" previously, choose one of the following：
-  - if the customized domains are not public resolved, replace the root domain of the above domains with "<YOUR_DOMAIN>", then add the resolution of the above domains to the local `/etc/hosts` on the access end, pointing to the IP address of the stand-alone environment
-  - elsely, add A records of above domains at DNS provider, pointing to the IP address of the stand-alone environment
 
 ## Visit KDP UX
-After the installation is complete, you can access the KDP UX in either of the following situations(if specified "--set ingress.tlsSecretName=<YOUR_TLS_SECERT>" previously, use HTTPS protocol)：
-- by default：http://kdp-ux.kdp-e2e.io
-- with '--set ingress.domain=<YOUR_DOMAIN>'：`http://kdp-ux.<YOUR_DOMAIN>`
+After the installation is completed successfully, you may visit KDP UX by the default URL：http://kdp-ux.kdp-e2e.io
 
 ## Clean up
 ```bash
