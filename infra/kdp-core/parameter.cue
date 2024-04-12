@@ -15,8 +15,6 @@ parameter: {
 	imagePullSecret: *"cr-secret" | string
 	// +usage=Specify namespace of the application to be installed
 	namespace: *"kdp-system" | string
-	// +usage=Specify KDP version
-	kdpVersion: *"v1.0.0-rc1" | string
 	// +usage=Ingress settings
 	ingress: {
 		// +usage=Specify ingressClassName
