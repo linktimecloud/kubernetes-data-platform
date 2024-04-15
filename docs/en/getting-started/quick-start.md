@@ -33,7 +33,10 @@ kdp install --local-mode --set dnsService.name=kube-dns
 
 All components running on the KDP are exposed to external access through the K8s Ingress. We used a self-defined root domain `kdp-e2e.io` for the quick start, therefore, local domain resolution must be configured in order to visit those services:
 ```bash
-# modify /etc/hosts requires sudo priviledge
+# 1. set env `KDP_HOST` to the private IP of the stand-alone host, e.g. `export KDP_HOST=192.168.1.100`
+# 2. modify /etc/hosts requires sudo priviledge
+
+kdpHost=${KDP_HOST:-127.0.0.1}
 kdpDomain="kdp-e2e.io"
 kdpPrefix=("kdp-ux" "grafana" "prometheus" "alertmanager" "flink-session-cluster-kdp-data" "hdfs-namenode-0-kdp-data" "hdfs-namenode-1-kdp-data" "hue-kdp-data" "kafka-manager-kdp-data" "minio-kdp-data-api" "spark-history-server-kdp-data" "streampark-kdp-data")
 etcHosts="/etc/hosts"
@@ -41,7 +44,7 @@ etcHosts="/etc/hosts"
 for prefix in "${kdpPrefix[@]}"; do
   domain="$prefix.$kdpDomain"
   if ! grep -q "$domain" ${etcHosts}; then
-    echo "127.0.0.1 $domain" | sudo tee -a ${etcHosts}
+    echo "$kdpHost $domain" | sudo tee -a ${etcHosts}
   fi
 done
 ```
@@ -51,7 +54,11 @@ After the installation is completed successfully, you may visit KDP UX by the de
 
 ## Clean up
 ```bash
-# destroy local cluster, all data will be erased.
-kind delete cluster -n kdp-e2e
+# 1. destroy KDP kind cluster, all data will be erased
+# 2. clean up /etc/hosts
 
+kind delete cluster -n kdp-e2e
+for prefix in "${kdpPrefix[@]}"; do
+  sudo sed -i"" "/$prefix.$kdpDomain/d" ${etcHosts}
+done
 ```

@@ -27,8 +27,10 @@ kdp install --local-mode --set dnsService.name=kube-dns
 ## 配置本地域名解析
 KDP 上运行的所有组件均通过 K8s Ingress 的方式暴露外部访问。在快速启动中我们使用了自定义的根域名`kdp-e2e.io`，因此安装完成后需要配置本地域名解析后方可访问对外暴露的KDP服务:
 ```bash
-# modify /etc/hosts requires sudo priviledge
+# 1. set env `KDP_HOST` to the private IP of the stand-alone host, e.g. `export KDP_HOST=192.168.1.100`
+# 2. modify /etc/hosts requires sudo priviledge
 
+kdpHost=${KDP_HOST:-127.0.0.1}
 kdpDomain="kdp-e2e.io"
 kdpPrefix=("kdp-ux" "grafana" "prometheus" "alertmanager" "flink-session-cluster-kdp-data" "hdfs-namenode-0-kdp-data" "hdfs-namenode-1-kdp-data" "hue-kdp-data" "kafka-manager-kdp-data" "minio-kdp-data-api" "spark-history-server-kdp-data" "streampark-kdp-data")
 etcHosts="/etc/hosts"
@@ -36,7 +38,7 @@ etcHosts="/etc/hosts"
 for prefix in "${kdpPrefix[@]}"; do
   domain="$prefix.$kdpDomain"
   if ! grep -q "$domain" ${etcHosts}; then
-    echo "127.0.0.1 $domain" | sudo tee -a ${etcHosts}
+    echo "$kdpHost $domain" | sudo tee -a ${etcHosts}
   fi
 done
 ```
