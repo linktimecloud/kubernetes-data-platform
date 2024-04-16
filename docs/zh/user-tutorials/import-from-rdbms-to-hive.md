@@ -14,8 +14,8 @@
 - hive-metastore
 - hive-server2
 - flink-kubernetes-operator
-- flink-session-cluster
-- streampark（可选。注意需要启用 Flink on Hive。）
+- flink-session-cluster（注意需要启用 Flink on Hive）
+- streampark（可选）
 - hue（可选）
 
 请依次安装上述组件。
