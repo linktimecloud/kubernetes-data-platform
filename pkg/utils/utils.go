@@ -19,8 +19,6 @@ import (
 	"bytes"
 	"encoding/base64"
 	"fmt"
-	"archive/tar"
-	"compress/gzip"
 	"io"
 	"net/http"
 	"os"
@@ -123,69 +121,6 @@ func ExecCmd(cmdStr string, suppressStdout bool) (int, error) {
 	}
 	
 	return 0, nil
-}
-
-func ExtractTarGZ(tarBallFile, targetDir, pathInTar string) error {
-	// create targetDir if not exists
-	if _, err := os.Stat(targetDir); os.IsNotExist(err) {
-	    err := os.MkdirAll(targetDir, 0755)
-	    if err != nil {
-	        return fmt.Errorf("failed to create target directory: %v", err)
-	    }
-	}
-
-	// open tar.gz file
-    file, err := os.Open(tarBallFile)
-	if err != nil {
-		return fmt.Errorf("failed to open file %s: %v", tarBallFile, err)
-	}
-	defer file.Close()
-
-	// create gzip reader
-	reader, err := gzip.NewReader(file)
-	if err != nil {
-		return fmt.Errorf("failed to create gzip reader: %v", err)
-	}
-	defer reader.Close()
-
-	// create tar reader and copy files to target directory
-	tarReader := tar.NewReader(reader)
-	for {
-		header, err := tarReader.Next()
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			return fmt.Errorf("failed to read tar entry: %v", err)
-		}
-
-		if pathInTar != "" && !strings.HasPrefix(header.Name, pathInTar) {
-			continue
-		}
-
-		switch header.Typeflag {
-			case tar.TypeDir:
-				if _, err := os.Stat(filepath.Join(targetDir, filepath.Base(header.Name))); os.IsNotExist(err) {
-					err := os.MkdirAll(filepath.Join(targetDir, filepath.Base(header.Name)), 0755)
-					if err != nil {
-						return fmt.Errorf("failed to create directory: %v", err)
-					}
-				}
-			case tar.TypeReg:
-				targetFile, err := os.Create(filepath.Join(targetDir, filepath.Base(header.Name)))
-				if err != nil {
-				    return fmt.Errorf("failed to create target file: %v", err)
-				}
-				defer targetFile.Close()
-				if _, err := io.Copy(targetFile, tarReader); err != nil {
-				    return fmt.Errorf("failed to write target file: %v", err)
-				}
-			default:
-				return fmt.Errorf("unsupported tar entry type: %v in : %v", header.Typeflag, header.Name)
-		}
-	}
-
-	return nil
 }
 
 func GetEnv(key, fallback string) string {
