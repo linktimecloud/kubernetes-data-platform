@@ -1,5 +1,7 @@
 # MySQL 数据同步到 Kafka
 
+[English](../../en/user-tutorials/import-from-rdbms-to-kafka.md) | 简体中文
+
 在复杂的计算场景中，MySQL 中的一张表可能被多个作业使用（比如保存用户信息的表），当多个任务使用同一张 MySQL 表做处理时，MySQL 数据库会启动多个连接，对 MySQL 服务器和网络造成很大的压力。
 
 为了缓解对上游 MySQL 数据库的压力，可以考虑利用 Flink cdc 将 MySQL 表同步到 Kafka，MySQL 表以 Upsert Kafka 的方式写入对应 topic。然后直接使用 Kafka JSON Catalog 中的表代替 MySQL 表，从而降低多个任务对 MySQL 数据库造成的压力。

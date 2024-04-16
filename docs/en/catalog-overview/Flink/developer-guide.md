@@ -140,17 +140,34 @@ Two methods are introduced for submitting applications: one is through the Flink
 
 #### Submitting Applications via Flink CLI
 
-Enter the flink session cluster container and execute the following command:
 
+Enter the flink session cluster container :
+```shell
+# Change the pod according to the actual situation
+kubuectl exec -it flink-session-cluster-xxxxx -n kdp-data -- bash
+```
+
+Execute the following command in the flink session cluster container:
 ```shell
 ./bin/flink run -d ./examples/streaming/SocketWindowWordCount.jar --hostname `(grep 'flink-session-cluster' /etc/hosts | head -n 1 | awk '{print $1}')` --port 9999 && nc -l 9999
 ```
+Expected output like:
+```shell
+ERROR StatusLogger Reconfiguration failed: No configuration found for '6438a396' at 'null' in 'null'
+ERROR StatusLogger Reconfiguration failed: No configuration found for '510f3d34' at 'null' in 'null'
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.apache.flink.api.java.ClosureCleaner (file:/opt/flink/lib/flink-dist-1.17.1.jar) to field java.lang.String.value
+WARNING: Please consider reporting this to the maintainers of org.apache.flink.api.java.ClosureCleaner
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+Job has been submitted with JobID ff3008609a49c364e7b27f5e94f4f57b
+```
+The error message `ERROR StatusLogger Reconfiguration failed` does not affect job submission and can be ignored.
 
-After successfully publishing the job, input text data and observe the output results on the flink session cluster console.
+At this point, the job has been successfully submitted. In the nc command interactive interface, enter any text, press Enter to send the text, and you can send text multiple times. You can view the output results on the flink session cluster console.
 
-Clean up job:
-Exit the nc interactive interface and execute the following command:
-
+Clear the job:
+Exit the nc interactive interface (control+c) and execute the following command:
 ```shell
 ./bin/flink list
 ## expecte output:job id
@@ -192,8 +209,8 @@ After successful addition, you will be redirected to the job management page.
 
 **Running the job**
 
-- On the job management page, click the `publish job` button for the `datagen-print` job, and the publish status will change to `Done` `Success`
-- Click the `start job` button for the `datagen-print` job, close the `from savepoint` in the pop-up window, click `apply`, the job will be submitted to the Flink session cluster for running, and the running status will change to `Starting`, `Running`, `Finished` in turn.
+- On the job management page, click the `publish job` button for the ``Socket Window WordCount`` job, and the publish status will change to `Done` `Success`
+- Click the `start job` button for the ``Socket Window WordCount`` job, close the `from savepoint` in the pop-up window, click `apply`, the job will be submitted to the Flink session cluster for running, and the running status will change to `Starting`, `Running` in turn.
 - Finally, use the `stop job` button to stop the job.
 
 ## Flink SQL Application Development
@@ -317,4 +334,5 @@ After successful addition, you will be redirected to the job management page.
 Running the job
 
 - On the job management page, click the `publish job` button for the job, and the publish status will change to `Done` `Success`.
-- Click the `start job` button for the job, close the from savepoint in the pop-up window, click `apply`, the job will be submitted to the Flink session cluster for running, and the running status will change to `Starting`, `Running`, `Finished` in turn.
+- Click the `start job` button for the job, close the from savepoint in the pop-up window, click `apply`, the job will be submitted to the Flink session cluster for running, and the running status will change to `Starting`, `Running`, in turn.
+- Finally, use the `stop job` button to stop the job.

@@ -1,5 +1,7 @@
 # Importing Data from Relational Databases to Hive
 
+English | [简体中文](../../zh/user-tutorials/import-from-rdbms-to-hive.md)
+
 After setting up an enterprise's big data platform, it is usually necessary to import data from databases scattered across various departments to eliminate data silos. Traditional host-based big data platforms often use ETL tools like Sqoop to import data. On cloud-native big data platforms, there are better methods available.
 
 This article introduces how to use Flink SQL to import MySQL data into Hive. Flink's Table & SQL API can handle SQL queries written in the SQL language, but these queries need to be embedded in table programs written in Java or Scala. In addition, these programs need to be packaged with build tools before being submitted to the cluster. We can use Flink SQL Client or StreamPark to write, debug, and submit table programs to the Flink cluster without writing a single line of Java or Scala code. This step can be easily achieved on KDP.
@@ -49,7 +51,7 @@ Execute the following commands to enter Flink SQL:
 kubectl get pods -n kdp-data -l app=flink-session-cluster -l component=jobmanager -o name
 # Enter the flink-session-cluster container.
 # Replace 'flink-session-cluster-xxxxx' with the actual pod name.
-kbuectl exec -it flink-session-cluster-xxxxx -n kdp-data -- bash
+kubectl exec -it flink-session-cluster-xxxxx -n kdp-data -- bash
 # Start Flink SQL
 ./bin/sql-client.sh
 ```

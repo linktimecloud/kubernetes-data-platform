@@ -1,5 +1,7 @@
 # Kafka Integration with Internal and External Components
 
+English | [简体中文](../../zh/user-tutorials/integration-kafka-with-int-ext-comps.md)
+
 The cloud-native Kafka provided by KDP is a distributed message queue system characterized by high throughput, high availability, and high fault tolerance, making it suitable for large-scale data processing scenarios.
 
 To support users in quickly setting up Kafka clusters, KDP offers a Kafka cluster application that allows users to install Kafka clusters with one click through the KDP-ux interface, supporting the production and consumption of messages.

@@ -1,5 +1,7 @@
 # 快速启动
 
+[English](../../en/getting-started/quick-start.md) | 简体中文
+
 用户可以在单机环境上快速体验 KDP 功能。
 
 ## 前提条件
@@ -15,50 +17,43 @@
     - 编译安装 (本地需要安装 [Go](https://go.dev/doc/install) 1.21+): 克隆项目到本地, 在项目根目录执行 `go install`
 
 ## 安装 KDP 基础设施层
-
-* 使用 KDP CLI 安装 KDP 基础设施层：
+使用 KDP CLI 安装 KDP 基础设施层：
 ```bash
-# > 指定 "--debug" 以开启debug日志
-# > 指定 "--set ingress.domain=<YOUR_DOMAIN>" 单独/以及 "--set ingress.tlsSecretName=<YOUR_TLS_SECRET>" 以使用自定义域名以及TLS
-# > 如安装中断, 可重复执行安装命令，已执行的步骤会自动跳过; 也可以指定 "--force-reinstall" 强制重新安装
+# if the install breaks, you may re-run the command to continue the install
 
 kdp install --local-mode --set dnsService.name=kube-dns
-
 ```
 
-## 域名解析
-KDP 上运行的所有组件均通过 K8s Ingress 的方式暴露外部访问，因此安装完成后需要配置域名解析方可访问。
+## 配置本地域名解析
+KDP 上运行的所有组件均通过 K8s Ingress 的方式暴露外部访问。在快速启动中我们使用了自定义的根域名`kdp-e2e.io`，因此安装完成后需要配置本地域名解析后方可访问对外暴露的KDP服务:
+```bash
+# 1. set env `KDP_HOST` to the private IP of the stand-alone host, e.g. `export KDP_HOST=192.168.1.100`
+# 2. modify /etc/hosts requires sudo priviledge
 
-以下列表是 KDP 上全量组件的默认域名：
+kdpHost=${KDP_HOST:-127.0.0.1}
+kdpDomain="kdp-e2e.io"
+kdpPrefix=("kdp-ux" "grafana" "prometheus" "alertmanager" "flink-session-cluster-kdp-data" "hdfs-namenode-0-kdp-data" "hdfs-namenode-1-kdp-data" "hue-kdp-data" "kafka-manager-kdp-data" "minio-kdp-data-api" "spark-history-server-kdp-data" "streampark-kdp-data")
+etcHosts="/etc/hosts"
+
+for prefix in "${kdpPrefix[@]}"; do
+  domain="$prefix.$kdpDomain"
+  if ! grep -q "$domain" ${etcHosts}; then
+    echo "$kdpHost $domain" | sudo tee -a ${etcHosts}
+  fi
+done
 ```
-kdp-ux.kdp-e2e.io
-grafana.kdp-e2e.io
-prometheus.kdp-e2e.io
-alertmanager.kdp-e2e.io
-flink-session-cluster-kdp-data.kdp-e2e.io
-hdfs-namenode-0-kdp-data.kdp-e2e.io
-hdfs-namenode-1-kdp-data.kdp-e2e.io
-hue-kdp-data.kdp-e2e.io
-kafka-manager-kdp-data.kdp-e2e.io
-minio-kdp-data-api.kdp-e2e.io
-spark-history-server-kdp-data.kdp-e2e.io
-streampark-kdp-data.kdp-e2e.io
-```
-域名解析配置可参考以下几种常见情况：
-- 使用默认配置安装时，在访问端本地 `/etc/hosts` 添加解析以上域名解析，指向单机环境的IP地址
-- 如之前指定了 "--set ingress.domain=<YOUR_DOMAIN>"，以下二选一：
-  - 如自定义域名不是公网解析，替换以上所有域名的根域名为<YOUR_DOMAIN>，并在访问端本地 `/etc/hosts` 添加解析以上域名解析，指向单机环境的IP地址
-  - 如自定义域名可公网解析，在DNS供应商添加以上域名的A记录，将自定义域名指向单机环境的IP地址
 
 ## 访问 KDP UX
-安装完成后可访问 KDP UX，以下两种情况二选一（如指定了"--set ingress.tlsSecretName=<YOUR_TLS_SECERT>"，则使用 HTTPS 协议访问）：
-- 默认配置：http://kdp-ux.kdp-e2e.io
-- 指定了 "--set ingress.domain=<YOUR_DOMAIN>"：`http://kdp-ux.<YOUR_DOMAIN>`
+安装完成后可访问 KDP UX，默认地址为：http://kdp-ux.kdp-e2e.io
 
 ## 环境清理
 
 ```bash
-# 销毁本地集群，所有数据将被清除
-kind delete cluster -n kdp-e2e
+# 1. destroy KDP kind cluster, all data will be erased
+# 2. clean up /etc/hosts
 
+kind delete cluster -n kdp-e2e
+for prefix in "${kdpPrefix[@]}"; do
+  sudo sed -i"" "/$prefix.$kdpDomain/d" ${etcHosts}
+done
 ```

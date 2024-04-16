@@ -35,17 +35,27 @@ var (
 	kdpInfraAddons = []string{"fluxcd", "openebs", "plg-stack", "kong", "mysql", "kdp-core"}
 	kdpLocalCluster = "kdp-e2e"
 
-	// flags for install/ugprade
+	// flags for both install/ugprade
 	repoUrl string
 	repoRef string
 	artifactServer string
-	helmRepo string
-	dockerRegistry string
 	setParameters []string
 	forceReinstall bool
 	localMode bool
 	srcUpgrade bool
 	velaUpgrade bool
+
+	// We should define seperated container/helm registries for install and upgrade,
+	// because normally upgrade should use the same registries as previous install
+
+	// flags for install
+	helmRepoInstall string
+	dockerRegistryInstall string
+
+	// flags for upgrade
+	helmRepoUpgrade string
+	dockerRegistryUpgrade string
+	
 )
 
 // rootCmd represents the base command when called without any subcommands

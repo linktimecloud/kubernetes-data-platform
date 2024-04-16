@@ -1,4 +1,10 @@
+---
+id: advanced-install
+---
+
 # Advanced Installation
+
+English | [简体中文](../../zh/getting-started/advanced-install.md)
 
 Users can quickly deploy KDP on an existing Kubernetes cluster using the CLI.
 
@@ -37,7 +43,7 @@ Runtime parameters are supported via "--set k1=v1 --set k2=v2 ..." when install 
 | kong.replicas | Kong Ingress replicas | 4 | Y | |
 | ingress.class | IngressClass used by KDP Ingress | kong | Y | |
 | ingress.domain | The root domain used by KDP Ingress | kdp-e2e.io | Y | This parameter can be set if a custom domain name is used |
-| ingress.tlsSecretName | TLS secret used by the KDP Ingress | "" | Y | 如启用自定义域名及 [TLS](https://kubernetes.io/docs/concepts/services-networking/ingress/#tls) ，可设置该参数 |
+| ingress.tlsSecretName | TLS secret used by the KDP Ingress | "" | Y | This parameter can be set if a custom domain name and [TLS](https://kubernetes.io/docs/concepts/services-networking/ingress/#tls) are used |
 | prometheusCRD.enabled | Whether to install Prometheus Operator CRD | true | Y | You may turn this off if you want to use existing [kube-prometheus-stack](https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack) on K8s cluster |
 | prometheus.enabled | Whether to install Prometheus Operator/Prometheus/Alertmanager/Grafana | true | Y | You may turn this off if you want to use existing [kube-prometheus-stack](https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack) on K8s cluster |
 | prometheus.externalUrl | The Prometheus service address used by the KDP observability feature | "" | Y | Set only when using external Prometheus service |

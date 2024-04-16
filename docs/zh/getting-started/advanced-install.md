@@ -1,5 +1,7 @@
 # 高级安装
 
+[English](../../en/getting-started/advanced-install.md) | 简体中文
+
 用户可在已有的 Kubernetes 集群上通过CLI快速部署 KDP。
 
 ## 资源规划
