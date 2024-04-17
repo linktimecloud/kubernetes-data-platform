@@ -67,7 +67,7 @@ INSERT INTO print_table select f_sequence,f_random,f_random_str from datagen;
 
 #### 运行作业
 - 在作业管理页面，点击`datagen-print`作业的`发布作业`按钮，稍等片刻，发布状态变为`Done` `Success`
-- 点击`datagen-print`作业的`启动作业`按钮，关闭弹窗中的`from savepoin`, 点击`应用`, 作业将提交到Flink session集群运行, 运行状态依次变为`Starting` `Running` `Finished`
+- 点击`datagen-print`作业的`启动作业`按钮，关闭弹窗中的`from savepoint`, 点击`应用`, 作业将提交到Flink session集群运行, 运行状态依次变为`Starting` `Running` `Finished`
   
 
 
