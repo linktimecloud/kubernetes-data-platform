@@ -16,7 +16,7 @@ _kdpOAMOperator: {
 		version:         "\(_version.operator)"
 		values: {
 			images: {
-				registry: "\(parameter.registry)"
+				registry: "\(parameter.registry)/linktimecloud"
 				pullSecrets: [
 					{name: "\(parameter.imagePullSecret)"},
 				]
