@@ -27,7 +27,9 @@ _kdpOAMOperator: {
 					"--kube-api-qps=300",
 					"--kube-api-burst=900"
 				]
+				image: repository: "kdp-oam-operator"
 			}
+			controller: image: repository: "kdp-oam-apiserver"
 			systemNamespace: name: "\(parameter.namespace)"
 		}
 	}
