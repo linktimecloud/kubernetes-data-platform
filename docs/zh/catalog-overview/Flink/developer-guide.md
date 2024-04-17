@@ -143,7 +143,7 @@ public class SocketWindowWordCount {
 进入flink session cluster容器
 ```shell
 # pod 根据实际情况替换
-kubuectl exec -it flink-session-cluster-xxxxx -n kdp-data -- bash
+kubectl exec -it flink-session-cluster-xxxxx -n kdp-data -- bash
 ```
 
 在容器中执行以下命令：
@@ -334,5 +334,5 @@ group by
 运行作业
 
 - 在作业管理页面，点击该作业的`发布作业`按钮，稍等片刻，发布状态变为`Done` `Success`
-- 点击该作业的`启动作业`按钮，关闭弹窗中的`from savepoin`, 点击`应用`, 作业将提交到Flink session集群运行, 运行状态依次变为`Starting` `Running` 
+- 点击该作业的`启动作业`按钮，关闭弹窗中的`from savepoint`, 点击`应用`, 作业将提交到Flink session集群运行, 运行状态依次变为`Starting` `Running` 
 - 最后不需要运行时，作业的`停止作业`按钮，停止作业。
