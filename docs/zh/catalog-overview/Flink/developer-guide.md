@@ -143,7 +143,7 @@ public class SocketWindowWordCount {
 进入flink session cluster容器
 ```shell
 # pod 根据实际情况替换
-kubuectl exec -it flink-session-cluster-xxxxx -n kdp-data -- bash
+kubectl exec -it flink-session-cluster-xxxxx -n kdp-data -- bash
 ```
 
 在容器中执行以下命令：
