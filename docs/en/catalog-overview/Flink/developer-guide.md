@@ -144,7 +144,7 @@ Two methods are introduced for submitting applications: one is through the Flink
 Enter the flink session cluster container :
 ```shell
 # Change the pod according to the actual situation
-kubuectl exec -it flink-session-cluster-xxxxx -n kdp-data -- bash
+kubectl exec -it flink-session-cluster-xxxxx -n kdp-data -- bash
 ```
 
 Execute the following command in the flink session cluster container:

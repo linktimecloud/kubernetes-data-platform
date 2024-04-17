@@ -66,5 +66,5 @@ After the addition is successful, it will jump to the job management page
 
 #### Run the job
 - In the job management page, click the `Release Application` button of the `datagen-print` job, wait for a moment, the publish status becomes `Done` `Success`
-- Click the `Start Application` button of the `datagen-print` job, close the `from savepoin` in the pop-up window, click `Apply`, the job will be submitted to the Flink session cluster for running, and the running status will change to `Starting` `Running` `Finished` in turn
+- Click the `Start Application` button of the `datagen-print` job, close the `from savepoint` in the pop-up window, click `Apply`, the job will be submitted to the Flink session cluster for running, and the running status will change to `Starting` `Running` `Finished` in turn
   
