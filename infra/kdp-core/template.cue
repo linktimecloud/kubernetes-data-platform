@@ -22,7 +22,7 @@ if parameter.grafana.externalUrl != "" {
 
 _version: {
 	kdp: "v1.0.0"
-	operator: "v1.0.0"
+	operator: "v1.1.0"
 	catalogManager: "v1.0.0"
 	ux: "v1.0.0"
 }
@@ -49,6 +49,9 @@ output: {
 			_velaOps,
 			_configReplicator,
 			_configReloader,
+			_kdpCloudTty,
+			_KdpTerminalConfig,
+			_kdpTerminalConfigTask,
 			_kdpOAMOperator,
 			_kdpCatalogManager,
 			_kdpUX,
@@ -187,6 +190,24 @@ output: {
 				name: "apply-system-bdc"
 				dependsOn: ["apply-bdc-xdef"]
 				properties: component: parameter.namePrefix + "system-bdc"
+			},
+			{
+				type: "apply-component"
+				name: "apply-cloudtty"
+				dependsOn: ["apply-bdc-xdef"]
+				properties: component: parameter.namePrefix + "cloudtty"
+			},
+			{
+				type: "apply-component"
+				name: "apply-terminal-config"
+				dependsOn: ["apply-bdc-xdef"]
+				properties: component: parameter.namePrefix + "terminal-config"
+			},
+			{
+				type: "apply-component"
+				name: "apply-terminal-config-task"
+				dependsOn: ["apply-terminal-config", "apply-cloudtty"]
+				properties: component: parameter.namePrefix + "terminal-config-task"
 			},
 		]
 	}
