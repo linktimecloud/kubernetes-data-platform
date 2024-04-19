@@ -36,6 +36,7 @@ _kdpTerminalConfigTask: {
 						namespace: "vela-system"
 					}
 					spec: {
+						ttlSecondsAfterFinished: 60
 						template: {
 							spec: {
 								volumes: [
