@@ -33,7 +33,6 @@ _kdpTerminalConfigTask: {
 					kind: "Job"
 					metadata: {
 						name: parameter.namePrefix + "init-kubeconfig"
-						namespace: "vela-system"
 					}
 					spec: {
 						ttlSecondsAfterFinished: 60
@@ -108,7 +107,7 @@ _KdpTerminalConfig: {
 				kind: "ServiceAccount"
 				metadata: {
 					name: "pod-terminal-sa"
-					namespace: "default"
+					namespace: "\(parameter.namespace)"
 				}
 			},
 			{
@@ -116,7 +115,7 @@ _KdpTerminalConfig: {
 				kind: "Secret"
 				metadata: {
 					name: "pod-terminal-token"
-					namespace: "default"
+					namespace: "\(parameter.namespace)"
 					annotations: {
 						"kubernetes.io/service-account.name": "pod-terminal-sa"
 					}
@@ -128,7 +127,7 @@ _KdpTerminalConfig: {
 				kind: "ServiceAccount"
 				metadata: {
 					name: "general-terminal-sa"
-					namespace: "default"
+					namespace: "\(parameter.namespace)"
 				}
 			},
 			{
@@ -136,7 +135,7 @@ _KdpTerminalConfig: {
 				kind: "Secret"
 				metadata: {
 					name: "general-terminal-token"
-					namespace: "default"
+					namespace: "\(parameter.namespace)"
 					annotations: {
 						"kubernetes.io/service-account.name": "general-terminal-sa"
 					}
@@ -313,7 +312,7 @@ _KdpTerminalConfig: {
 					{
 						kind: "ServiceAccount"
 						name: "pod-terminal-sa"
-						namespace: "default"
+						namespace: "\(parameter.namespace)"
 					}
 				]
 				roleRef: {
@@ -332,7 +331,7 @@ _KdpTerminalConfig: {
 					{
 						kind: "ServiceAccount"
 						name: "general-terminal-sa"
-						namespace: "default"
+						namespace: "\(parameter.namespace)"
 					}
 				]
 				roleRef: {
@@ -346,7 +345,6 @@ _KdpTerminalConfig: {
 				kind: "ConfigMap"
 				metadata: {
 					name: "kubeconfig-template"
-					namespace: "vela-system"
 				}
 				data: {
 					"kubeconfig-template": """
@@ -373,15 +371,15 @@ _KdpTerminalConfig: {
 					apiVersion: v1
 					metadata:
 					  name: SECRECT_NAME
-					  namespace: default
+					  namespace: \(parameter.namespace)
 					data:
 					  config: SECRECT_DATA
 					"""
 					"create-kubeconfig": """
 					KUBE_APISERVER='https://kubernetes.default.svc';
 					for i in pod-terminal general-terminal;do
-							TOKEN_DECODE=$(kubectl get secret/$i-token -n default -o jsonpath='{.data.token}'| base64 -d)
-							CLUSTER_AUTH=$(kubectl get secret/$i-token -n default -o yaml |grep ca.crt |awk '{print $2}')
+							TOKEN_DECODE=$(kubectl get secret/$i-token -n \(parameter.namespace) -o jsonpath='{.data.token}'| base64 -d)
+							CLUSTER_AUTH=$(kubectl get secret/$i-token -n \(parameter.namespace) -o yaml |grep ca.crt |awk '{print $2}')
 							# cat kubeconfig-template |sed "s#USER#$i#g" |sed "s#KUBE_APISERVER#$KUBE_APISERVER#g" |sed "s#CLUSTER_AUTH#$CLUSTER_AUTH#g" |sed "s#TOKEN_DECODE#$TOKEN_DECODE#g" >$i.config
 							KUBE_BASE_CODE=$(cat kubeconfig-template |sed "s#USER#$i#g" |sed "s#KUBE_APISERVER#$KUBE_APISERVER#g" |sed "s#CLUSTER_AUTH#$CLUSTER_AUTH#g" |sed "s#TOKEN_DECODE#$TOKEN_DECODE#g"|base64 -w 0)
 							cat kubeconfig-secret-template |sed "s#SECRECT_NAME#$i-secret#g" |sed "s#SECRECT_DATA#$KUBE_BASE_CODE#g" >$i.yaml
