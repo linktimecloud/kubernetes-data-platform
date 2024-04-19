@@ -89,7 +89,7 @@ func VelaInstall(artifactServer, dockerRegistry, cacheDir, binDir, velaVersion s
 	} else {
 		_, err = utils.ExecCmd(
 			fmt.Sprintf(
-				"%s install --yes --detail=false --file %s --set imageRegistry=%s/ --set image.pullPolicy=IfNotPresent", 
+				"%s install --yes --detail=false --file %s --set imageRegistry=%s/ --set image.pullPolicy=IfNotPresent --set replicaCount=3 --set optimize.disableApplicationRevision=true", 
 				velaCli, filepath.Join(cacheDir, velaChart), dockerRegistry,
 			), false,
 		)

@@ -33,7 +33,7 @@ _openebs: {
                 enabled: true
                 image: "openebs/provisioner-localpv"
                 imageTag: "3.5.0"
-                replicas: 1
+                replicas: 3
                 basePath: "/var/openebs/local"
                 deviceClass: {
                     enabled: false
