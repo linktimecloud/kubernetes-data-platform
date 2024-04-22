@@ -20,7 +20,7 @@ Requires the installation of the following components on KDP:
 
 Please install the above components in order.
 
-For the usage of Flink SQL, please refer to [Flink SQL](./import-from-mysql-to-hive.md#flink-sql-使用方法)
+For the usage of Flink SQL, please refer to [Flink SQL](./import-from-rbdms-to-hive.md#flink-sql-usage)
 
 After the installation of kafka-3-cluster is complete, please click on 'Big Data Cluster Management' - 'Cluster Information' - 'Application Usage Configuration' - 'kafka-3-cluster-kafka-context' on the KDP page in sequence, and check the value of `bootstrap_plain` (usually `kafka-3-cluster-kafka-0.kafka-3-cluster-kafka-brokers.kdp-data.svc.cluster.local:9092,kafka-3-cluster-kafka-1.kafka-3-cluster-kafka-brokers.kdp-data.svc.cluster.local:9092,kafka-3-cluster-kafka-2.kafka-3-cluster-kafka-brokers.kdp-data.svc.cluster.local:9092`). This value is the address of the kafka bootstrap servers and will be used below.
 

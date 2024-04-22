@@ -529,37 +529,10 @@ template: {
 		}
 		// +ui:description=自定义 core-site.xml 内容
 		// +ui:order=10
-		coreSite: *{
-			"hadoop.tmp.dir":                   "/usr/local/hadoop/tmp"
-			"fs.trash.interval":                "1440"
-			"fs.permissions.umask-mode":        "037"
-			"hadoop.proxyuser.ec2-user.groups": "*"
-			"hadoop.proxyuser.ec2-user.hosts":  "*"
-			"hadoop.proxyuser.root.groups":     "*"
-			"hadoop.proxyuser.root.hosts":      "*"
-			"hadoop.proxyuser.sqoop.groups":    "*"
-			"hadoop.proxyuser.sqoop.hosts":     "*"
-			"hadoop.proxyuser.hue.groups":      "*"
-			"hadoop.proxyuser.hue.hosts":       "*"
-			"hadoop.proxyuser.zeppelin.groups": "*"
-			"hadoop.proxyuser.zeppelin.hosts":  "*"
-			"hadoop.proxyuser.hive.groups":     "*"
-			"hadoop.proxyuser.hive.hosts":      "*"
-			"hadoop.proxyuser.httpfs.groups":   "*"
-			"hadoop.proxyuser.httpfs.hosts":    "*"
-			"hadoop.proxyuser.livy.groups":     "*"
-			"hadoop.proxyuser.livy.hosts":      "*"
-			"hadoop.proxyuser.dcos.groups":     "*"
-			"hadoop.proxyuser.dcos.hosts":      "*"
-		} | {...}
+		coreSite: {...}
 		// +ui:description=自定义 hdfs-site.xml 内容
 		// +ui:order=11
-		hdfsSite: *{
-			"dfs.block.access.token.enable":            "true"
-			"dfs.permissions.ContentSummary.subAccess": "true"
-			"dfs.namenode.name.dir":                    "file:///hadoop/dfs/name"
-			"dfs.datanode.max.transfer.threads":        "8192"
-		} | {...}
+		hdfsSite: {...}
 		// +ui:description=Helm Chart 版本号
 		// +ui:order=100
 		// +ui:options={"disabled":true}
