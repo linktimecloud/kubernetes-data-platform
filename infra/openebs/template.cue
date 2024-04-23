@@ -45,14 +45,14 @@ _openebs: {
                 }
             }  
             ndm: {
-                enabled: true
+                enabled: false
                 image: "openebs/node-disk-manager"
                 imageTag: "2.1.0"
                 nodeSelector: {}
                 tolerations: []
             }
             ndmOperator: {
-                enabled: true
+                enabled: false
                 image: "openebs/node-disk-operator"
                 imageTag: "2.1.0"
                 replicas: 1
