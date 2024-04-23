@@ -130,7 +130,7 @@ template: {
 											"successThreshold":    1
 											"failureThreshold":    3
 										}
-										if parameter["resources"] != _|_ {
+										if parameter.resources != _|_ {
 											resources: parameter.resources
 										}
 										volumeMounts: [{
