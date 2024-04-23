@@ -310,27 +310,31 @@ template: {
 				},
 				{
 					"name": "\(context.name)-config"
-					"type": "raw"
+					"type": "k8s-objects"
 					"properties": {
-						"apiVersion": "bdc.kdp.io/v1alpha1"
-						"kind":       "ContextSetting"
-						"metadata": {
-							"namespace": context.namespace
-							"name":      "\(context.bdc)-\(context.name)"
-							"annotations": {
-								"setting.ctx.bdc.kdp.io/type":   "zookeeper"
-								"setting.ctx.bdc.kdp.io/origin": "system"
+						"objects": [
+							{
+								"apiVersion": "bdc.kdp.io/v1alpha1"
+								"kind":       "ContextSetting"
+								"metadata": {
+									"namespace": context.namespace
+									"name":      "\(context.bdc)-\(context.name)"
+									"annotations": {
+										"setting.ctx.bdc.kdp.io/type":   "zookeeper"
+										"setting.ctx.bdc.kdp.io/origin": "system"
+									}
+								}
+								"spec": {
+									"name": "zookeeper-context"
+									"type": "zookeeper"
+									"properties": {
+										"host":     "zookeeper.\(context.namespace).svc.cluster.local:2181"
+										"hostname": "zookeeper.\(context.namespace).svc.cluster.local"
+										"port":     "2181"
+									}
+								}
 							}
-						}
-						"spec": {
-							"name": "zookeeper-context"
-							"type": "zookeeper"
-							"properties": {
-								"host":     "zookeeper.\(context.namespace).svc.cluster.local:2181"
-								"hostname": "zookeeper.\(context.namespace).svc.cluster.local"
-								"port":     "2181"
-							}
-						}
+						]
 					}
 				},
 			]

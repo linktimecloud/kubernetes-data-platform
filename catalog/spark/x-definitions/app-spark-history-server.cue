@@ -41,71 +41,99 @@ template: {
 		spec: {
 			components: [
 				{
-					"name": context.name
-					"type": "raw"
-					"properties": {
-						apiVersion: "apps/v1"
-						kind:       "Deployment"
-						metadata: {
-							name: context.name
-							annotations: {}
-							labels: {
-								app: context.name
-							}
-						}
-						spec: {
-							replicas: parameter.replicas
-							selector: matchLabels: {
-								app:                     context.name
-								"app.oam.dev/component": context.name
-							}
-							template: {
-								metadata: labels: {
-									app:                     context.name
-									"app.oam.dev/component": context.name
+					name: context.name
+					type: "k8s-objects"
+					properties: {
+						objects: [
+							{
+								apiVersion: "apps/v1"
+								kind:       "Deployment"
+								metadata: {
+									name: context.name
+									annotations: {}
+									labels: {
+										app: context.name
+									}
 								}
 								spec: {
-									containers: [{
-										name: context.name
-										env: [{
-											name:  "HADOOP_CONF_DIR"
-											value: "/opt/hadoop/etc/hadoop/"
-										}, {
-											name:  "SPARK_HISTORY_OPTS"
-											value: "-Dspark.history.fs.logDirectory=\(parameter.logDirectory) -Dspark.history.fs.cleaner.enabled=\(strconv.FormatBool(parameter.cleaner.enabled)) -Dspark.history.fs.cleaner.interval=\(parameter.cleaner.interval) -Dspark.history.fs.cleaner.maxAge=\(parameter.cleaner.maxAge) -Dlog4j.configuration=file:///opt/spark/conf/log4j.properties"
-										}]
-										args: ["/opt/spark/bin/spark-class", "org.apache.spark.deploy.history.HistoryServer"]
-										image: "\(context.docker_registry)/\(parameter.image)"
-										ports: [{
-											containerPort: 18080
-											protocol:      "TCP"
-										}]
-										resources: parameter.resources
-
-										volumeMounts: [{
-											name:      "logs"
-											mountPath: "/opt/spark/logs/"
-										}, {
-											name:      "hadoop-config"
-											mountPath: "/opt/hadoop/etc/hadoop/"
-										}]
-									}]
-
-									volumes: [{
-										name: "logs"
-										emptyDir: {}
-									}, {
-										name: "hadoop-config"
-										configMap: {
-											name:        parameter.dependencies.hdfsConfigMapName
-											defaultMode: 420
+									replicas: parameter.replicas
+									selector: matchLabels: {
+										app:                     context.name
+										"app.oam.dev/component": context.name
+									}
+									template: {
+										metadata: labels: {
+											app:                     context.name
+											"app.oam.dev/component": context.name
 										}
-									}]
+										spec: {
+											containers: [{
+												name: context.name
+												env: [{
+													name:  "HADOOP_CONF_DIR"
+													value: "/opt/hadoop/etc/hadoop/"
+												}, {
+													name:  "SPARK_HISTORY_OPTS"
+													value: "-Dspark.history.fs.logDirectory=\(parameter.logDirectory) -Dspark.history.fs.cleaner.enabled=\(strconv.FormatBool(parameter.cleaner.enabled)) -Dspark.history.fs.cleaner.interval=\(parameter.cleaner.interval) -Dspark.history.fs.cleaner.maxAge=\(parameter.cleaner.maxAge) -Dlog4j.configuration=file:///opt/spark/conf/log4j.properties"
+												}]
+												args: ["/opt/spark/bin/spark-class", "org.apache.spark.deploy.history.HistoryServer"]
+												image: "\(context.docker_registry)/\(parameter.image)"
+												ports: [{
+													containerPort: 18080
+													protocol:      "TCP"
+												}]
+												resources: parameter.resources
+
+												volumeMounts: [{
+													name:      "logs"
+													mountPath: "/opt/spark/logs/"
+												}, {
+													name:      "hadoop-config"
+													mountPath: "/opt/hadoop/etc/hadoop/"
+												}]
+											}]
+
+											volumes: [{
+												name: "logs"
+												emptyDir: {}
+											}, {
+												name: "hadoop-config"
+												configMap: {
+													name:        parameter.dependencies.hdfsConfigMapName
+													defaultMode: 420
+												}
+											}]
+										}
+									}
+								}
+							},
+							{
+								apiVersion: "v1"
+								kind:       "Service"
+								metadata: {
+									name: context.name + "-svc"
+									labels: {
+										"app": context.name
+									}
+								}
+								spec: {
+									type: "ClusterIP"
+									selector: {
+										"app": context.name
+									}
+									ports: [
+										{
+											name:       "port-tcp-18080"
+											targetPort: 18080
+											port:       18080
+											protocol:   "TCP"
+										},
+									]
 								}
 							}
-						}
+						]
 					}
-					"traits": [
+					traits: [
 						{
 							"type": "bdos-security-context"
 							"properties": {
@@ -144,34 +172,6 @@ template: {
 							}
 						},
 					]
-				},
-				{
-					"name": context.name + "-svc"
-					"type": "raw"
-					"properties": {
-						apiVersion: "v1"
-						kind:       "Service"
-						metadata: {
-							name: context.name + "-svc"
-							labels: {
-								"app": context.name
-							}
-						}
-						spec: {
-							type: "ClusterIP"
-							selector: {
-								"app": context.name
-							}
-							ports: [
-								{
-									name:       "port-tcp-18080"
-									targetPort: 18080
-									port:       18080
-									protocol:   "TCP"
-								},
-							]
-						}
-					}
 				},
 			]
 		}
