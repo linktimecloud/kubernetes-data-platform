@@ -33,7 +33,7 @@ _openebs: {
                 enabled: true
                 image: "openebs/provisioner-localpv"
                 imageTag: "3.5.0"
-                replicas: 1
+                replicas: 3
                 basePath: "/var/openebs/local"
                 deviceClass: {
                     enabled: false
@@ -45,14 +45,14 @@ _openebs: {
                 }
             }  
             ndm: {
-                enabled: true
+                enabled: false
                 image: "openebs/node-disk-manager"
                 imageTag: "2.1.0"
                 nodeSelector: {}
                 tolerations: []
             }
             ndmOperator: {
-                enabled: true
+                enabled: false
                 image: "openebs/node-disk-operator"
                 imageTag: "2.1.0"
                 replicas: 1
@@ -68,6 +68,48 @@ _openebs: {
 	}
 }
 
+_init_pvc_cleaner : {
+	name: parameter.namePrefix + "openebs-init-pvc-cleaner"
+	type: "k8s-objects"
+	properties: objects: [{
+		apiVersion: "batch/v1"
+		kind:       "CronJob"
+		metadata: {
+			name: parameter.namePrefix + "openebs-init-pvc-cleaner"
+			namespace: parameter.namespace
+			labels: app: parameter.namePrefix + "openebs-init-pvc-cleaner"
+		}
+		spec: {
+			concurrencyPolicy: "Forbid"
+			ttlSecondsAfterFinished: 0
+			schedule: "*/1 * * * *"
+			jobTemplate: {
+				spec: {
+					template: {
+						spec: {
+							containers: [{
+								name: "openebs-init-pvc-cleaner"
+								env: [{
+									name: "NS",
+									value: parameter.namespace,
+								},]
+								command: ["/bin/sh", "-c", "kubectl delete pods -n ${NS} $(kubectl get pods -n ${NS} --field-selector=status.phase=Succeeded -ojsonpath='{range .items[*]}{.metadata.name}{\"\\n\"}{end}') || true"]
+								image: "\(parameter.registry)/bitnami/kubectl:1.26"
+								imagePullPolicy: "IfNotPresent"
+							}]
+							imagePullSecrets: [{
+								name: "\(parameter.imagePullSecret)"
+							}]
+							restartPolicy: "OnFailure"
+							serviceAccountName: "openebs"
+						}
+					}
+				}
+			}
+		}
+	}]
+}
+
 output: {
 	apiVersion: "core.oam.dev/v1beta1"
 	kind: "Application"
@@ -75,7 +117,8 @@ output: {
 	spec: {
 		components: [
 			_ns,
-			_openebs
+			_openebs,
+			_init_pvc_cleaner
 		]
 		policies: [
 			{
@@ -102,7 +145,7 @@ output: {
 				name: "apply-once-res"
 				properties: rules: [
 					{
-						selector: resourceTypes: ["Namespace", "CustomResourceDefinition"]
+						selector: resourceTypes: ["Namespace", "CustomResourceDefinition", "CronJob"]
 						strategy: {
 							path: ["*"]
 						}
