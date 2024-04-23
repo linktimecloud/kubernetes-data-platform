@@ -78,6 +78,9 @@ template: {
 								spec: {
 									containers: [{
 										name: context.name
+										if parameter["resources"] != _|_ {
+											resources: parameter.resources
+										}
 										env: [
 											{
 												name:  "TZ"

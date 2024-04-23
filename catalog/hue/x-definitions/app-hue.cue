@@ -100,11 +100,9 @@ template: {
 								spec: {
 									containers: [{
 										name: context.name
-										_customEnv: [...]
-										if parameter.env != _|_ {
-											_customEnv: parameter.env
+										if parameter["resources"] != _|_ {
+											resources: parameter.resources
 										}
-
 										env: [
 											{
 												name:  "ADMIN_USER"
