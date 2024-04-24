@@ -59,6 +59,10 @@ _kdpTerminalConfigTask: {
 																{
 																	key: "create-kubeconfig"
 																	path: "create-kubeconfig.sh"
+																},
+																{
+																	key: "terminal-ingress-template"
+																	path: "terminal-ingress-template.yaml"
 																}
 															]
 														}
@@ -72,6 +76,20 @@ _kdpTerminalConfigTask: {
 										name: "init-kubeconfig"
 										image: "\(parameter.registry)/cloudtty/cloudshell:v0.5.7"
 										imagePullPolicy: "IfNotPresent"
+										env: [
+											if parameter.ingress.tlsSecretName != "" {
+												{
+														name: "HTTPTYPE"
+														value: "https"
+												}
+											},
+											if parameter.ingress.tlsSecretName == "" {
+												{
+														name: "HTTPTYPE"
+														value: "http"
+												}
+											},
+										]
 										volumeMounts: [
 											{
 												name: "template"
@@ -375,7 +393,39 @@ _KdpTerminalConfig: {
 					data:
 					  config: SECRECT_DATA
 					"""
+					"terminal-ingress-template": """
+					kind: Ingress
+					apiVersion: networking.k8s.io/v1
+					metadata:
+					  name: "cloudtty-ingress"
+					  namespace: "\(parameter.namespace)"
+					  annotations:
+					    "konghq.com/strip-path": "true"
+					spec:
+					  ingressClassName: "\(parameter.ingress.class)"
+					  rules:
+					    - host: "cloudtty.\(parameter.ingress.domain)"
+					      http:
+					        paths:
+					        - path: "/template"
+					          pathType: "Prefix"
+					          backend:
+					            service:
+					              name: "template"
+					              port:
+					                number: 7681
+					  tls:
+					    - hosts:
+					      - "cloudtty.\(parameter.ingress.domain)"
+					      secretName: "\(parameter.ingress.tlsSecretName)"
+					"""
 					"create-kubeconfig": """
+					if [[ ${HTTPTYPE} == "http" ]];then
+						head -n -4 terminal-ingress-template.yaml >terminal-ingress.yaml
+					else
+						cat terminal-ingress-template.yaml >terminal-ingress.yaml
+					fi
+					kubectl apply -f terminal-ingress.yaml;
 					KUBE_APISERVER='https://kubernetes.default.svc';
 					for i in pod-terminal general-terminal;do
 							TOKEN_DECODE=$(kubectl get secret/$i-token -n \(parameter.namespace) -o jsonpath='{.data.token}'| base64 -d)
@@ -386,57 +436,7 @@ _KdpTerminalConfig: {
 							kubectl apply -f $i.yaml
 					done
 					"""
-				}
-			}
-		]
-	}
-}
 
-
-_kdpTerminalIngress: {
-	name: parameter.namePrefix +"terminal-ingress"
-	type: "k8s-objects"
-	properties: {
-		objects: [
-			{
-				apiVersion: "networking.k8s.io/v1"
-				kind: "Ingress"
-				metadata: {
-					name: "cloudtty-ingress"
-					namespace: "\(parameter.namespace)"
-					annotations: {
-						"konghq.com/strip-path": "true"
-					}
-				}
-				spec: {
-					ingressClassName: parameter.ingress.class
-					rules: [
-						{
-							host: "cloudtty.\(parameter.ingress.domain)"
-							http: {
-								paths: [
-									{
-										path: "/template"
-										pathType: "Prefix"
-										backend: {
-											service: {
-												name: "template"
-												port: {
-													number: 7681
-												}
-											}
-										}
-									}
-								]
-							}
-						}
-					]
-					if parameter.ingress.tlsSecretName != "" {
-						tls: [{
-								hosts:["\(_UXName).\(parameter.ingress.domain)"]
-								secretName: "\(parameter.ingress.tlsSecretName)"
-						}]
-					}
 				}
 			}
 		]
