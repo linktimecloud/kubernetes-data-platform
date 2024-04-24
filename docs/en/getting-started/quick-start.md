@@ -38,7 +38,7 @@ All components running on the KDP are exposed to external access through the K8s
 
 kdpHost=${KDP_HOST:-127.0.0.1}
 kdpDomain="kdp-e2e.io"
-kdpPrefix=("kdp-ux" "grafana" "prometheus" "alertmanager" "flink-session-cluster-kdp-data" "hdfs-namenode-0-kdp-data" "hdfs-namenode-1-kdp-data" "hue-kdp-data" "kafka-manager-kdp-data" "minio-kdp-data-api" "spark-history-server-kdp-data" "streampark-kdp-data")
+kdpPrefix=("kdp-ux" "grafana" "prometheus" "alertmanager" "cloudtty" "flink-session-cluster-kdp-data" "hdfs-namenode-0-kdp-data" "hdfs-namenode-1-kdp-data" "hue-kdp-data" "kafka-manager-kdp-data" "minio-kdp-data-api" "spark-history-server-kdp-data" "streampark-kdp-data")
 etcHosts="/etc/hosts"
 
 for prefix in "${kdpPrefix[@]}"; do
