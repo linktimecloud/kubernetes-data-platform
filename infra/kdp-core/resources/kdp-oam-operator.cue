@@ -32,6 +32,16 @@ _kdpOAMOperator: {
 					{
 						name: "NAMESPACE",
 						value: "\(parameter.namespace)"
+					},
+					{
+						name: "DOMAIN",
+						vlaue: "cloudtty.\(parameter.ingress.domain)"
+					},
+					if parameter.ingress.tlsSecretName != "" {
+						{
+								name: "HTTPTYPE"
+								value: "https"
+						}
 					}
 				]
 			}

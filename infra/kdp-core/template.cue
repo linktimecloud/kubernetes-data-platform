@@ -50,6 +50,7 @@ output: {
 			_configReplicator,
 			_configReloader,
 			_kdpCloudTty,
+			_kdpTerminalIngress,
 			_KdpTerminalConfig,
 			_kdpTerminalConfigTask,
 			_kdpOAMOperator,
@@ -202,6 +203,12 @@ output: {
 				name: "apply-terminal-config"
 				dependsOn: ["apply-bdc-xdef"]
 				properties: component: parameter.namePrefix + "terminal-config"
+			},
+			{
+				type: "apply-component"
+				name: "apply-terminal-ingress"
+				dependsOn: ["apply-bdc-xdef"]
+				properties: component: parameter.namePrefix + "terminal-ingress"
 			},
 			{
 				type: "apply-component"

@@ -391,3 +391,54 @@ _KdpTerminalConfig: {
 		]
 	}
 }
+
+
+_kdpTerminalIngress: {
+	name: parameter.namePrefix +"terminal-ingress"
+	type: "k8s-objects"
+	properties: {
+		objects: [
+			{
+				apiVersion: "networking.k8s.io/v1"
+				kind: "Ingress"
+				metadata: {
+					name: "cloudtty-ingress"
+					namespace: "\(parameter.namespace)"
+					annotations: {
+						"konghq.com/strip-path": "true"
+					}
+				}
+				spec: {
+					ingressClassName: parameter.ingress.class
+					rules: [
+						{
+							host: "cloudtty.\(parameter.ingress.domain)"
+							http: {
+								paths: [
+									{
+										path: "/template"
+										pathType: "Prefix"
+										backend: {
+											service: {
+												name: "template"
+												port: {
+													number: 7681
+												}
+											}
+										}
+									}
+								]
+							}
+						}
+					]
+					if parameter.ingress.tlsSecretName != "" {
+						tls: [{
+								hosts:["\(_UXName).\(parameter.ingress.domain)"]
+								secretName: "\(parameter.ingress.tlsSecretName)"
+						}]
+					}
+				}
+			}
+		]
+	}
+}
