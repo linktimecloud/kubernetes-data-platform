@@ -425,7 +425,10 @@ _KdpTerminalConfig: {
 					else
 						cat terminal-ingress-template.yaml >terminal-ingress.yaml
 					fi
-					kubectl apply -f terminal-ingress.yaml;
+					kubectl get ingress cloudtty-ingress -n \(parameter.namespace)
+					if [[ $? -ne 0 ]];then
+						kubectl apply -f terminal-ingress.yaml
+					fi
 					KUBE_APISERVER='https://kubernetes.default.svc';
 					for i in pod-terminal general-terminal;do
 							TOKEN_DECODE=$(kubectl get secret/$i-token -n \(parameter.namespace) -o jsonpath='{.data.token}'| base64 -d)
