@@ -416,7 +416,419 @@ template: {
                   name: "hms-admin-cfg"
                 },
                 data: {
-                  "hms-json-export.yml": "metrics:\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..create_total_count_dbs}'\n    labels:\n      environment: hms # static label\n    values:\n      create_total_count_dbs: '{.count}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..create_total_count_tables}'\n    labels:\n      environment: hms # static label\n    values:\n      create_total_count_tables: '{.count}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..create_total_count_partitions}'\n    labels:\n      environment: hms # static label\n    values:\n      create_total_count_partitions: '{.count}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..delete_total_count_dbs}'\n    labels:\n      environment: hms # static label\n    values:\n      delete_total_count_dbs: '{.count}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..delete_total_count_tables}'\n    labels:\n      environment: hms # static label\n    values:\n      delete_total_count_tables: '{.count}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..delete_total_count_partitions}'\n    labels:\n      environment: hms # static label\n    values:\n      delete_total_count_partitions: '{.count}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..directsql_errors}'\n    labels:\n      environment: hms # static label\n    values:\n      directsql_errors: '{.count}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..open_connections}'\n    labels:\n      environment: hms # static label\n    values:\n      open_connections: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..direct\\.capacity}'\n    labels:\n      environment: hms # static label\n    values:\n      buffers_direct_capacity: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..direct\\.count}'\n    labels:\n      environment: hms # static label\n    values:\n      buffers_direct_count: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..direct\\.used}'\n    labels:\n      environment: hms # static label\n    values:\n      buffers_direct_used: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..mapped\\.capacity}'\n    labels:\n      environment: hms # static label\n    values:\n      buffers_mapped_capacity: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..mapped\\.count}'\n    labels:\n      environment: hms # static label\n    values:\n      buffers_mapped_count: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..mapped\\.used}'\n    labels:\n      environment: hms # static label\n    values:\n      buffers_mapped_used: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..heap\\.committed}'\n    labels:\n      environment: hms # static label\n    values:\n      memory_heap_committed: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..heap\\.init}'\n    labels:\n      environment: hms # static label\n    values:\n      memory_heap_init: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..heap\\.max}'\n    labels:\n      environment: hms # static label\n    values:\n      memory_heap_max: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..heap\\.usage}'\n    labels:\n      environment: hms # static label\n    values:\n      memory_heap_usage: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..heap\\.used}'\n    labels:\n      environment: hms # static label\n    values:\n      memory_heap_used: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..non-heap\\.committed}'\n    labels:\n      environment: hms # static label\n    values:\n      memory_non_heap_committed: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..non-heap\\.init}'\n    labels:\n      environment: hms # static label\n    values:\n      memory_non_heap_init: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..non-heap\\.max}'\n    labels:\n      environment: hms # static label\n    values:\n      memory_non_heap_max: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..non-heap\\.usage}'\n    labels:\n      environment: hms # static label\n    values:\n      memory_non_heap_usage: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..non-heap\\.used}'\n    labels:\n      environment: hms # static label\n    values:\n      memory_non_heap_used: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..pools\\.Code-Cache\\.usage}'\n    labels:\n      environment: hms # static label\n    values:\n      memory_pools_CodeCache_usage: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..pools\\.Compressed-Class-Space\\.usage}'\n    labels:\n      environment: hms # static label\n    values:\n      memory_pools_CompressedClassSpace_usage: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..pools\\.Metaspace\\.usage}'\n    labels:\n      environment: hms # static label\n    values:\n      memory_pools_Metaspace_usage: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..total\\.committed}'\n    labels:\n      environment: hms # static label\n    values:\n      memory_total_committed: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..total\\.init}'\n    labels:\n      environment: hms # static label\n    values:\n      memory_total_init: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..total\\.max}'\n    labels:\n      environment: hms # static label\n    values:\n      memory_total_max: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..total\\.used}'\n    labels:\n      environment: hms # static label\n    values:\n      memory_total_used: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..blocked\\.count}'\n    labels:\n      environment: hms # static label\n    values:\n      threads_blocked_count: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..daemon\\.count}'\n    labels:\n      environment: hms # static label\n    values:\n      threads_daemon_count: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..deadlock\\.count}'\n    labels:\n      environment: hms # static label\n    values:\n      threads_deadlock_count: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..new\\.count}'\n    labels:\n      environment: hms # static label\n    values:\n      threads_new_count: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..runnable\\.count}'\n    labels:\n      environment: hms # static label\n    values:\n      threads_runnable_count: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..terminated\\.count}'\n    labels:\n      environment: hms # static label\n    values:\n      threads_terminated_count: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..timed_waiting\\.count}'\n    labels:\n      environment: hms # static label\n    values:\n      threads_timed_waiting_count: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..waiting\\.count}'\n    labels:\n      environment: hms # static label\n    values:\n      threads_waiting_count: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..total_count_dbs}'\n    labels:\n      environment: hms # static label\n    values:\n      total_count_dbs: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..total_count_partitions}'\n    labels:\n      environment: hms # static label\n    values:\n      total_count_partitions: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..total_count_tables}'\n    labels:\n      environment: hms # static label\n    values:\n      total_count_tables: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..HikariPool-1\\.pool\\.ActiveConnections}'\n    labels:\n      environment: hms # static label\n    values:\n      HikariPool_pool_ActiveConnections: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..HikariPool-1\\.pool\\.IdleConnections}'\n    labels:\n      environment: hms # static label\n    values:\n      HikariPool_pool_IdleConnections: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..HikariPool-1\\.pool\\.PendingConnections}'\n    labels:\n      environment: hms # static label\n    values:\n      HikariPool_pool_PendingConnections: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..HikariPool-1\\.pool\\.TotalConnections}'\n    labels:\n      environment: hms # static label\n    values:\n      HikariPool_pool_TotalConnections: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..loaded}'\n    labels:\n      environment: hms # static label\n    values:\n      classLoading_loaded: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..unloaded}'\n    labels:\n      environment: hms # static label\n    values:\n      classLoading_unloaded: '{.value}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..jvm\\.pause\\.extraSleepTime}'\n    labels:\n      environment: hms # static label\n    values:\n      jvm_pause_extraSleepTime: '{.count}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..jvm\\.pause\\.info-threshold}'\n    labels:\n      environment: hms # static label\n    values:\n      jvm_pause_info_threshold: '{.count}' # dynamic value\n  - name: hms\n    type: object\n    help: Example of sub-level value scrapes from a json\n    path: '{$..jvm\\.pause\\.warn-threshold}'\n    labels:\n      environment: hms # static label\n    values:\n      jvm_pause_warn_threshold: '{.count}' # dynamic value\nheaders:\n  X-Dummy: hms-json-export-header\n"
+                  "hms-json-export.yml": #"""
+                  metrics:
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..create_total_count_dbs}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        create_total_count_dbs: '{.count}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..create_total_count_tables}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        create_total_count_tables: '{.count}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..create_total_count_partitions}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        create_total_count_partitions: '{.count}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..delete_total_count_dbs}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        delete_total_count_dbs: '{.count}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..delete_total_count_tables}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        delete_total_count_tables: '{.count}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..delete_total_count_partitions}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        delete_total_count_partitions: '{.count}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..directsql_errors}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        directsql_errors: '{.count}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..open_connections}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        open_connections: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..direct\.capacity}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        buffers_direct_capacity: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..direct\.count}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        buffers_direct_count: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..direct\.used}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        buffers_direct_used: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..mapped\.capacity}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        buffers_mapped_capacity: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..mapped\.count}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        buffers_mapped_count: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..mapped\.used}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        buffers_mapped_used: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..heap\.committed}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        memory_heap_committed: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..heap\.init}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        memory_heap_init: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..heap\.max}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        memory_heap_max: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..heap\.usage}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        memory_heap_usage: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..heap\.used}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        memory_heap_used: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..non-heap\.committed}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        memory_non_heap_committed: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..non-heap\.init}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        memory_non_heap_init: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..non-heap\.max}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        memory_non_heap_max: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..non-heap\.usage}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        memory_non_heap_usage: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..non-heap\.used}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        memory_non_heap_used: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..pools\.Code-Cache\.usage}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        memory_pools_CodeCache_usage: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..pools\.Compressed-Class-Space\.usage}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        memory_pools_CompressedClassSpace_usage: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..pools\.Metaspace\.usage}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        memory_pools_Metaspace_usage: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..total\.committed}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        memory_total_committed: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..total\.init}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        memory_total_init: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..total\.max}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        memory_total_max: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..total\.used}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        memory_total_used: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..blocked\.count}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        threads_blocked_count: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..daemon\.count}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        threads_daemon_count: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..deadlock\.count}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        threads_deadlock_count: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..new\.count}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        threads_new_count: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..runnable\.count}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        threads_runnable_count: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..terminated\.count}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        threads_terminated_count: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..timed_waiting\.count}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        threads_timed_waiting_count: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..waiting\.count}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        threads_waiting_count: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..total_count_dbs}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        total_count_dbs: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..total_count_partitions}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        total_count_partitions: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..total_count_tables}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        total_count_tables: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..HikariPool-1\.pool\.ActiveConnections}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        HikariPool_pool_ActiveConnections: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..HikariPool-1\.pool\.IdleConnections}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        HikariPool_pool_IdleConnections: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..HikariPool-1\.pool\.PendingConnections}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        HikariPool_pool_PendingConnections: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..HikariPool-1\.pool\.TotalConnections}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        HikariPool_pool_TotalConnections: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..loaded}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        classLoading_loaded: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..unloaded}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        classLoading_unloaded: '{.value}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..jvm\.pause\.extraSleepTime}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        jvm_pause_extraSleepTime: '{.count}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..jvm\.pause\.info-threshold}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        jvm_pause_info_threshold: '{.count}' # dynamic value
+                    - name: hms
+                      type: object
+                      help: Example of sub-level value scrapes from a json
+                      path: '{$..jvm\.pause\.warn-threshold}'
+                      labels:
+                        environment: hms # static label
+                      values:
+                        jvm_pause_warn_threshold: '{.count}' # dynamic value
+                  headers:
+                    X-Dummy: hms-json-export-header
+                  """#
                 }
               },
               {
