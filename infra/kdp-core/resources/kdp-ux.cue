@@ -1,6 +1,6 @@
 package main
 
-_UXName: "kdp-ux"
+_UXName: "\(parameter.webName)"
 _UXPort: 3300
 
 _kdpUX: {

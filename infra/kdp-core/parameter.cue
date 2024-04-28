@@ -46,7 +46,7 @@ parameter: {
 			}
 		}
 	}
-
+	webName: *"kdp-ux" | string
 	prometheus: externalUrl: *"" | string
 	loki: externalUrl: *"" | string
 	grafana: externalUrl: *"" | string

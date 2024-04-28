@@ -10,7 +10,7 @@ _kdpCloudTty: {
 		chart:           _CloudTtyName
 		releaseName:     parameter.namePrefix + _CloudTtyName
 		repoType:        "oci"
-		version:         "0.5.7"
+		version:         "0.7.2"
 		values: {
 			global: {
 				imageRegistry: "\(parameter.registry)"
@@ -397,14 +397,14 @@ _KdpTerminalConfig: {
 					kind: Ingress
 					apiVersion: networking.k8s.io/v1
 					metadata:
-					  name: "cloudtty-ingress"
+					  name: "cloudtty"
 					  namespace: "\(parameter.namespace)"
 					  annotations:
 					    "konghq.com/strip-path": "true"
 					spec:
 					  ingressClassName: "\(parameter.ingress.class)"
 					  rules:
-					    - host: "cloudtty.\(parameter.ingress.domain)"
+					    - host: "\(parameter.webName).\(parameter.ingress.domain)"
 					      http:
 					        paths:
 					        - path: "/template"
@@ -425,7 +425,7 @@ _KdpTerminalConfig: {
 					else
 						cat terminal-ingress-template.yaml >terminal-ingress.yaml
 					fi
-					kubectl get ingress cloudtty-ingress -n \(parameter.namespace)
+					kubectl get ingress cloudtty -n \(parameter.namespace)
 					if [[ $? -ne 0 ]];then
 						kubectl apply -f terminal-ingress.yaml
 					fi
