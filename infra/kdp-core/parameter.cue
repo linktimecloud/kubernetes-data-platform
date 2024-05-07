@@ -46,7 +46,12 @@ parameter: {
 			}
 		}
 	}
+	// +usage=Specify kdp web name
 	webName: *"kdp-ux" | string
+	// +usage=Specify kdp web port
+	webPort: *3300 | int
+	// +usage=Specify web terminal Three-level domain name
+	terminalHost: *"cloudtty" | string
 	prometheus: externalUrl: *"" | string
 	loki: externalUrl: *"" | string
 	grafana: externalUrl: *"" | string

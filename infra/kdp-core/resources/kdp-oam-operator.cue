@@ -35,7 +35,11 @@ _kdpOAMOperator: {
 					},
 					{
 						name: "DOMAIN",
-						vlaue: "cloudtty.\(parameter.ingress.domain)"
+						value: "\(parameter.terminalHost).\(parameter.ingress.domain)"
+					},
+					{
+						name: "TTL",
+						value: "3600"
 					},
 					if parameter.ingress.tlsSecretName != "" {
 						{

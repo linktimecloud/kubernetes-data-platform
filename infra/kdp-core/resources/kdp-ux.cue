@@ -1,7 +1,7 @@
 package main
 
 _UXName: "\(parameter.webName)"
-_UXPort: 3300
+_UXPort: parameter.webPort
 
 _kdpUX: {
 	name: parameter.namePrefix + _UXName

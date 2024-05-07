@@ -10,7 +10,7 @@ _kdpCloudTty: {
 		chart:           _CloudTtyName
 		releaseName:     parameter.namePrefix + _CloudTtyName
 		repoType:        "oci"
-		version:         "0.7.2"
+		version:         "0.5.7"
 		values: {
 			global: {
 				imageRegistry: "\(parameter.registry)"
@@ -404,16 +404,16 @@ _KdpTerminalConfig: {
 					spec:
 					  ingressClassName: "\(parameter.ingress.class)"
 					  rules:
-					    - host: "\(parameter.webName).\(parameter.ingress.domain)"
+					    - host: "\(parameter.terminalHost).\(parameter.ingress.domain)"
 					      http:
 					        paths:
 					        - path: "/template"
 					          pathType: "Prefix"
 					          backend:
 					            service:
-					              name: "template"
+					              name: "\(parameter.webName)"
 					              port:
-					                number: 7681
+					                number: \(parameter.webPort)
 					  tls:
 					    - hosts:
 					      - "cloudtty.\(parameter.ingress.domain)"
