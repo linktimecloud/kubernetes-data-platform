@@ -184,6 +184,9 @@ mysql: {
 						}]
 					}]
 				}
+				startupProbe: {
+				    failureThreshold: 30
+				}
 			}
 			secondary: {
 				replicaCount: 1
