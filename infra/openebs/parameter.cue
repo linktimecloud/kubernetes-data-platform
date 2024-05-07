@@ -15,4 +15,8 @@ parameter: {
 	imagePullSecret: *"cr-secret" | string
 	// +usage=Specify namespace of the application to be installed
 	namespace: *"kdp-system" | string
+	// +usage=Specify if install OpenEBS hostpath provisoner
+	openebs: {
+		enabled: *true | bool
+	}
 }

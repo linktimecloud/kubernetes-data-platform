@@ -117,8 +117,10 @@ output: {
 	spec: {
 		components: [
 			_ns,
-			_openebs,
-			_init_pvc_cleaner
+			if parameter.openebs.enabled == true {
+				_openebs,
+				_init_pvc_cleaner,
+			}
 		]
 		policies: [
 			{
