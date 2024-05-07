@@ -106,6 +106,35 @@ template: {
 						}
 					]
 				},
+				{
+					"name": "\(context.name)-config"
+					"type": "k8s-objects"
+					"properties": {
+						"objects": [
+							{
+								"apiVersion": "bdc.kdp.io/v1alpha1"
+								"kind":       "ContextSetting"
+								"metadata": {
+									"namespace": context.namespace
+									"name":      "\(context.bdc)-\(context.name)"
+									"annotations": {
+										"setting.ctx.bdc.kdp.io/type":   "clickhouse"
+										"setting.ctx.bdc.kdp.io/origin": "system"
+									}
+								}
+								"spec": {
+									"name": "clickhouse-context"
+									"type": "clickhouse"
+									"properties": {
+										"host":     "clickhouse.\(context.namespace).svc.cluster.local:9000"
+										"hostname": "clickhouse.\(context.namespace).svc.cluster.local"
+										"port":     "9000"
+									}
+								}
+							}
+						]
+					}
+				},
 			]
 			policies: [
 				{
