@@ -107,10 +107,18 @@ _kdpCatalogManager: {
 											name: "OAM_BASE_URL"
 											value: "http://\(_APIServerName):\(_APIServerPort)"
 										},
-										{
-											name: "DASHBOARD_URL"
-											value: _GrafanaUrl
-										},
+										if parameter.grafana.externalUrl != "" {
+											{
+												name: "DASHBOARD_URL"
+												value: parameter.grafana.externalUrl
+											},
+										}
+										if parameter.grafana.externalUrl == "" || parameter.grafana.externalUrl == _|_ {
+											{
+												name: "DASHBOARD_URL"
+												value: "http://grafana.\(parameter.ingress.domain)"
+											},
+										}
 										{
 											name: "SUPPORT_LANG"
 											value: "zh,en"

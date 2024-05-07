@@ -67,14 +67,30 @@ _kdpUX: {
 											name: "OAM_API_SERVER_DOMAIN"
 											value: "http://\(_APIServerName):\(_APIServerPort)"
 										},
-										{
-											name: "PROMETHEUS_SERVICE"
-											value: _PrometheusUrl
-										},
-										{
-											name: "LOKI_SERVICE"
-											value: _LokiUrl
-										},
+										if parameter.prometheus.externalUrl != "" {
+											{
+												name: "PROMETHEUS_SERVICE"
+												value: parameter.prometheus.externalUrl
+											},
+										}
+										if parameter.prometheus.externalUrl == "" || parameter.prometheus.externalUrl == _|_ {
+											{
+												name: "PROMETHEUS_SERVICE"
+												value: "http://kps-prometheus:9090"
+											},
+										}
+										if parameter.loki.externalUrl != "" {
+											{
+												name: "LOKI_SERVICE"
+												value: parameter.loki.externalUrl
+											},
+										}
+										if parameter.loki.externalUrl == "" || parameter.loki.externalUrl == _|_ {
+											{
+												name: "LOKI_SERVICE"
+												value: "http://loki-gateway.\(parameter.namespace)"
+											},
+										}
 										{
 											name: "MYSQL_DATABASE"
 											value: "kdp_ux_db"

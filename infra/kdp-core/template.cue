@@ -4,22 +4,6 @@ import (
 	"encoding/json"
 )
 
-_PrometheusUrl: "http://kps-prometheus:9090"
-_LokiUrl: "http://loki-gateway.\(parameter.namespace)"
-_GrafanaUrl: "http://grafana.\(parameter.ingress.domain)"
-
-if parameter.prometheus.externalUrl != "" {
-	_PrometheusUrl: parameter.prometheus.externalUrl
-}
-
-if parameter.loki.externalUrl != "" {
-	_LokiUrl: parameter.loki.externalUrl
-}
-
-if parameter.grafana.externalUrl != "" {
-	_GrafanaUrl: parameter.grafana.externalUrl
-}
-
 _version: {
 	kdp: "v1.0.0"
 	operator: "v1.0.0"
