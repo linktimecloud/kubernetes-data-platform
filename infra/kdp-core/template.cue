@@ -13,7 +13,7 @@ if parameter.prometheus.externalUrl != "" {
 }
 
 if parameter.loki.externalUrl != "" {
-	_LokiUrl: parameter.prometheus.externalUrl
+	_LokiUrl: parameter.loki.externalUrl
 }
 
 if parameter.grafana.externalUrl != "" {
