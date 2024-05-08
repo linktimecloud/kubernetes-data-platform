@@ -41,6 +41,10 @@ _kdpOAMOperator: {
 						name: "TTL",
 						value: "3600"
 					},
+					{
+						name: "PROXY_KEY",
+						value: "\(parameter.PROXY_KEY)"
+					},
 					if parameter.ingress.tlsSecretName != "" {
 						{
 								name: "HTTPTYPE"
