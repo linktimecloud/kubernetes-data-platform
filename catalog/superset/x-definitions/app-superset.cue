@@ -109,22 +109,70 @@ template: {
 										disableWait: true
 									}
 									values: {
+										image: {
+											tag: "4.0.0"
+										}
 										supersetNode: {
 											replicaCount: parameter.supersetNode.replicaCount
 											connections: {
-												db_host: "kdp-data-mysql"
-												db_port: "3306"
-												db_user: "bdos_dba"
-												db_pass: "KdpDbamysql123"
 												db_name: _databaseName
 											}
 											if parameter.supersetNode.resources != _|_ {
 												resources: parameter.supersetNode.resources
 											}
-											startupProbe: {}
-											livenessProbe: {}
-											readinessProbe: {}
+											initContainers: [
+												{
+													name:  "wait-for-db"
+													image: "{{ .Values.initImage.repository }}:{{ .Values.initImage.tag }}"
+													envFrom: [
+														{
+															configMapRef: name: "\(parameter.mysql.mysqlSetting)"
+														},
+													]
+													command: [
+														"/bin/sh",
+														"-c",
+														"dockerize -wait tcp://$MYSQL_HOST:$MYSQL_PORT -timeout 120s",
+													]
+												},
+
+											]
 										}
+										extraEnvRaw: [
+											{
+												name: "DB_PASS"
+												valueFrom: {
+													secretKeyRef: {
+														key:  "MYSQL_PASSWORD"
+														name: "\(parameter.mysql.mysqlSecret)"
+													}
+												}
+											},
+											{
+												name: "DB_USER"
+												valueFrom: {
+													secretKeyRef: {
+														key:  "MYSQL_USER"
+														name: "\(parameter.mysql.mysqlSecret)"
+													}
+												}
+											},
+											{
+												name: "DB_HOST"
+												valueFrom: configMapKeyRef: {
+													name: "\(parameter.mysql.mysqlSetting)"
+													key:  "MYSQL_HOST"
+												}
+											},
+											{
+												name: "DB_PORT"
+												valueFrom: configMapKeyRef: {
+													name: "\(parameter.mysql.mysqlSetting)"
+													key:  "MYSQL_PORT"
+												}
+											},
+
+										]
 
 										configOverrides: {
 											my_override:
@@ -200,7 +248,6 @@ template: {
 															name:  "DATABASE"
 															value: _databaseName
 														},
-
 														{
 															name: "MYSQL_HOST"
 															valueFrom: configMapKeyRef: {
