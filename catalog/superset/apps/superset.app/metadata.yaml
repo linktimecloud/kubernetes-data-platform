@@ -1,0 +1,8 @@
+version: 4.0.0
+alias: Superset
+description: Superset 是快速、轻量级、直观的，且具有丰富的选项，使得所有技能水平的用户都能轻松地探索和可视化他们的数据，从简单的折线图到高度详细的地理空间图。
+isGlobal: false
+i18n:
+  en:
+    description: >-
+      Superset is fast, lightweight, intuitive, and loaded with options that make it easy for users of all skill sets to explore and visualize their data, from simple line charts to highly detailed geospatial charts.

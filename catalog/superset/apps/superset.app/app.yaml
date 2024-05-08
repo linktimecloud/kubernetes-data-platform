@@ -1,0 +1,21 @@
+apiVersion: bdc.kdp.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    app.core.bdos/catalog: superset
+  labels:
+    app: superset
+    app.core.bdos/type: system
+spec:
+  name: superset
+  type: superset
+  properties:
+    supersetNode:
+      replicaCount: 1
+    mysql:
+      mysqlSecret: "mysql-secret"
+      mysqlSetting: "mysql-setting"
+      
+# ./bdcctl def apply /Users/mark/github/kubernetes-data-platform/catalog/superset/x-definitions/app-superset.cue
+
+# ./bdcctl app apply /Users/mark/github/kubernetes-data-platform/catalog/superset/apps/superset/app.yaml -b kdp-data -n superset
