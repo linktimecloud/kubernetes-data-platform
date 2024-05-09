@@ -126,9 +126,9 @@ template: {
 									"name": "clickhouse-context"
 									"type": "clickhouse"
 									"properties": {
-										"host":     "clickhouse.\(context.namespace).svc.cluster.local:9000"
+										"host":     "clickhouse.\(context.namespace).svc.cluster.local:8123"
 										"hostname": "clickhouse.\(context.namespace).svc.cluster.local"
-										"port":     "9000"
+										"port":     "8123"
 									}
 								}
 							}
