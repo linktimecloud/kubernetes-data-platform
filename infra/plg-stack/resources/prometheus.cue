@@ -12,7 +12,7 @@ _prometheus: {
 		targetNamespace: "\(parameter.namespace)"
 		values: {
 			fullnameOverride: parameter.namePrefix + "kps"
-			if parameter.prometheus.enabled != true {
+			if parameter.prometheusDefaultRules.enabled != true {
 				defaultRules: {
 					create: false
 				}
@@ -79,7 +79,7 @@ _prometheus: {
 				}
 			}
 			grafana: {
-				if parameter.prometheus.enabled != true {
+				if parameter.grafana.enabled != true {
 					enabled: false
 				}
 				additionalDataSources: [{
