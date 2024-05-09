@@ -110,7 +110,8 @@ template: {
 									}
 									values: {
 										image: {
-											tag: "4.0.0"
+											repository: context["docker_registry"] + "/linktimecloud/superset"
+											tag:        parameter.imageTag
 										}
 										supersetNode: {
 											replicaCount: parameter.supersetNode.replicaCount
@@ -187,8 +188,10 @@ template: {
 												import urllib
 												DATABASE_PASSWORD = urllib.parse.quote_plus(f"{env('DB_PASS')}") # password may contain special characters @
 												SQLALCHEMY_DATABASE_URI = f"mysql://{env('DB_USER')}:{DATABASE_PASSWORD}@{env('DB_HOST')}:{env('DB_PORT')}/{env('DB_NAME')}?charset=utf8"
+												# for debug mode only
+												# SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/superset.db?check_same_thread=false'
 
-												#https://github.com/apache/superset/issues/10354
+												# https://github.com/apache/superset/issues/10354
 												WTF_CSRF_ENABLED = False
 
 												# https://superset.apache.org/docs/configuration/configuring-superset/#configuration-behind-a-load-balancer
@@ -212,7 +215,7 @@ template: {
 										}
 
 										init: {
-											loadExamples: false
+											loadExamples: true
 											createAdmin:  true
 											adminUser: {
 												username:  "admin"
@@ -270,6 +273,35 @@ template: {
 													]
 												},
 											]
+											initscript: ##"""
+												#!/bin/sh
+												set -eu
+												echo "Upgrading DB schema..."
+												superset db upgrade
+												echo "Initializing roles..."
+												superset init
+												{{ if .Values.init.createAdmin }}
+												echo "Creating admin user..."
+												superset fab create-admin \
+																--username {{ .Values.init.adminUser.username }} \
+																--firstname {{ .Values.init.adminUser.firstname }} \
+																--lastname {{ .Values.init.adminUser.lastname }} \
+																--email {{ .Values.init.adminUser.email }} \
+																--password {{ .Values.init.adminUser.password }} \
+																|| true
+												{{- end }}
+												{{ if .Values.init.loadExamples }}
+												echo "Starting http server for loading examples"
+												python -m http.server --directory /app/examples-data &
+												sleep 5
+												echo "Loading examples..."
+												superset load_examples
+												{{- end }}
+												if [ -f "{{ .Values.extraConfigMountPath }}/import_datasources.yaml" ]; then
+												echo "Importing database connections.... "
+												superset import_datasources -p {{ .Values.extraConfigMountPath }}/import_datasources.yaml
+												fi
+												"""##
 										}
 
 									}
@@ -365,5 +397,9 @@ template: {
 			}
 		}
 
+		// +ui:description=镜像标签
+		// +ui:options={"disabled": true}
+		// +ui:order=5
+		imageTag: *"bd5a8aa9" | string
 	}
 }
