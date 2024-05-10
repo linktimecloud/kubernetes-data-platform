@@ -1,6 +1,6 @@
 name: Superset
 category: 开发工具
-description: Superset 是快速、轻量级、直观的，且具有丰富的选项，使得所有技能水平的用户都能轻松地探索和可视化他们的数据，从简单的折线图到高度详细的地理空间图。
+description: Superset 是一个快速、轻量级、直观的工具，它提供了丰富的选项，使得不同技能水平的用户都能轻松地探索和可视化他们的数据，从简单的折线图到高度详细的GIS图表。
 i18n:
   en:
     category: system.storage

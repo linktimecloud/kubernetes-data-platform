@@ -12,10 +12,4 @@ spec:
   properties:
     supersetNode:
       replicaCount: 1
-    mysql:
-      mysqlSecret: "mysql-secret"
-      mysqlSetting: "mysql-setting"
-      
-# ./bdcctl def apply /Users/mark/github/kubernetes-data-platform/catalog/superset/x-definitions/app-superset.cue
 
-# ./bdcctl app apply /Users/mark/github/kubernetes-data-platform/catalog/superset/apps/superset/app.yaml -b kdp-data -n superset

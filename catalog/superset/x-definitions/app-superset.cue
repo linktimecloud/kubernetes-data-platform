@@ -174,7 +174,6 @@ template: {
 											},
 
 										]
-
 										configOverrides: {
 											my_override:
 												"""
@@ -188,8 +187,7 @@ template: {
 												import urllib
 												DATABASE_PASSWORD = urllib.parse.quote_plus(f"{env('DB_PASS')}") # password may contain special characters @
 												SQLALCHEMY_DATABASE_URI = f"mysql://{env('DB_USER')}:{DATABASE_PASSWORD}@{env('DB_HOST')}:{env('DB_PORT')}/{env('DB_NAME')}?charset=utf8"
-												# for debug mode only
-												# SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/superset.db?check_same_thread=false'
+												SQLALCHEMY_EXAMPLES_URI = f"mysql://{env('DB_USER')}:{DATABASE_PASSWORD}@{env('DB_HOST')}:{env('DB_PORT')}/{env('DB_NAME')}_examples?charset=utf8"
 
 												# https://github.com/apache/superset/issues/10354
 												WTF_CSRF_ENABLED = False
@@ -218,11 +216,8 @@ template: {
 											loadExamples: true
 											createAdmin:  true
 											adminUser: {
-												username:  "admin"
-												firstname: "Superset"
-												lastname:  "Admin"
-												email:     "admin@superset.com"
-												password:  "admin"
+												username: parameter.supersetNode.adminUser.username
+												password: parameter.supersetNode.adminUser.password
 											}
 											initContainers: [
 												{
@@ -269,7 +264,7 @@ template: {
 													command: [
 														"sh",
 														"-c",
-														"mysql -h $MYSQL_HOST -P $MYSQL_PORT -u $USER -p$PASSWORD -e \"CREATE DATABASE IF NOT EXISTS $DATABASE CHARACTER SET utf8 COLLATE utf8_general_ci;\"",
+														"mysql -h $MYSQL_HOST -P $MYSQL_PORT -u $USER -p$PASSWORD -e \"CREATE DATABASE IF NOT EXISTS $DATABASE CHARACTER SET utf8 COLLATE utf8_general_ci; CREATE DATABASE IF NOT EXISTS ${DATABASE}_examples CHARACTER SET utf8 COLLATE utf8_general_ci;\"",
 													]
 												},
 											]
@@ -359,14 +354,30 @@ template: {
 			mysqlSecret: string
 		}
 
+		// +ui:description=Superset配置
+		// +ui:order=1
 		supersetNode: {
+			// +ui:description=管理员账号,初次安装配置,更新请在Web应用中修改
+			// +ui:order=1
+			adminUser: {
+				// +ui:description=用户名
+				// +ui:options={"showPassword":true}
+				// +ui:order=1
+				username: *"admin" | string
+
+				// +ui:description=密码
+				// +ui:options={"showPassword":true}
+				// +ui:order=2
+				password: *"admin" | string
+			}
+
 			// +minimum=1
 			// +ui:description=副本数
 			// +ui:order=2
 			replicaCount: *1 | int
 
 			// +ui:description=资源规格
-			// +ui:order=5
+			// +ui:order=3
 			resources: {
 				// +ui:description=预留
 				// +ui:order=1
@@ -399,7 +410,7 @@ template: {
 
 		// +ui:description=镜像标签
 		// +ui:options={"disabled": true}
-		// +ui:order=5
-		imageTag: *"bd5a8aa9" | string
+		// +ui:order=4
+		imageTag: *"v1.0.0-4.0.0" | string
 	}
 }
