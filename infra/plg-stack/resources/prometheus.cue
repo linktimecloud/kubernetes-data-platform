@@ -12,9 +12,23 @@ _prometheus: {
 		targetNamespace: "\(parameter.namespace)"
 		values: {
 			fullnameOverride: parameter.namePrefix + "kps"
-			if parameter.prometheusDefaultRules.enabled != true {
-				defaultRules: {
+			defaultRules: {
+				if parameter.prometheusDefaultRules.enabled != true {
 					create: false
+				}
+				if parameter.prometheusDefaultRules.enabled == true {
+					create: true
+					rules: {
+						windows: false
+					}
+				}
+				labels: {
+					prometheus: "k8s"
+					role: "alert-rules"
+				}
+				additionalRuleLabels: {
+					prometheus: "k8s"
+					role: "alert-rules"
 				}
 			}
 			global: {
