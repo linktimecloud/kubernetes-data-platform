@@ -195,6 +195,13 @@ template: {
 												# https://superset.apache.org/docs/configuration/configuring-superset/#configuration-behind-a-load-balancer
 												ENABLE_PROXY_FIX = True
 
+												# localization
+												BABEL_DEFAULT_LOCALE = "en"
+												LANGUAGES = {
+													"en": {"flag": "us", "name": "English"},
+													"zh": {"flag": "cn", "name": "Chinese"},
+												}
+
 												"""
 										}
 										// https: //artifacthub.io/packages/helm/bitnami/redis
