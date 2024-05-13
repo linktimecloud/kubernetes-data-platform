@@ -109,10 +109,19 @@ template: {
 										disableWait: true
 									}
 									values: {
-										image: {
-											repository: context["docker_registry"] + "/linktimecloud/superset"
-											tag:        parameter.imageTag
-										}
+										// image: {
+										//  repository: conteimageTagxt["docker_registry"] + "/linktimecloud/superset"
+										//  tag:        parameter.
+										// }
+										bootstrapScript: ##"""
+											#!/bin/bash
+											pip install -i https://pypi.tuna.tsinghua.edu.cn/simple clickhouse-connect==0.7.8
+											{{ if .Values.init.loadExamples }}
+											mkdir -p /app/examples-data
+											curl https://registry.linktimecloud.com/repository/raw/examples-data-kdp-v1.0.tar.gz | tar -xz --strip-components=1 -C /app/examples-data
+											if [ ! -f ~/bootstrap ]; then echo "Running Superset with uid {{ .Values.runAsUser }}" > ~/bootstrap; fi
+											{{- end }}
+											"""##
 										supersetNode: {
 											replicaCount: parameter.supersetNode.replicaCount
 											connections: {
@@ -293,6 +302,11 @@ template: {
 																|| true
 												{{- end }}
 												{{ if .Values.init.loadExamples }}
+												sed -i 's#https://github.com/apache-superset/examples-data/blob/master/#http://localhost:8000/#' /app/superset/examples/helpers.py
+												sed -i 's#https://github.com/apache-superset/examples-data/raw/master/#http://localhost:8000/#g' /app/superset/examples/configs/datasets/examples/* 
+												sed -i 's#https://github.com/apache-superset/examples-data/raw/lowercase_columns_examples/#http://localhost:8000/#g' /app/superset/examples/configs/datasets/examples/video_game_sales.yaml 
+												sed -i 's#https://raw.githubusercontent.com/apache-superset/examples-data/master/#http://localhost:8000/#g' /app/superset/examples/configs/datasets/examples/* 
+												sed -i 's#https://raw.githubusercontent.com/apache-superset/examples-data/lowercase_columns_examples/#http://localhost:8000/#g' /app/superset/examples/configs/datasets/examples/* 
 												echo "Starting http server for loading examples"
 												python -m http.server --directory /app/examples-data &
 												sleep 5
@@ -418,6 +432,6 @@ template: {
 		// +ui:description=镜像标签
 		// +ui:options={"disabled": true}
 		// +ui:order=4
-		imageTag: *"v1.0.0-4.0.0" | string
+		imageTag: *"98fb37d0" | string
 	}
 }
