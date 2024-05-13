@@ -20,7 +20,7 @@
 
 请依次安装上述组件。
 
-Flink SQL 的使用方法请参考 [Flink SQL](./import-from-mysql-to-hive.md#flink-sql-使用方法)
+Flink SQL 的使用方法请参考 [Flink SQL](./import-from-rdbms-to-hive.md#flink-sql-使用方法)
 
 kafka-3-cluster 安装完成后，请在 KDP 页面依次点击「大数据集群管理」-「集群信息」-「应用使用配置」-「kafka-3-cluster-kafka-context」，查看 `bootstrap_plain` 的值（通常为 `kafka-3-cluster-kafka-0.kafka-3-cluster-kafka-brokers.kdp-data.svc.cluster.local:9092,kafka-3-cluster-kafka-1.kafka-3-cluster-kafka-brokers.kdp-data.svc.cluster.local:9092,kafka-3-cluster-kafka-2.kafka-3-cluster-kafka-brokers.kdp-data.svc.cluster.local:9092`）。这个值是 kafka bootstrap servers 地址，下面会用到。
 
