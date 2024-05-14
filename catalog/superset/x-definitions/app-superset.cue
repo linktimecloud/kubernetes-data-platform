@@ -428,10 +428,5 @@ template: {
 				}
 			}
 		}
-
-		// +ui:description=镜像标签
-		// +ui:options={"disabled": true}
-		// +ui:order=4
-		imageTag: *"98fb37d0" | string
 	}
 }
