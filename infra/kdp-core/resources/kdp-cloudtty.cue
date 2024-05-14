@@ -404,16 +404,16 @@ _KdpTerminalConfig: {
 					spec:
 					  ingressClassName: "\(parameter.ingress.class)"
 					  rules:
-					    - host: "\(parameter.terminalHost).\(parameter.ingress.domain)"
+					    - host: "cloudtty.\(parameter.ingress.domain)"
 					      http:
 					        paths:
 					        - path: "/template"
 					          pathType: "Prefix"
 					          backend:
 					            service:
-					              name: "\(parameter.webName)"
+					              name: "\(_UXName)"
 					              port:
-					                number: \(parameter.webPort)
+					                number: \(_UXPort)
 					  tls:
 					    - hosts:
 					      - "cloudtty.\(parameter.ingress.domain)"
