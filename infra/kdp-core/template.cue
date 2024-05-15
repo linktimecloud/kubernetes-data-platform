@@ -176,7 +176,22 @@ output: {
 						type: "apply-component"
 						name: "apply-kdp-ux"
 						properties: component: parameter.namePrefix + "kdp-ux"
-					}
+					},
+					{
+						type: "apply-component"
+						name: "apply-cloudtty"
+						properties: component: parameter.namePrefix + "cloudtty"
+					},
+					{
+						type: "apply-component"
+						name: "apply-terminal-config"
+						properties: component: parameter.namePrefix + "terminal-config"
+					},
+					{
+						type: "apply-component"
+						name: "apply-terminal-config-task"
+						properties: component: parameter.namePrefix + "terminal-config-task"
+					},
 				]
 			},
 			{
@@ -190,24 +205,6 @@ output: {
 				name: "apply-system-bdc"
 				dependsOn: ["apply-bdc-xdef"]
 				properties: component: parameter.namePrefix + "system-bdc"
-			},
-			{
-				type: "apply-component"
-				name: "apply-cloudtty"
-				dependsOn: ["apply-bdc-xdef"]
-				properties: component: parameter.namePrefix + "cloudtty"
-			},
-			{
-				type: "apply-component"
-				name: "apply-terminal-config"
-				dependsOn: ["apply-bdc-xdef"]
-				properties: component: parameter.namePrefix + "terminal-config"
-			},
-			{
-				type: "apply-component"
-				name: "apply-terminal-config-task"
-				dependsOn: ["apply-terminal-config", "apply-cloudtty"]
-				properties: component: parameter.namePrefix + "terminal-config-task"
 			},
 		]
 	}
