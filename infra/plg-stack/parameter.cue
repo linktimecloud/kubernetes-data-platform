@@ -44,8 +44,12 @@ parameter: {
 	}
 	// +usage=Enable/Disable Prometheus CRD installation
 	prometheusCRD: enabled: *true | bool
-	// +usage=Enable/Disable Prometheus/AlertManager/Grafana installation
+	// +usage=Enable/Disable Prometheus default rules installation
+	prometheusDefaultRules: enabled: *true | bool
+	// +usage=Enable/Disable Prometheus/AlertManager installation
 	prometheus: enabled: *true | bool
+	// +usage=Enable/Disable Grafana installation
+	grafana: enabled: *true | bool
 	// +usage=Enable/Disable Loki/Prometheus installation
 	loki: enabled: *true | bool
 }

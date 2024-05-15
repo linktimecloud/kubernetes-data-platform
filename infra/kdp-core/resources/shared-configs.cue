@@ -71,8 +71,14 @@ _sharedConfigs: {
                     }
                 }
                 data: {
-                    LOKI_PUSH_URL: "\(_LokiUrl)/loki/api/v1/push"
-                    LOKI_ROOT_URL: "\(_LokiUrl)"
+                    if parameter.loki.externalUrl != "" {
+                        LOKI_PUSH_URL: "\(parameter.loki.externalUrl)/loki/api/v1/push"
+                        LOKI_ROOT_URL: "\(parameter.loki.externalUrl)"
+                    }
+                    if parameter.loki.externalUrl == "" || parameter.loki.externalUrl == _|_ {
+                        LOKI_PUSH_URL: "http://loki-gateway.\(parameter.namespace)/loki/api/v1/push"
+                        LOKI_ROOT_URL: "http://loki-gateway.\(parameter.namespace)"
+                    }
                 }
             },
             {

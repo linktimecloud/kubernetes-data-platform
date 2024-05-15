@@ -12,9 +12,23 @@ _prometheus: {
 		targetNamespace: "\(parameter.namespace)"
 		values: {
 			fullnameOverride: parameter.namePrefix + "kps"
-			if parameter.prometheus.enabled != true {
-				defaultRules: {
+			defaultRules: {
+				if parameter.prometheusDefaultRules.enabled != true {
 					create: false
+				}
+				if parameter.prometheusDefaultRules.enabled == true {
+					create: true
+					rules: {
+						windows: false
+					}
+				}
+				labels: {
+					prometheus: "k8s"
+					role: "alert-rules"
+				}
+				additionalRuleLabels: {
+					prometheus: "k8s"
+					role: "alert-rules"
 				}
 			}
 			global: {
@@ -79,7 +93,7 @@ _prometheus: {
 				}
 			}
 			grafana: {
-				if parameter.prometheus.enabled != true {
+				if parameter.grafana.enabled != true {
 					enabled: false
 				}
 				additionalDataSources: [{
