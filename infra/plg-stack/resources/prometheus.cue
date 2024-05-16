@@ -187,7 +187,12 @@ _prometheus: {
 						defaultDatasourceEnabled: true
 						isDefaultDatasource: true
 						uid: "prometheus"
-						url: "http://kps-prometheus:9090/"
+						if parameter.prometheus.externalUrl != "" {
+                            url: "\(parameter.prometheus.externalUrl)"
+                        }
+						if parameter.prometheus.externalUrl == "" {
+                            url: "http://prometheus:9090/"
+                        }
 						label: "grafana_datasource"
 						labelValue: "1"
 						alertmanager: {

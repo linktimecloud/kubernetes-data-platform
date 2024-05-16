@@ -47,7 +47,10 @@ parameter: {
 	// +usage=Enable/Disable Prometheus default rules installation
 	prometheusDefaultRules: enabled: *true | bool
 	// +usage=Enable/Disable Prometheus/AlertManager installation
-	prometheus: enabled: *true | bool
+	prometheus: {
+		enabled: *true | bool
+		externalUrl: *"" | string
+	}
 	// +usage=Enable/Disable Grafana installation
 	grafana: enabled: *true | bool
 	// +usage=Enable/Disable Loki/Prometheus installation
