@@ -1,0 +1,8 @@
+version: 0.59.1
+alias: Airbyte
+description: Airbyte 是一个开源的数据移动基础设施，专注于构建提取和加载（EL）数据管道。它被设计为多功能、可扩展且易于使用。 https://artifacthub.io/packages/helm/airbyte/airbyte/0.67.17
+isGlobal: false
+i18n:
+  en:
+    description: >-
+      Airbyte is an open-source data movement infrastructure for building extract and load (EL) data pipelines. It is designed for versatility, scalability, and ease-of-use. https://artifacthub.io/packages/helm/airbyte/airbyte/0.67.17
