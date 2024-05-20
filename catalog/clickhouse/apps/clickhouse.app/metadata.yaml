@@ -1,0 +1,14 @@
+version: v1.0.0-24.3.2
+alias: ClickHouse
+description: ClickHouse是一个用于联机分析(OLAP)的列式数据库管理系统(DBMS)。
+isGlobal: false
+i18n:
+  en:
+    description: >-
+      ClickHouse is a high-performance, column-oriented SQL database management system (DBMS) 
+      for online analytical processing (OLAP).
+dashboard:
+  - id: clickhouse
+    name: ClickHouse 监控面板
+    i18n:
+      en: ClickHouse Dashboard
