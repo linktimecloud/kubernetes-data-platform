@@ -207,15 +207,15 @@ kafka 集群域名格式为：`<kafka-broker>.<namespace>.svc.<cluster-domain>`�
 
 ### 组件部署
 
-在KDP-ux上分别安装Kafka cluster、kafka-manager、flink cluster、streampark应用。
+在KDP-ux上分别安装Kafka operator、kafka cluster、kafka manager、flink cluster、streampark应用。
 
 ### topic创建与数据准备
 
-找到应用目录kafka下kafka-manager应用，点击名称进入应用详情页，点击“访问地址”按钮，进入kafka-manager管理页面，创建一个名为`pageviews`、一个名为`pageviews_per_region`的topic。kafka manager topic管理与创建页面如下：
+找到应用目录kafka下kafka-manager应用，点击名称进入应用详情页，点击“访问地址”按钮，进入kafka-manager管理页面，创建一个名为`pageviews`、一个名为`pageviews_per_region`的topic。注意，创建topic时的输入参数`Replicator Factor`需大于或等于集群配置值`min.insync.replicas`（默认值`2`），默认推荐值`3`。kafka manager topic管理与创建页面如下：
 
 ![img.png](./images/kafka-topic-manager.png)
 
-点击`pageviews` topic右侧放大镜进入topic详情页，点击`Produce to topic`按钮，将一下数据**逐条**发送到topic中。
+点击`pageviews` topic右侧放大镜进入topic详情页，点击`Produce to topic`按钮，将以下数据**逐条**发送到topic中。
 ![img.png](./images/kafka-topic-produce.png)
 
 ```json
@@ -237,17 +237,17 @@ kafka 集群域名格式为：`<kafka-broker>.<namespace>.svc.<cluster-domain>`�
 
 若已完成配置可跳过
 
-1. 找到应用目录Flink下Streampark应用，进入点击名称应用详情页，点击“访问地址”按钮，进入Streampark管理页面，输入**固定**用户名(admin)密码(streampark)登录。
-   在`设计中心`添加`Flink版本`配置:当前仅支持flink 1.17.1版本，在streampark默认路径为`/streampark/flink/flink-1.17.1`。
+1. 找到应用目录Flink下Streampark应用，点击应用实例名称进入应用详情页，点击“访问地址”按钮，进入Streampark管理页面，输入**固定**用户名(admin)密码(streampark)登录。
+   在`设置中心`添加`Flink版本`配置:当前仅支持flink 1.17.1版本，在streampark默认路径为`/streampark/flink/flink-1.17.1`。
    ![img.png](./images/flink-streampark-flink-version.png)
 
-2. 在`设计中心`添加`Flink集群`配置:当前仅支持flink 1.17.1版本。KDP flink默认访问地址为：<http://flink-session-cluster-rest:8081>
+2. 在`设置中心`添加`Flink集群`配置:当前仅支持flink 1.17.1版本。KDP flink默认访问地址为：<http://flink-session-cluster-rest:8081>
    ![img.png](./images/flink-streampark-flink-cluster.png)
 
 #### Flink任务编写
 
-1. 选择`实时任务`->`作业管理`点击`添加`，
-2. 执行模式选择`remote`，选择`Flink版本`与`Flink集群`选择3.3.1中配置的内容
+1. 选择`实时开发`->`作业管理`点击`添加`，
+2. 执行模式选择`remote`，选择`Flink版本`与`Flink集群`
    ![img.png](./images/flink-streampark-job-add.png)
 3. flink sql填入如下内容：
 
@@ -288,8 +288,8 @@ FROM pageviews
 GROUP BY user_region;
 ```
 
-4. 输入作业名称`kafka-to-kafka`，点击`确定`。
-5. 在`作业管理`页面找到刚才添加的`kafka-to-kafka`作业点击操作中的`提交`与`启动`，等待任务启动成功。
+4. 输入作业名称`kafka-to-kafka`，点击`提交`。
+5. 在`作业管理`页面找到刚才添加的`kafka-to-kafka`作业点击操作中的`发布作业`与`启动作业`，首次启动时关闭弹出框中`from savepoint`然后点击`应用`，等待任务启动成功。
 
 ### 结果验证
 
