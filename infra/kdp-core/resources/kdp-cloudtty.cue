@@ -317,7 +317,33 @@ _KdpTerminalConfig: {
 							"list",
 						]
 					},
-
+					{
+						apiGroups: ["flink.apache.org"]
+						resources: [
+							"*"
+						]
+						verbs: [
+							"*"
+						]
+					},
+					{
+						apiGroups: ["kafka.strimzi.io"]
+						resources: [
+							"*"
+						]
+						verbs: [
+							"*"
+						]
+					},
+					{
+						apiGroups: ["sparkoperator.k8s.io"]
+						resources: [
+							"*"
+						]
+						verbs: [
+							"*"
+						]
+					},
 				]
 			},
 			{

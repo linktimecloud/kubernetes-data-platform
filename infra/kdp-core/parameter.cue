@@ -46,6 +46,7 @@ parameter: {
 			}
 		}
 	}
+
 	prometheus: externalUrl: *"" | string
 	loki: externalUrl: *"" | string
 	grafana: externalUrl: *"" | string
