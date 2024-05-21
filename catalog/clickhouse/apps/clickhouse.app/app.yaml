@@ -1,0 +1,29 @@
+apiVersion: bdc.kdp.io/v1alpha1
+kind: Application
+metadata:
+  labels:
+    app: clickhouse
+    app.core.bdos/type: system
+  annotations:
+    definition.bdc.kdp.io/description: clickhouse
+    app.core.bdos/catalog: clickhouse
+spec:
+  type: clickhouse
+  properties:
+    # dependencies:
+    #   zookeeperHost: zookeeper.kdp-data.svc.cluster.local
+    chartVersion: "6.0.2"
+    imageTag: "24.3.2-debian-12-r2"
+    shards: 2
+    replicaCount: 2
+    storageSize: "20Gi"
+    resources:
+      requests:
+        cpu: "0.1"
+        memory: 512Mi
+      limits:
+        cpu: "4.0"
+        memory: 4096Mi
+    # auth:
+    #   username: "default"
+    #   password: "ckdba.123"

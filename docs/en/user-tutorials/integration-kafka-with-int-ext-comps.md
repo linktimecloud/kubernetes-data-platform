@@ -210,11 +210,11 @@ KDP provides an example of reading Kafka data and writing it back to Kafka using
 
 ### Component Deployment
 
-Install Kafka cluster, kafka-manager, Flink cluster, and streampark applications on KDP-ux.
+Install Kafka operator、kafka cluster, kafka manager, Flink cluster, and streampark applications on KDP-ux.
 
 ### Topic Creation and Data Preparation
 
-Find the application directory under Kafka and click on the kafka-manager application. Enter the application details page and click the "Access Address" button to enter the kafka-manager management page. Create topics named `pageviews` and `pageviews_per_region`.
+Find the application directory under Kafka and click on the kafka-manager application. Enter the application details page and click the "Access Address" button to enter the kafka-manager management page. Create topics named `pageviews` and `pageviews_per_region`. Note that when creating a topic, the input parameter 'Replicator Factor' must be greater than or equal to the cluster configuration value 'min.insync.replicas' (default value is '2'), with a recommended default value of '3'.
 
 Kafka Manager Topic Management and Creation
 

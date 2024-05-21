@@ -1,0 +1,9 @@
+name: ClickHouse
+category: 系统/大数据开发工具
+description: ClickHouse是一个用于联机分析(OLAP)的列式数据库管理系统(DBMS)。
+i18n:
+  en:
+    category: system.dataManagement
+    description: >-
+      ClickHouse is a high-performance, column-oriented SQL database management system (DBMS) 
+      for online analytical processing (OLAP).
