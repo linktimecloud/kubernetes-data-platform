@@ -69,4 +69,11 @@ driver 和 executor 的资源可以按需要调整。
 kubectl apply -f spark-distcp.yaml
 ```
 
+迁移进度可以查看 `spark-distcp-driver` pod 的日志，或者通过以下命令从本地浏览器访问 Spark UI:
+
+```shell
+# 执行完毕后可以从浏览器访问 localhost:4040
+kubectl port-forward spark-distcp-driver -n kdp-data 4040:4040
+```
+
 更多参数和注意事项可以参考 https://index.scala-lang.org/coxautomotivedatasolutions/spark-distcp

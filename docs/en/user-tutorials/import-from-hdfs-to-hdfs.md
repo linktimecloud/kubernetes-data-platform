@@ -69,4 +69,11 @@ Execute the following command to start the data migration process:
 kubectl apply -f spark-distcp.yaml
 ```
 
+Migration progress can be viewed by checking the logs of the `spark-distcp-driver` pod, or by accessing the Spark UI from a local browser using the following command:
+
+```shell
+# Once executed, you can access localhost:4040 from your browser
+kubectl port-forward spark-distcp-driver -n kdp-data 4040:4040
+```
+
 For more parameters and considerations, you can refer to https://index.scala-lang.org/coxautomotivedatasolutions/spark-distcp
