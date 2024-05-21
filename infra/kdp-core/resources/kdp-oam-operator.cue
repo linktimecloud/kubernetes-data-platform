@@ -28,6 +28,26 @@ _kdpOAMOperator: {
 					"--kube-api-burst=900"
 				]
 				image: repository: "kdp-oam-apiserver"
+				env: [
+					{
+						name: "NAMESPACE",
+						value: "\(parameter.namespace)"
+					},
+					{
+						name: "DOMAIN",
+						value: "cloudtty.\(parameter.ingress.domain)"
+					},
+					{
+						name: "TTL",
+						value: "3600"
+					},
+					if parameter.ingress.tlsSecretName != "" {
+						{
+								name: "HTTPTYPE"
+								value: "https"
+						}
+					}
+				]
 			}
 			controller: image: repository: "kdp-oam-operator"
 			systemNamespace: name: "\(parameter.namespace)"

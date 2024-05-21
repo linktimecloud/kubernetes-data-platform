@@ -6,7 +6,7 @@ import (
 
 _version: {
 	kdp: "v1.0.0"
-	operator: "v1.0.0"
+	operator: "v1.1.0"
 	catalogManager: "v1.0.0"
 	ux: "v1.0.0"
 }
@@ -33,6 +33,9 @@ output: {
 			_velaOps,
 			_configReplicator,
 			_configReloader,
+			_kdpCloudTty,
+			_KdpTerminalConfig,
+			_kdpTerminalConfigTask,
 			_kdpOAMOperator,
 			_kdpCatalogManager,
 			_kdpUX,
@@ -157,7 +160,22 @@ output: {
 						type: "apply-component"
 						name: "apply-kdp-ux"
 						properties: component: parameter.namePrefix + "kdp-ux"
-					}
+					},
+					{
+						type: "apply-component"
+						name: "apply-cloudtty"
+						properties: component: parameter.namePrefix + "cloudtty"
+					},
+					{
+						type: "apply-component"
+						name: "apply-terminal-config"
+						properties: component: parameter.namePrefix + "terminal-config"
+					},
+					{
+						type: "apply-component"
+						name: "apply-terminal-config-task"
+						properties: component: parameter.namePrefix + "terminal-config-task"
+					},
 				]
 			},
 			{
