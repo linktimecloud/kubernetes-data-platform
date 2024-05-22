@@ -13,11 +13,6 @@ spec:
   properties:
     version: "9.23.0"
     architecture: "replication"
-    auth:
-      rootPassword: Kdp@mysql123
-      replicationPassword: Replicat@mysql123
-      username: bdos_dba
-      password: KdpDba@mysql123
     resources:
       limits:
         cpu: '2.0'
