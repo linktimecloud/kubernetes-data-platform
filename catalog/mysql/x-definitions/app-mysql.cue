@@ -348,28 +348,29 @@ template: {
 		// +ui:order=4
 		auth: {
 			// +ui:description=mysql root的密码, 初次安装时使用此配置，应用更新时更改此配置mysql密码保持不变, 可在应用端修改密码后更新配置，以供其他应用使用。
-			// +pattern=^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()-_=+[\]{}|;:'",.<>?/]).{8,}$
+			// +pattern=(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\W_]).{8,}
 			// +ui:options={"format": "password", "showPassword": true}
 			// +ui:order=1
 			// +err:options={"pattern":"密码要求如下:\n1、长度大于8个字符\n2、密码中至少包含大小写字母、数字、特殊字符"}
-			rootPassword: string
+			rootPassword: *"Kdp@mysql123" | string
 			// +ui:description=mysql 备份用户的密码, 初次安装时使用此配置，应用更新时更改此配置mysql密码保持不变, 可在应用端修改密码后更新配置，以供其他应用使用。
-			// +pattern=^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()-_=+[\]{}|;:'",.<>?/]).{8,}$
+			// +pattern=(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\W_]).{8,}
 			// +ui:options={"showPassword": true}
 			// +ui:order=2
 			// +err:options={"pattern":"密码要求如下:\n1、长度大于8个字符\n2、密码中至少包含大小写字母、数字、特殊字符"}
 			// +ui:hidden={{rootFormData.architecture == "standalone"}}
-			replicationPassword: string
+			replicationPassword: *"Replicat@mysql123" | string
 			// +ui:description=mysql dba用户名
 			// +ui:options={"disabled": true}
 			// +ui:order=3
 			username: *"bdos_dba" | string
 			// +ui:description=mysql dba密码, 初次安装时使用此配置，应用更新时更改此配置mysql密码保持不变, 可在应用端修改密码后更新配置，以供其他应用使用。
-			// +pattern=^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()-_=+[\]{}|;:'",.<>?/]).{8,}$
+			// +pattern=^(?!.*@)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\W_]).{8,}$
 			// +ui:options={"showPassword": true}
 			// +ui:order=4
-			// +err:options={"pattern":"密码要求如下:\n1、长度大于8个字符\n2、密码中至少包含大小写字母、数字、特殊字符"}
-			password: string
+			// +err:options={"pattern":"密码要求如下:\n1、长度大于8个字符\n2、密码中至少包含大小写字母、数字、特殊字符且不包含@"}
+			// +ui:hidden={{rootFormData.architecture == "standalone"}}"}
+			password: *"KdpDbamysql123" | string
 		}
 		// +ui:description=mysql资源配置
 		// +ui:order=5
