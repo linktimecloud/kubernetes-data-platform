@@ -1,0 +1,15 @@
+apiVersion: bdc.kdp.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    app.core.bdos/catalog: superset
+  labels:
+    app: superset
+    app.core.bdos/type: system
+spec:
+  name: superset
+  type: superset
+  properties:
+    supersetNode:
+      replicaCount: 1
+
