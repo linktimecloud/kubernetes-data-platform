@@ -1,0 +1,14 @@
+apiVersion: bdc.kdp.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    app.core.bdos/catalog: airbyte
+  labels:
+    app: airbyte
+    app.core.bdos/type: system
+spec:
+  name: airbyte
+  type: airbyte
+  properties:
+    server: 
+      replicaCount: 1
