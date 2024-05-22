@@ -76,18 +76,18 @@ FROM default_raw__stream_tmall_order_sample;
 
 ```
 
-确认数据处理完成
+Data processing verification
 ```sql
 select * from airbyte_internal.ods_tmall_order limit 10;
 ```
-# 4. 数据展示
-在 Superset 中添加 clickhouse 数据源, 并制作面板。关于如何添加数据源，如何制作面板请参考 Superset quick start。下面我们通过面板的导入功能完成数据源，面板的导入。
-1. [下载面板](https://gitee.com/xing-can/pic/blob/master/dashboard_export_20240521T102107.zip)
-2. 导入面板
-选择下载的文件导入
+# 4.  Data Display
+In Superset, we add a ClickHouse data source and create a dashboard. For instructions on how to add a data source and create a dashboard, refer to the Superset quick start guide. Below, we complete the data source and dashboard import using the panel import feature.
+1. [Download the dashboard](https://gitee.com/xing-can/pic/blob/master/dashboard_export_20240521T102107.zip)
+2. Import the dashboard
+   - Select the downloaded file to import
 ![](../../images/superset01.png)
-输入clickhouse的用户`default`的默认密码`ckdba.123`
+   - Enter the default password of the ClickHouse user `default` as ckdba.123`
 ![](../../images/superset02.png)
-导入后的效果如下
+   - The imported dashboard will look like this:
 ![](../../images/superset03.png)
    
