@@ -117,8 +117,24 @@ template: {
 			replicaCount: *1 | int
 		}
 
-		// +ui:description= 配置环境变量，如 MAX_SYNC_WORKERS=5
+		// +ui:description=Webapp配置
 		// +ui:order=3
+		webapp: {
+			// +minimum=1
+			// +ui:description=副本数
+			replicaCount: *1 | int
+		}
+
+		// +ui:description=Server配置
+		// +ui:order=4
+		server: {
+			// +minimum=1
+			// +ui:description=副本数
+			replicaCount: *1 | int
+		}
+
+		// +ui:description= 配置环境变量，如 MAX_SYNC_WORKERS=5
+		// +ui:order=5
 		env_vars?: {...}
 	}
 }
