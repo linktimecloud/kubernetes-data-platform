@@ -40,7 +40,7 @@ template: {
 								replicaCount: 1
 							}
 							worker: {
-								replicaCount: 1
+								replicaCount: parameter.worker.replicaCount
 							}
 							"airbyte-api-server": {
 								replicaCount: 1
@@ -108,5 +108,17 @@ template: {
 				size: *"500Mi" | string
 			}
 		}
+
+		// +ui:description=Worker配置
+		// +ui:order=2
+		worker: {
+			// +minimum=1
+			// +ui:description=副本数
+			replicaCount: *1 | int
+		}
+
+		// +ui:description= 配置环境变量，如 MAX_SYNC_WORKERS=5
+		// +ui:order=3
+		env_vars?: {...}
 	}
 }
