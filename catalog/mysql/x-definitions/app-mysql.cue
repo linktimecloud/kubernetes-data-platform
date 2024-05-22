@@ -369,7 +369,6 @@ template: {
 			// +ui:options={"showPassword": true}
 			// +ui:order=4
 			// +err:options={"pattern":"密码要求如下:\n1、长度大于8个字符\n2、密码中至少包含大小写字母、数字、特殊字符且不包含@"}
-			// +ui:hidden={{rootFormData.architecture == "standalone"}}"}
 			password: *"KdpDba!mysql123" | string
 		}
 		// +ui:description=mysql资源配置
