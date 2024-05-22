@@ -9,7 +9,7 @@ Import data from a csv file into clickhouse
 1. Add a file type source in airbyte.
    ![](../../images/airbyte01.png)
    - Dataset Name: `tmall-order-sample` (please modify)
-   - URL: `https://gitee.com/xing-can/pic/raw/master/tmall-order-sample.csv`
+   - URL: `https://gitee.com/linktime-cloud/example-datasets/raw/main/airbyte/tmall-order-sample.csv`
       
 1. Add a clickhouse type destination in airbyte. 
    ![](../../images/airbyte03.png)
@@ -27,7 +27,7 @@ Import data from a csv file into clickhouse
    
 After completing the above operations, the ELT (Extract Load Transform) process is completed, and the Transform is performed using clickhouse.
 
-# 3. 数据加工
+# 3. Data Processing
 
 ```bash
 # Enter clickhouse container
@@ -42,7 +42,7 @@ show tables;
 select count(*) from airbyte_internal.default_raw__stream_tmall_order_sample;
 ```
 
-继续依次执行下面的三条SQL语句，完成数据加工。
+Continue to execute the following three SQL statements in sequence to complete data processing.
 
 ```sql
 DROP TABLE IF EXISTS airbyte_internal.ods_tmall_order;
@@ -82,7 +82,7 @@ select * from airbyte_internal.ods_tmall_order limit 10;
 ```
 # 4.  Data Display
 In Superset, we add a ClickHouse data source and create a dashboard. For instructions on how to add a data source and create a dashboard, refer to the Superset quick start guide. Below, we complete the data source and dashboard import using the panel import feature.
-1. [Download the dashboard](https://gitee.com/xing-can/pic/blob/master/dashboard_export_20240521T102107.zip)
+1. [Download the dashboard](https://gitee.com/linktime-cloud/example-datasets/blob/main/superset/dashboard_export_20240521T102107.zip)
 2. Import the dashboard
    - Select the downloaded file to import
 ![](../../images/superset01.png)

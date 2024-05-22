@@ -10,7 +10,7 @@
 1. 在 airbyte 中添加一个 file 类型 source。
 ![](../../images/airbyte01.png)
    - Dataset Name: `tmall-order-sample` (请误修改)
-   - URL: `https://gitee.com/xing-can/pic/raw/master/tmall-order-sample.csv`
+   - URL: `https://gitee.com/linktime-cloud/example-datasets/raw/main/airbyte/tmall-order-sample.csv`
       
 1. 在 airbyte 中添加一个 clickhouse 类型 destination。 
 ![](../../images/airbyte03.png)
@@ -83,7 +83,7 @@ select * from airbyte_internal.ods_tmall_order limit 10;
 ```
 # 4. 数据展示
 在 Superset 中添加 clickhouse 数据源, 并制作面板。关于如何添加数据源，如何制作面板请参考 Superset quick start。下面我们通过面板的导入功能完成数据源，面板的导入。
-1. [下载面板](https://gitee.com/xing-can/pic/blob/master/dashboard_export_20240521T102107.zip)
+1. [下载面板](https://gitee.com/linktime-cloud/example-datasets/blob/main/superset/dashboard_export_20240521T102107.zip)
 2. 导入面板
 选择下载的文件导入
 ![](../../images/superset01.png)
