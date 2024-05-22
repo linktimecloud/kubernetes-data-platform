@@ -417,7 +417,7 @@ template: {
 				// +ui:order=2
 				limits: {
 					// +pattern=^(\d+\.\d{1,3}?|[1-9]\d*m?)$
-					// +err:options={"pattern":"请输入正�������的CPU格式，如0.25，250m"}
+					// +err:options={"pattern":"请输入正确的CPU格式，如0.25，250m"}
 					// +ui:description=CPU
 					cpu: *"0.5" | string
 
