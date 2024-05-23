@@ -1,0 +1,8 @@
+version: v1.0.0-3.1.1
+alias: Airflow
+description: Airflow™是一个以编程方式编写、调度和监控工作流的平台。
+isGlobal: false
+i18n:
+  en:
+    description: >-
+      Airflow™ is a platform created by the community to programmatically author, schedule and monitor workflows.
