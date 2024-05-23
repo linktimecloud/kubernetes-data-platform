@@ -181,21 +181,29 @@ template: {
 		}
 	}
 	parameter: {
-    // +ui:description=副本数
+		// +ui:title=组件依赖
 		// +ui:order=1
+		dependencies: {
+			// +ui:description=Zookeeper 地址
+			// +ui:order=1
+			// +err:options={"required":"请先安装 Zookeeper"}
+			zookeeperHost: string
+		}
+    // +ui:description=副本数
+		// +ui:order=2
 		// +minimum=1
     shards: *2 | int
 		// +ui:description=副本数
-		// +ui:order=2
+		// +ui:order=3
 		// +minimum=1
 		replicaCount: *2 | int
     // +ui:description=存储大小
-		// +ui:order=3
+		// +ui:order=4
 		// +pattern=^[1-9]\d*(Mi|Gi)$
 		// +err:options={"pattern":"请输入正确的存储格式，如1024Mi, 1Gi"}
     storageSize: *"20Gi" | string
 		// +ui:description=资源规格
-		// +ui:order=4
+		// +ui:order=5
 		resources: {
 			// +ui:description=预留
 			// +ui:order=1
@@ -227,7 +235,7 @@ template: {
 			}
 		}
 		// +ui:description=clickhouse管理员设置
-		// +ui:order=5
+		// +ui:order=6
 		auth: {
 			// +ui:description=管理员用户名
 			// +ui:order=1
