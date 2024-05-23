@@ -56,6 +56,9 @@ template: {
 							postgresql: {
 								enabled: true
 							}
+							if parameter.env_vars != _|_ {
+								global: env_vars: parameter.env_vars
+							}
 						}
 						version: "0.67.17"
 					}
