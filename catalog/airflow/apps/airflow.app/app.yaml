@@ -1,0 +1,17 @@
+apiVersion: bdc.kdp.io/v1alpha1
+kind: Application
+metadata:
+  labels:
+    app: airflow
+    app.core.bdos/type: system
+  annotations:
+    app.core.bdos/catalog: airflow
+    definition.bdc.kdp.io/description: airflow
+spec:
+  type: airflow
+  properties:
+    chartVersion: 1.14.0
+    images:
+      airflow:
+        tag: 2.9.1
+
