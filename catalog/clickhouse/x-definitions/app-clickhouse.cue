@@ -243,7 +243,7 @@ template: {
 			// +ui:description=管理员密码。部署后无法在此页面更改密码。
 			// +ui:options={"showPassword": true}
 			// +ui:order=2
-			password: string
+			password: *"ckdba.123" | string
 		}
 		// +ui:description=Helm Chart 版本号
 		// +ui:order=100
