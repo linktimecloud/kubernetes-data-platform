@@ -42,7 +42,12 @@ _loki: {
                 serviceMonitor: labels: {
                     release: "prometheus"
                 }
-                selfMonitoring: enabled: false
+                selfMonitoring: {
+                	enabled: false
+                	grafanaAgent: {
+                		installOperator: false
+                	}
+                }
                 lokiCanary: enabled: false
             }
             test: enabled: false
