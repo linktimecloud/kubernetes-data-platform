@@ -13,7 +13,7 @@ Superset 是一个快速、轻量级、直观的工具，提供了丰富的选�
 请参考:https://superset.apache.org/docs/using-superset/creating-your-first-dashboard#creating-your-first-dashboard
 
 
-### 3.FQA
+### 3.FAQ
 
 1. 启动报错
    

@@ -11,7 +11,7 @@ Note: If you encounter a `500 Internal Server Error` upon first access, please t
 #### 2.2 How to Create a Superset Dashboard
 Please refer to: https://superset.apache.org/docs/using-superset/creating-your-first-dashboard#creating-your-first-dashboard
 
-### 3.FQA
+### 3.FAQ
 
 1. Startup Error
 `sqlalchemy.exc.OperationalError: (MySQLdb._exceptions.OperationalError) (2005, "Unknown server host 'xxxxx@yyyy' (-2)")`
