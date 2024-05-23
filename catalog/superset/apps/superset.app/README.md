@@ -11,3 +11,11 @@ Superset 是一个快速、轻量级、直观的工具，提供了丰富的选�
 
 #### 2.2 如何创建一个 Superset Dashboard
 请参考:https://superset.apache.org/docs/using-superset/creating-your-first-dashboard#creating-your-first-dashboard
+
+
+### 3.FQA
+
+1. 启动报错
+   
+`sqlalchemy.exc.OperationalError: (MySQLdb._exceptions.OperationalError) (2005, "Unknown server host 'xxxxx@yyyy' (-2)")`
+请检查数据库密码中是否包含`@`字符，如果包含请修改数据库密码。该报错是由于 Superset 解析 SQLAlchemy URL (dialect+driver://username:password@host:port/database) 时候错误识别 host 导致的。
