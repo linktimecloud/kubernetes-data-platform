@@ -89,7 +89,7 @@ template: {
 								"metadataConnection": {
 									"host":     parameter.dependencies.mysql.host
 									"port":     strconv.ParseInt(parameter.dependencies.mysql.port, 10, 64)
-									"user":     parameter.dependencies.mysql.host
+									"user":     parameter.dependencies.mysql.user
 									"pass":     parameter.dependencies.mysql.pass
 									"protocol": "mysql"
 									"db":       parameter.dependencies.mysql.database
@@ -148,6 +148,9 @@ template: {
 										"cpu":    parameter.workers.resources.requests.cpu
 										"memory": parameter.workers.resources.requests.memory
 									}
+								},
+								"persistence": {
+									"enabled": false
 								}
 							}
 							"redis": {
@@ -159,7 +162,7 @@ template: {
 									"enabled": true
 									"hosts": [
 										{
-											"name": "airflow-web" + context.namespace + "." + context["ingress.root_domain"]
+											"name": "airflow-web-" + context.namespace + "." + context["ingress.root_domain"]
 										},
 									]
 									"ingressClassName": "kong"
