@@ -189,14 +189,14 @@ template: {
 			// +err:options={"required":"请先安装 Zookeeper"}
 			zookeeperHost: string
 		}
-    // +ui:description=副本数
+    // +ui:description=分片数
 		// +ui:order=2
 		// +minimum=1
-    shards: *2 | int
+    shards: *1 | int
 		// +ui:description=副本数
 		// +ui:order=3
 		// +minimum=1
-		replicaCount: *2 | int
+		replicaCount: *1 | int
     // +ui:description=存储大小
 		// +ui:order=4
 		// +pattern=^[1-9]\d*(Mi|Gi)$
