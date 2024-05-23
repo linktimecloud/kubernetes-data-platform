@@ -76,4 +76,23 @@ kubectl apply -f spark-distcp.yaml
 kubectl port-forward spark-distcp-driver -n kdp-data 4040:4040
 ```
 
+# 可选参数
+
+可以在 `spark-distcp.yaml` 的 `spec.arguments` 中增加以下标识：
+
+| 参数                          | 描述                                                                  |
+| ---------------------------- | --------------------------------------------------------------------- |
+| --i                          | 忽略失败                                                               |
+| --log <path>                 | 将日志写入 URI                                                         |
+| --dryrun                     | 进行一次无更改的试运行                                                   |
+| --verbose                    | 以详细模式运行                                                          |
+| --overwrite                  | 覆盖目标位置                                                            |
+| --update                     | 如果源文件和目标文件大小不同或校验和不一致，则覆盖                            |
+| --filters <path>             | 过滤器配置文件的路径，文件中每行一个模式字符串，匹配这些模式的文件路径将不会被复制 |
+| --delete                     | 删除存在于目标位置但不在源位置的文件                                        |
+| --numListstatusThreads <int> | 用于构建文件列表的线程数                                                  |
+| --consistentPathBehaviour    | 在使用 `--overwrite` 或 `--update` 标识时，路径行为不受此标志影响           |
+| --maxFilesPerTask <int>      | 单个 Spark 任务中复制的最大文件数                                         |
+| --maxBytesPerTask <bytes>    | 单个 Spark 任务中复制的最大字节数                                         |
+
 更多参数和注意事项可以参考 https://index.scala-lang.org/coxautomotivedatasolutions/spark-distcp

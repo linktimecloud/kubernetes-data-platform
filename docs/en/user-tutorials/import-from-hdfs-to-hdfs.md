@@ -76,4 +76,23 @@ Migration progress can be viewed by checking the logs of the `spark-distcp-drive
 kubectl port-forward spark-distcp-driver -n kdp-data 4040:4040
 ```
 
+# Options
+
+The following flags can be added in `spec.arguments` of `spark-distcp.yaml`:
+
+| Flag                         | Description                                                                                                                                       |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| --i                          | Ignore failures                                                                                                                                   |
+| --log <path>                 | Write logs to a URI                                                                                                                               |
+| --dryrun                     | Perform a trial run with no changes made                                                                                                          |
+| --verbose                    | Run in verbose mode                                                                                                                               |
+| --overwrite                  | Overwrite destination                                                                                                                             |
+| --update                     | Overwrite if source and destination differ in size, or checksum                                                                                   |
+| --filters <path>             | The path to a file containing a list of pattern strings, one string per line, such that paths matching the pattern will be excluded from the copy |
+| --delete                     | Delete the files existing in the dst but not in src                                                                                               |
+| --numListstatusThreads <int> | Number of threads to use for building file listing                                                                                                |
+| --consistentPathBehaviour    | Revert the path behaviour when using overwrite or update to the path behaviour of non-overwrite/non-update                                        |
+| --maxFilesPerTask <int>      | Maximum number of files to copy in a single Spark task                                                                                            |
+| --maxBytesPerTask <bytes>    | Maximum number of bytes to copy in a single Spark task                                                                                            |
+
 For more parameters and considerations, you can refer to https://index.scala-lang.org/coxautomotivedatasolutions/spark-distcp
