@@ -8,12 +8,12 @@
 # 2. 数据集成
 将数据从 csv file 导入 clickhouse
 1. 在 airbyte 中添加一个 file 类型 source。
-![](../../images/airbyte01.png)
+![](./images/airbyte01.png)
    - Dataset Name: `tmall-order-sample` (请误修改)
    - URL: `https://gitee.com/linktime-cloud/example-datasets/raw/main/airbyte/tmall-order-sample.csv`
       
 1. 在 airbyte 中添加一个 clickhouse 类型 destination。 
-![](../../images/airbyte03.png)
+![](./images/airbyte03.png)
     - Host: `clickhouse.kdp-data.svc.cluster.local`
     - Port: `8123`
     - DB Name: `default`
@@ -21,10 +21,10 @@
     - Password: `ckdba.123`
 
 1. 在 airbyte 中添加一个 connection, source 选择 file, destination 选择 clickhouse, 使用默认配置然后保存。
-![](../../images/airbyte02.png)
+![](./images/airbyte02.png)
    
 1. 查看 airbyte 的 job 状态，如果成功，则说明数据已经成功导入到clickhouse中。
-![](../../images/airbyte04.png)
+![](./images/airbyte04.png)
    
 完成上述操作后即完成了ELT(Extract Load Transform)中的EL, 接下使用clickhouse完成Transform。
 
@@ -86,9 +86,9 @@ select * from airbyte_internal.ods_tmall_order limit 10;
 1. [下载面板](https://gitee.com/linktime-cloud/example-datasets/blob/main/superset/dashboard_export_20240521T102107.zip)
 2. 导入面板
 选择下载的文件导入
-![](../../images/superset01.png)
+![](./images/superset01.png)
 输入clickhouse的用户`default`的默认密码`ckdba.123`
-![](../../images/superset02.png)
+![](./images/superset02.png)
 导入后的效果如下
-![](../../images/superset03.png)
+![](./images/superset03.png)
    
