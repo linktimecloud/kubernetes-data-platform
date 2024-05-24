@@ -35,7 +35,8 @@ import "strings"
 }
 
 template: {
-	_databaseName: "\(strings.Replace(context.namespace+"_superset", "-", "_", -1))"
+	_imageRegistry: context["docker_registry"] + "/"
+	_databaseName:  "\(strings.Replace(context.namespace+"_superset", "-", "_", -1))"
 
 	output: {
 		apiVersion: "core.oam.dev/v1beta1"
@@ -109,10 +110,13 @@ template: {
 										disableWait: true
 									}
 									values: {
-										// image: {
-										//  repository: conteimageTagxt["docker_registry"] + "/linktimecloud/superset"
-										//  tag:        parameter.
-										// }
+										image: {
+											repository: _imageRegistry + "apache/superset"
+											tag:        "4.0.0"
+										}
+										initImage: repository: _imageRegistry + "apache/superset"
+										supersetWebsockets: image: repository: _imageRegistry + "oneacrefund/superset-websocket"
+
 										bootstrapScript: ##"""
 											#!/bin/bash
 											pip install -i https://pypi.tuna.tsinghua.edu.cn/simple clickhouse-connect==0.7.8
