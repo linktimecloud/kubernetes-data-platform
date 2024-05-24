@@ -35,7 +35,12 @@ import "strings"
 }
 
 template: {
-	_databaseName: "\(strings.Replace(context.namespace+"_superset", "-", "_", -1))"
+	_databaseName:         "\(strings.Replace(context.namespace+"_superset", "-", "_", -1))"
+	_imageRegistry:        *"" | string
+	_contextImageRegistry: context["docker_registry"]
+	if _contextImageRegistry != _|_ && len(_contextImageRegistry) > 0 {
+		_imageRegistry: _contextImageRegistry + "/"
+	}
 
 	output: {
 		apiVersion: "core.oam.dev/v1beta1"
@@ -109,10 +114,13 @@ template: {
 										disableWait: true
 									}
 									values: {
-										// image: {
-										//  repository: conteimageTagxt["docker_registry"] + "/linktimecloud/superset"
-										//  tag:        parameter.
-										// }
+										image: {
+											repository: _imageRegistry + "apache/superset"
+											tag:        "4.0.0"
+										}
+										initImage: repository: _imageRegistry + "apache/superset"
+										supersetWebsockets: image: repository: _imageRegistry + "oneacrefund/superset-websocket"
+
 										bootstrapScript: ##"""
 											#!/bin/bash
 											pip install -i https://pypi.tuna.tsinghua.edu.cn/simple clickhouse-connect==0.7.8
@@ -238,7 +246,7 @@ template: {
 											initContainers: [
 												{
 													name:  "create-mysql-database"
-													image: context["docker_registry"] + "/bitnami/mysql:8.0.22"
+													image: _imageRegistry + "bitnami/mysql:8.0.22"
 													env: [
 														{
 															name: "PASSWORD"
