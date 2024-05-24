@@ -51,7 +51,7 @@ spec:
         expire_logs_days=3
         max_connections=3000
         max_user_connections=1000
-        innodb_buffer_pool_size=6442450944
+        innodb_buffer_pool_size=3G
         slow-query-log=1
         slow-query-log-file=/opt/bitnami/mysql/logs/slow-query.log
         long_query_time=10
