@@ -138,11 +138,19 @@ template: {
 												port:   10000
 												scheme: "HTTP"
 											}
-											initialDelaySeconds: 60
-											periodSeconds:       10
-											failureThreshold:    3
-											timeoutSeconds:      3
-											successThreshold:    1
+											periodSeconds:    30
+											failureThreshold: 3
+											timeoutSeconds:   3
+											successThreshold: 1
+										}
+										startupProbe: {
+											httpGet: {
+												path:   "/actuator/health/livenessState"
+												port:   10000
+												scheme: "HTTP"
+											}
+											failureThreshold: 30
+											periodSeconds:    10
 										}
 									}]
 									restartPolicy: "Always"
