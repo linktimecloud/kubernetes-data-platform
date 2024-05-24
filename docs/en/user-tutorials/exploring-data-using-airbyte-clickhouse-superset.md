@@ -7,12 +7,12 @@ This guide will show you how to use the KDP platform to complete data integratio
 # 2. Data Integration
 Import data from a csv file into clickhouse
 1. Add a file type source in airbyte.
-   ![](../../images/airbyte01.png)
+   ![](./images/airbyte01.png)
    - Dataset Name: `tmall-order-sample` (please modify)
    - URL: `https://gitee.com/linktime-cloud/example-datasets/raw/main/airbyte/tmall-order-sample.csv`
       
 1. Add a clickhouse type destination in airbyte. 
-   ![](../../images/airbyte03.png)
+   ![](./images/airbyte03.png)
    - Host: `clickhouse.kdp-data.svc.cluster.local`
    - Port: `8123`
    - DB Name: `default`
@@ -20,10 +20,10 @@ Import data from a csv file into clickhouse
    - Password: `ckdba.123`
 
 1. Add a connection in airbyte, select file as the source and clickhouse as the destination, use the default configuration, and then save.
-   ![](../../images/airbyte02.png)
+   ![](./images/airbyte02.png)
    
 1. Check the airbyte job status. If successful, the data has been successfully imported into clickhouse.
-   ![](../../images/airbyte04.png)
+   ![](./images/airbyte04.png)
    
 After completing the above operations, the ELT (Extract Load Transform) process is completed, and the Transform is performed using clickhouse.
 
@@ -85,9 +85,9 @@ In Superset, we add a ClickHouse data source and create a dashboard. For instruc
 1. [Download the dashboard](https://gitee.com/linktime-cloud/example-datasets/blob/main/superset/dashboard_export_20240521T102107.zip)
 2. Import the dashboard
    - Select the downloaded file to import
-![](../../images/superset01.png)
+![](./images/superset01.png)
    - Enter the default password of the ClickHouse user `default` as ckdba.123`
-![](../../images/superset02.png)
+![](./images/superset02.png)
    - The imported dashboard will look like this:
-![](../../images/superset03.png)
+![](./images/superset03.png)
    
