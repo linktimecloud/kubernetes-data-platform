@@ -15,6 +15,12 @@
 }
 
 template: {
+	_imageRegistry:        *"" | string
+	_contextImageRegistry: context["docker_registry"]
+	if _contextImageRegistry != _|_ && len(_contextImageRegistry) > 0 {
+		_imageRegistry: _contextImageRegistry + "/"
+	}
+
 	output: {
 		apiVersion: "core.oam.dev/v1beta1"
 		kind:       "Application"
@@ -33,6 +39,21 @@ template: {
 						targetNamespace: context["namespace"]
 						url:             context["helm_repo_url"]
 						values: {
+							"airbyte-api-server": image: repository:       _imageRegistry + "airbyte/airbyte-api-server"
+							"airbyte-bootloader": image: repository:       _imageRegistry + "airbyte/bootloader"
+							"connector-builder-server": image: repository: _imageRegistry + "airbyte/connector-builder-server"
+							cron: image: repository:                       _imageRegistry + "airbyte/cron"
+							metrics: image: repository:                    _imageRegistry + "airbyte/metrics-reporter"
+							minio: image: repository:                      _imageRegistry + "minio/minio"
+							"pod-sweeper": image: repository:              _imageRegistry + "bitnami/kubectl"
+							postgresql: image: repository:                 _imageRegistry + "airbyte/db"
+							server: image: repository:                     _imageRegistry + "airbyte/server"
+							temporal: image: repository:                   _imageRegistry + "temporalio/auto-setup"
+							webapp: image: repository:                     _imageRegistry + "airbyte/webapp"
+							worker: image: repository:                     _imageRegistry + "airbyte/worker"
+							"workload-api-server": image: repository:      _imageRegistry + "airbyte/workload-api-server"
+							"workload-launcher": image: repository:        _imageRegistry + "airbyte/workload-launcher"
+
 							webapp: {
 								replicaCount: 1
 							}
