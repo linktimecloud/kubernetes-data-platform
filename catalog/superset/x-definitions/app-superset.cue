@@ -35,8 +35,12 @@ import "strings"
 }
 
 template: {
-	_imageRegistry: context["docker_registry"] + "/"
-	_databaseName:  "\(strings.Replace(context.namespace+"_superset", "-", "_", -1))"
+	_databaseName:         "\(strings.Replace(context.namespace+"_superset", "-", "_", -1))"
+	_imageRegistry:        *"" | string
+	_contextImageRegistry: context["docker_registry"]
+	if _contextImageRegistry != _|_ && len(_contextImageRegistry) > 0 {
+		_imageRegistry: _contextImageRegistry + "/"
+	}
 
 	output: {
 		apiVersion: "core.oam.dev/v1beta1"
@@ -242,7 +246,7 @@ template: {
 											initContainers: [
 												{
 													name:  "create-mysql-database"
-													image: context["docker_registry"] + "/bitnami/mysql:8.0.22"
+													image: _imageRegistry + "bitnami/mysql:8.0.22"
 													env: [
 														{
 															name: "PASSWORD"

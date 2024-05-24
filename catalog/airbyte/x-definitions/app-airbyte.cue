@@ -15,7 +15,11 @@
 }
 
 template: {
-	_imageRegistry: context["docker_registry"] + "/"
+	_imageRegistry:        *"" | string
+	_contextImageRegistry: context["docker_registry"]
+	if _contextImageRegistry != _|_ && len(_contextImageRegistry) > 0 {
+		_imageRegistry: _contextImageRegistry + "/"
+	}
 
 	output: {
 		apiVersion: "core.oam.dev/v1beta1"
