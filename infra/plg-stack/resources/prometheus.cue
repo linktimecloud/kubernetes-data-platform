@@ -191,7 +191,7 @@ _prometheus: {
                             url: "\(parameter.prometheus.externalUrl)"
                         }
 						if parameter.prometheus.externalUrl == "" {
-                            url: "http://prometheus:9090/"
+                            url: "http://kps-prometheus:9090/"
                         }
 						label: "grafana_datasource"
 						labelValue: "1"
