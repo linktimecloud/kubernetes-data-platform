@@ -34,6 +34,10 @@ import ("encoding/json")
 
 template: {
 	_databaseName:  "\(strings.Replace(context.namespace+"_airflow", "-", "_", -1))"
+	_imageRegistry:        *"" | string
+	if context.docker_registry != _|_ && len(context.docker_registry) > 0 {
+		_imageRegistry: context.docker_registry + "/"
+	}
 
 	output: {
 		"apiVersion": "core.oam.dev/v1beta1"
@@ -59,7 +63,7 @@ template: {
 						"releaseName":     context.name
 						"targetNamespace": context.namespace
 						"values": {
-							"defaultAirflowRepository": context["docker_registry"] + "/apache/airflow"
+							"defaultAirflowRepository": _imageRegistry + "apache/airflow"
 							defaultAirflowTag:          parameter.images.airflow.tag
 							"config": {
 								"core": {
@@ -130,7 +134,7 @@ template: {
 								"extraInitContainers": [
 										{
 											name:  "create-mysql-database"
-											image: context["docker_registry"] + "/bitnami/mysql:8.0.22"
+											image: _imageRegistry + "bitnami/mysql:8.0.22"
 											env: [
 												{
 													name: "PASSWORD"
@@ -211,11 +215,11 @@ template: {
 							}
 							"images": {
 								"statsd": {
-									"repository": context["docker_registry"] + "/prometheus/statsd-exporter"
+									"repository": _imageRegistry + "prometheus/statsd-exporter"
 									"tag":        "v0.26.1"
 								}
 								"redis": {
-									"repository": context["docker_registry"] + "/redis"
+									"repository": _imageRegistry + "redis"
 									"tag":        "7-bookworm"
 								}
 							}
