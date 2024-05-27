@@ -12,7 +12,7 @@ spec:
   type: mysql
   properties:
     version: "9.23.0"
-    architecture: "replication"
+    architecture: "standalone"
     resources:
       limits:
         cpu: '2.0'
