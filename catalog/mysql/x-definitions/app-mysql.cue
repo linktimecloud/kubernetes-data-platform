@@ -343,8 +343,9 @@ template: {
 		debug: *false | bool
 		// +ui:description=mysql部署模式，standalone: 单机部署，replication: 主备部署。注意: standalone切换replication会导致应用一直处于执行中且无法切换成功。
 		// +ui:order=3
-		architecture: *"standalone" | "replication"
-		// +ui:description=mysql鉴权信息
+		// +ui:hidden={{rootFormData.architecture != ""}}
+		architecture: *""| "standalone" | "replication"
+		// +ui:description={{rootFormData.architecture == "standalone" ? 'standalone模式鉴权信息': 'replication模式鉴权信息'}}
 		// +ui:order=4
 		auth: {
 			// +ui:description=mysql root的密码, 初次安装时使用此配置，应用更新时更改此配置mysql密码保持不变, 可在应用端修改密码后更新配置，以供其他应用使用。
