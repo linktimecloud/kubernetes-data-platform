@@ -1,5 +1,6 @@
 import (
-	"strconv"
+	"strconv",
+	"strings"
 )
 
 import ("encoding/json")
@@ -10,36 +11,20 @@ import ("encoding/json")
 	attributes: {
 		"dynamicParameterMeta": [
 			{
-				"name":        "dependencies.mysql.host"
-				"type":        "ContextSetting"
-				"refType":     "mysql"
-				"refKey":      "MYSQL_HOST"
-				"description": "mysql host"
-				"required":    true
+				name:        "dependencies.mysql.mysqlSetting"
+				type:        "ContextSetting"
+				refType:     "mysql"
+				refKey:      ""
+				description: "mysql setting name"
+				required:    true
 			},
 			{
-				"name":        "dependencies.mysql.port"
-				"type":        "ContextSetting"
-				"refType":     "mysql"
-				"refKey":      "MYSQL_PORT"
-				"description": "mysql port"
-				"required":    true
-			},
-			{
-				"name":        "dependencies.mysql.user"
-				"type":        "ContextSecret"
-				"refType":     "mysql"
-				"refKey":      "MYSQL_USER"
-				"description": "mysql user name"
-				"required":    true
-			},
-			{
-				"name":        "dependencies.mysql.pass"
-				"type":        "ContextSecret"
-				"refType":     "mysql"
-				"refKey":      "MYSQL_PASSWORD"
-				"description": "mysql password"
-				"required":    true
+				name:        "dependencies.mysql.mysqlSecret"
+				type:        "ContextSecret"
+				refType:     "mysql"
+				refKey:      ""
+				description: "mysql secret name"
+				required:    true
 			},
 		]
 	}
@@ -48,6 +33,12 @@ import ("encoding/json")
 }
 
 template: {
+	_databaseName:  "\(strings.Replace(context.namespace+"_airflow", "-", "_", -1))"
+	_imageRegistry:        *"" | string
+	if context.docker_registry != _|_ && len(context.docker_registry) > 0 {
+		_imageRegistry: context.docker_registry + "/"
+	}
+
 	output: {
 		"apiVersion": "core.oam.dev/v1beta1"
 		"kind":       "Application"
@@ -72,7 +63,7 @@ template: {
 						"releaseName":     context.name
 						"targetNamespace": context.namespace
 						"values": {
-							"defaultAirflowRepository": context["docker_registry"] + "/apache/airflow"
+							"defaultAirflowRepository": _imageRegistry + "apache/airflow"
 							defaultAirflowTag:          parameter.images.airflow.tag
 							"config": {
 								"core": {
@@ -85,19 +76,24 @@ template: {
 									"dag_dir_list_interval": 60
 								}
 							}
+							"extraEnvFrom": """
+							   - secretRef:
+							       name: '\(parameter.dependencies.mysql.mysqlSecret)'
+							   - configMapRef:
+							       name: '\(parameter.dependencies.mysql.mysqlSetting)'
+							"""
 							"data": {
 								"metadataConnection": {
-									"host":     parameter.dependencies.mysql.host
-									"port":     strconv.ParseInt(parameter.dependencies.mysql.port, 10, 64)
-									"user":     parameter.dependencies.mysql.user
-									"pass":     parameter.dependencies.mysql.pass
 									"protocol": "mysql"
-									"db":       parameter.dependencies.mysql.database
+									"db":       _databaseName
 									"sslmode":  "disable"
 								}
 							}
 							"postgresql": {
 								"enabled": false
+							}
+							"migrateDatabaseJob": {
+								"useHelmHooks": false
 							}
 							"webserverSecretKey": "feab0e05d989b76acb325a8b35e596c9"
 							"webserver": {
@@ -135,6 +131,55 @@ template: {
 									"failureThreshold": 20
 									"periodSeconds":    10
 								}
+								"extraInitContainers": [
+										{
+											name:  "create-mysql-database"
+											image: _imageRegistry + "bitnami/mysql:8.0.22"
+											env: [
+												{
+													name: "PASSWORD"
+													valueFrom: {
+														secretKeyRef: {
+															key:  "MYSQL_PASSWORD"
+															name: "\(parameter.dependencies.mysql.mysqlSecret)"
+														}
+													}
+												},
+												{
+													name: "USER"
+													valueFrom: {
+														secretKeyRef: {
+															key:  "MYSQL_USER"
+															name: "\(parameter.dependencies.mysql.mysqlSecret)"
+														}
+													}
+												},
+												{
+													name:  "DATABASE"
+													value: _databaseName
+												},
+												{
+													name: "MYSQL_HOST"
+													valueFrom: configMapKeyRef: {
+														name: "\(parameter.dependencies.mysql.mysqlSetting)"
+														key:  "MYSQL_HOST"
+													}
+												},
+												{
+													name: "MYSQL_PORT"
+													valueFrom: configMapKeyRef: {
+														name: "\(parameter.dependencies.mysql.mysqlSetting)"
+														key:  "MYSQL_PORT"
+													}
+												},
+											]
+											command: [
+												"sh",
+												"-c",
+												"mysql -h $MYSQL_HOST -P $MYSQL_PORT -u $USER -p$PASSWORD -e \"CREATE DATABASE IF NOT EXISTS $DATABASE CHARACTER SET utf8mb4;\"",
+											]
+										},
+									]
 							}
 							"workers": {
 								"replicas":                      parameter.workers.replicas
@@ -170,11 +215,11 @@ template: {
 							}
 							"images": {
 								"statsd": {
-									"repository": context["docker_registry"] + "/prometheus/statsd-exporter"
+									"repository": _imageRegistry + "prometheus/statsd-exporter"
 									"tag":        "v0.26.1"
 								}
 								"redis": {
-									"repository": context["docker_registry"] + "/redis"
+									"repository": _imageRegistry + "redis"
 									"tag":        "7-bookworm"
 								}
 							}
@@ -192,24 +237,13 @@ template: {
 			// +ui:description=MySQL 配置
 			mysql: {
 				// +ui:order=1
-				// +ui:description=数据库名称
-				database: *"airflow" | string
+				// +ui:description=数据库连接信息
+				// +err:options={"required":"请先安装Mysql"}
+				mysqlSetting: string
 				// +ui:order=2
-				// +ui:description=数据库连接地址
+				// +ui:description=数据库认证信息
 				// +err:options={"required":"请先安装Mysql"}
-				host: string
-				// +ui:order=3
-				// +ui:description=数据库连接端口
-				// +err:options={"required":"请先安装Mysql"}
-				port: string
-				// +ui:order=3
-				// +ui:description=数据库连接用户
-				// +err:options={"required":"请先安装Mysql"}
-				user: string
-				// +ui:order=3
-				// +ui:description=数据库连接密码
-				// +err:options={"required":"请先安装Mysql"}
-				pass: string
+				mysqlSecret: string
 			}
 		}
 		// +ui:title=Webserver
@@ -345,6 +379,7 @@ template: {
 		// +ui:options={"disabled":true}
 		images: {
 			airflow: {
+				// +ui:options={"disabled":true}
 				tag: *"2.9.1" | string
 			}
 		}
