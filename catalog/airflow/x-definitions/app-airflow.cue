@@ -1,15 +1,15 @@
 import (
-	"strconv",
+	"strconv"
 	"strings"
 )
 
 import ("encoding/json")
 
-"airflow": {
+airflow: {
 	annotations: {}
 	labels: {}
 	attributes: {
-		"dynamicParameterMeta": [
+		dynamicParameterMeta: [
 			{
 				name:        "dependencies.mysql.mysqlSetting"
 				type:        "ContextSetting"
@@ -34,193 +34,193 @@ import ("encoding/json")
 
 template: {
 	_databaseName:  "\(strings.Replace(context.namespace+"_airflow", "-", "_", -1))"
-	_imageRegistry:        *"" | string
+	_imageRegistry: *"" | string
 	if context.docker_registry != _|_ && len(context.docker_registry) > 0 {
 		_imageRegistry: context.docker_registry + "/"
 	}
 
 	output: {
-		"apiVersion": "core.oam.dev/v1beta1"
-		"kind":       "Application"
-		"metadata": {
-			"name":      context.name
-			"namespace": context.namespace
-			"labels": {
-				"app":                context.name
+		apiVersion: "core.oam.dev/v1beta1"
+		kind:       "Application"
+		metadata: {
+			name:      context.name
+			namespace: context.namespace
+			labels: {
+				app:                  context.name
 				"app.core.bdos/type": "system"
 			}
 		}
-		"spec": {
-			"components": [
+		spec: {
+			components: [
 				{
-					"name": context.name
-					"type": "helm"
-					"properties": {
-						"chart":           "airflow"
-						"version":         parameter.chartVersion
-						"url":             context["helm_repo_url"]
-						"repoType":        "oci"
-						"releaseName":     context.name
-						"targetNamespace": context.namespace
-						"values": {
-							"defaultAirflowRepository": _imageRegistry + "apache/airflow"
-							defaultAirflowTag:          parameter.images.airflow.tag
-							"config": {
-								"core": {
+					name: context.name
+					type: "helm"
+					properties: {
+						chart:           "airflow"
+						version:         parameter.chartVersion
+						url:             context["helm_repo_url"]
+						repoType:        "oci"
+						releaseName:     context.name
+						targetNamespace: context.namespace
+						values: {
+							defaultAirflowRepository: _imageRegistry + "apache/airflow"
+							defaultAirflowTag:        parameter.images.airflow.tag
+							config: {
+								core: {
 									"default_timezone": "Asia/Shanghai"
 								}
-								"webserver": {
+								webserver: {
 									"default_ui_timezone": "Asia/Shanghai"
 								}
-								"scheduler": {
+								scheduler: {
 									"dag_dir_list_interval": 60
 								}
 							}
-							"extraEnvFrom": """
+							extraEnvFrom: """
 							   - secretRef:
 							       name: '\(parameter.dependencies.mysql.mysqlSecret)'
 							   - configMapRef:
 							       name: '\(parameter.dependencies.mysql.mysqlSetting)'
 							"""
-							"data": {
-								"metadataConnection": {
-									"protocol": "mysql"
-									"db":       _databaseName
-									"sslmode":  "disable"
+							data: {
+								metadataConnection: {
+									protocol: "mysql"
+									db:       _databaseName
+									sslmode:  "disable"
 								}
 							}
-							"postgresql": {
-								"enabled": false
+							postgresql: {
+								enabled: false
 							}
-							"migrateDatabaseJob": {
-								"useHelmHooks": false
+							migrateDatabaseJob: {
+								useHelmHooks: false
 							}
-							"webserverSecretKey": "feab0e05d989b76acb325a8b35e596c9"
-							"webserver": {
-								"replicas": parameter.webserver.replicas
-								"resources": {
-									"limits": {
-										"cpu":    parameter.webserver.resources.limits.cpu
-										"memory": parameter.webserver.resources.limits.memory
+							webserverSecretKey: "feab0e05d989b76acb325a8b35e596c9"
+							webserver: {
+								replicas: parameter.webserver.replicas
+								resources: {
+									limits: {
+										cpu:    parameter.webserver.resources.limits.cpu
+										memory: parameter.webserver.resources.limits.memory
 									}
-									"requests": {
-										"cpu":    parameter.webserver.resources.requests.cpu
-										"memory": parameter.webserver.resources.requests.memory
+									requests: {
+										cpu:    parameter.webserver.resources.requests.cpu
+										memory: parameter.webserver.resources.requests.memory
 									}
 								}
-								"startupProbe": {
-									"timeoutSeconds":   20
-									"failureThreshold": 20
-									"periodSeconds":    10
+								startupProbe: {
+									timeoutSeconds:   20
+									failureThreshold: 20
+									periodSeconds:    10
 								}
 							}
-							"scheduler": {
-								"replicas": parameter.scheduler.replicas
-								"resources": {
-									"limits": {
-										"cpu":    parameter.scheduler.resources.limits.cpu
-										"memory": parameter.scheduler.resources.limits.memory
+							scheduler: {
+								replicas: parameter.scheduler.replicas
+								resources: {
+									limits: {
+										cpu:    parameter.scheduler.resources.limits.cpu
+										memory: parameter.scheduler.resources.limits.memory
 									}
-									"requests": {
-										"cpu":    parameter.scheduler.resources.requests.cpu
-										"memory": parameter.scheduler.resources.requests.memory
+									requests: {
+										cpu:    parameter.scheduler.resources.requests.cpu
+										memory: parameter.scheduler.resources.requests.memory
 									}
 								}
-								"startupProbe": {
-									"timeoutSeconds":   20
-									"failureThreshold": 20
-									"periodSeconds":    10
+								startupProbe: {
+									timeoutSeconds:   20
+									failureThreshold: 20
+									periodSeconds:    10
 								}
-								"extraInitContainers": [
+								extraInitContainers: [
+									{
+										name:  "create-mysql-database"
+										image: _imageRegistry + "bitnami/mysql:8.0.22"
+										env: [
+											{
+												name: "PASSWORD"
+												valueFrom: {
+													secretKeyRef: {
+														key:  "MYSQL_PASSWORD"
+														name: "\(parameter.dependencies.mysql.mysqlSecret)"
+													}
+												}
+											},
+											{
+												name: "USER"
+												valueFrom: {
+													secretKeyRef: {
+														key:  "MYSQL_USER"
+														name: "\(parameter.dependencies.mysql.mysqlSecret)"
+													}
+												}
+											},
+											{
+												name:  "DATABASE"
+												value: _databaseName
+											},
+											{
+												name: "MYSQL_HOST"
+												valueFrom: configMapKeyRef: {
+													name: "\(parameter.dependencies.mysql.mysqlSetting)"
+													key:  "MYSQL_HOST"
+												}
+											},
+											{
+												name: "MYSQL_PORT"
+												valueFrom: configMapKeyRef: {
+													name: "\(parameter.dependencies.mysql.mysqlSetting)"
+													key:  "MYSQL_PORT"
+												}
+											},
+										]
+										command: [
+											"sh",
+											"-c",
+											"mysql -h $MYSQL_HOST -P $MYSQL_PORT -u $USER -p$PASSWORD -e \"CREATE DATABASE IF NOT EXISTS $DATABASE CHARACTER SET utf8mb4;\"",
+										]
+									},
+								]
+							}
+							workers: {
+								replicas:                      parameter.workers.replicas
+								terminationGracePeriodSeconds: 60
+								resources: {
+									limits: {
+										cpu:    parameter.workers.resources.limits.cpu
+										memory: parameter.workers.resources.limits.memory
+									}
+									requests: {
+										cpu:    parameter.workers.resources.requests.cpu
+										memory: parameter.workers.resources.requests.memory
+									}
+								}
+								persistence: {
+									enabled: false
+								}
+							}
+							redis: {
+								enabled:                       true
+								terminationGracePeriodSeconds: 30
+							}
+							ingress: {
+								web: {
+									enabled: true
+									hosts: [
 										{
-											name:  "create-mysql-database"
-											image: _imageRegistry + "bitnami/mysql:8.0.22"
-											env: [
-												{
-													name: "PASSWORD"
-													valueFrom: {
-														secretKeyRef: {
-															key:  "MYSQL_PASSWORD"
-															name: "\(parameter.dependencies.mysql.mysqlSecret)"
-														}
-													}
-												},
-												{
-													name: "USER"
-													valueFrom: {
-														secretKeyRef: {
-															key:  "MYSQL_USER"
-															name: "\(parameter.dependencies.mysql.mysqlSecret)"
-														}
-													}
-												},
-												{
-													name:  "DATABASE"
-													value: _databaseName
-												},
-												{
-													name: "MYSQL_HOST"
-													valueFrom: configMapKeyRef: {
-														name: "\(parameter.dependencies.mysql.mysqlSetting)"
-														key:  "MYSQL_HOST"
-													}
-												},
-												{
-													name: "MYSQL_PORT"
-													valueFrom: configMapKeyRef: {
-														name: "\(parameter.dependencies.mysql.mysqlSetting)"
-														key:  "MYSQL_PORT"
-													}
-												},
-											]
-											command: [
-												"sh",
-												"-c",
-												"mysql -h $MYSQL_HOST -P $MYSQL_PORT -u $USER -p$PASSWORD -e \"CREATE DATABASE IF NOT EXISTS $DATABASE CHARACTER SET utf8mb4;\"",
-											]
+											name: "airflow-web-" + context.namespace + "." + context["ingress.root_domain"]
 										},
 									]
-							}
-							"workers": {
-								"replicas":                      parameter.workers.replicas
-								"terminationGracePeriodSeconds": 60
-								"resources": {
-									"limits": {
-										"cpu":    parameter.workers.resources.limits.cpu
-										"memory": parameter.workers.resources.limits.memory
-									}
-									"requests": {
-										"cpu":    parameter.workers.resources.requests.cpu
-										"memory": parameter.workers.resources.requests.memory
-									}
-								},
-								"persistence": {
-									"enabled": false
+									ingressClassName: "kong"
 								}
 							}
-							"redis": {
-								"enabled":                       true
-								"terminationGracePeriodSeconds": 30
-							}
-							"ingress": {
-								"web": {
-									"enabled": true
-									"hosts": [
-										{
-											"name": "airflow-web-" + context.namespace + "." + context["ingress.root_domain"]
-										},
-									]
-									"ingressClassName": "kong"
+							images: {
+								statsd: {
+									repository: _imageRegistry + "prometheus/statsd-exporter"
+									tag:        "v0.26.1"
 								}
-							}
-							"images": {
-								"statsd": {
-									"repository": _imageRegistry + "prometheus/statsd-exporter"
-									"tag":        "v0.26.1"
-								}
-								"redis": {
-									"repository": _imageRegistry + "redis"
-									"tag":        "7-bookworm"
+								redis: {
+									repository: _imageRegistry + "redis"
+									tag:        "7-bookworm"
 								}
 							}
 						}
