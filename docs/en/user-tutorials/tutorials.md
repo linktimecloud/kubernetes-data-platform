@@ -19,4 +19,6 @@ Users can refer to the following scenario tutorials to practice how to do data i
   * [How to integrate with Kafka on KDP](./integration-kafka-with-int-ext-comps.md)
   * [Data Import from External HDFS to KDP HDFS](./import-from-hdfs-to-hdfs.md)
   * [Exploring data using Airbyte/ClickHouse/Superset](./exploring-data-using-airbyte-clickhouse-superset.md)
+  * [Batch Job Scheduling for Hive SQL with Apache Airflow](./batch-job-scheduling-for-hive-sql-with-apache-airflow.md)
   * More...
+

@@ -15,4 +15,6 @@
   * [如何与 KDP 上的 Kafka 快速集成](./integration-kafka-with-int-ext-comps.md)
   * [从外部 HDFS 导入数据到 KDP HDFS](./import-from-hdfs-to-hdfs.md)
   * [使用 Airbyte/ClickHouse/Superset 探索数据](./exploring-data-using-airbyte-clickhouse-superset.md)
+  * [使用Apache Airflow进行Hive SQL批作业调度](./batch-job-scheduling-for-hive-sql-with-apache-airflow.md)
   * 更多...
+
