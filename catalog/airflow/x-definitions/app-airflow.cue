@@ -261,7 +261,7 @@ template: {
 				// +ui:description=git 仓库提交 ID 
 				// +ui:order=3
 				rev: *"HEAD" | string
-				// +ui:description= DAG 代码目录 (默认为根目录)
+				// +ui:description= DAG 代码目录 (根目录请使用空字符串)
 				// +ui:order=4
 				subPath: *"dags" | string
 			}
