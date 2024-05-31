@@ -10,8 +10,6 @@ metadata:
 spec:
   type: airflow
   properties:
-    chartVersion: v1.1.0-1.14.0
-    images:
-      airflow:
-        tag: 2.9.1
+    scheduler:
+      replicas: 1
 
