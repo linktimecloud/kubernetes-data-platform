@@ -31,7 +31,7 @@ DAG files are stored in a Git repository. The default installation configuration
 
 DAGs are set to a paused state by default and need to be manually started. Manually activate the DAG named `hello_airflow` by clicking the switch next to its name. This DAG runs once a day and will automatically catch up on yesterday's tasks after activation. You can also manually trigger it by clicking the `Trigger DAG` button on the right side of the `hello_airflow` DAG.
 
-### 3. Troubleshooting Common Issues
+### 3. FAQ
 
 #### 3.1. DAG Execution Failure
 
