@@ -281,54 +281,58 @@ template: {
 										"mysql-replication-password": base64.Encode(null, parameter.auth.replicationPassword)
 										"mysql-root-password": base64.Encode(null, parameter.auth.rootPassword)
 									}
-								}
+								},
 							]
 						}
 						"type": "k8s-objects"
 					},
+					{
+						name: "mysql-context-data"
+						type: "k8s-objects"
+						properties: {
+							objects: [
+								{
+									"apiVersion": "bdc.kdp.io/v1alpha1"
+									"kind":       "ContextSetting"
+									"metadata": {
+										"name": context.bdc + "-mysql-setting"
+										"annotations": {
+											"setting.ctx.bdc.kdp.io/type":   "connect"
+											"setting.ctx.bdc.kdp.io/origin": "system"
+										}
+									}
+									"spec": {
+										"name": "mysql-setting"
+										"properties": {
+											"MYSQL_HOST": context["bdc"] + "-mysql"
+											"MYSQL_PORT": "3306"
+										}
+										"type": "mysql"
+									}
+								},
+								{
+									"apiVersion": "bdc.kdp.io/v1alpha1"
+									"kind":       "ContextSecret"
+									"metadata": {
+										"annotations": {
+											"setting.ctx.bdc.kdp.io/origin": "system"
+										}
+										"name":      context["bdc"] + "-mysql-secret"
+										"namespace": ""
+									}
+									"spec": {
+										"type": "mysql"
+										"properties": {
+											"MYSQL_USER":     base64.Encode(null, parameter.auth.username)
+											"MYSQL_PASSWORD": base64.Encode(null, parameter.auth.password)
+										}
+										"name": "mysql-secret"
+									}
+								},
+							]
+						}
+					},
 				]
-			}
-		}
-	}
-	outputs: {
-		contextsetting: {
-			//生成connect地址端口相关的上下文信息
-			"apiVersion": "bdc.kdp.io/v1alpha1"
-			"kind":       "ContextSetting"
-			"metadata": {
-				"name": context.bdc + "-mysql-setting"
-				"annotations": {
-					"setting.ctx.bdc.kdp.io/type":   "connect"
-					"setting.ctx.bdc.kdp.io/origin": "system"
-				}
-			}
-			"spec": {
-				"name": "mysql-setting"
-				"properties": {
-					"MYSQL_HOST": context["bdc"] + "-mysql"
-					"MYSQL_PORT": "3306"
-				}
-				"type": "mysql"
-			}
-		}
-
-		contextsecret: {
-			"apiVersion": "bdc.kdp.io/v1alpha1"
-			"kind":       "ContextSecret"
-			"metadata": {
-				"annotations": {
-					"setting.ctx.bdc.kdp.io/origin": "system"
-				}
-				"name":      context["bdc"] + "-mysql-secret"
-				"namespace": ""
-			}
-			"spec": {
-				"type": "mysql"
-				"properties": {
-					"MYSQL_USER":     base64.Encode(null, parameter.auth.username)
-					"MYSQL_PASSWORD": base64.Encode(null, parameter.auth.password)
-				}
-				"name": "mysql-secret"
 			}
 		}
 	}
