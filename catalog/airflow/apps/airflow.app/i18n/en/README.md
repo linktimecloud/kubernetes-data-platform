@@ -1,74 +1,49 @@
 ### 1. Application Description
 
-Airflow™ is a platform created by the community to programmatically author, schedule and monitor workflows.
+Airflow™ is a platform for programmatically authoring, scheduling, and monitoring workflows.
 
 ### 2. Quick Start
 
-#### 2.1 Deploy
+#### 2.1 Deployment
 
-Airflow is deployed by using KDP web.
+Airflow is deployed via the KDP web interface.
 
-#### 2.2. Practice
+#### 2.2 Practical Usage
 
-##### 2.2.1 Create DAG file
+##### 2.2.1 Creating DAG Files
 
-Here is a simple DAG file, copy the following content to the demo.py file.
+##### 2.2.3 Accessing Airflow Web via Browser
 
-```python
-from datetime import datetime
-
-from airflow import DAG
-from airflow.decorators import task
-from airflow.operators.bash import BashOperator
-
-with DAG(dag_id="demo", start_date=datetime(2024, 5, 20), schedule="0 0 * * *") as dag:
-
-    hello = BashOperator(task_id="hello", bash_command="echo hello")
-
-    @task()
-    def airflow():
-        print("airflow")
-
-    hello >> airflow()
-```
-
-##### 2.2.2 Copy DAG file to airflow scheduler and worker pod
-
-```shell
-kubectl cp demo.py airflow-scheduler-7cf5ddb9c5-fql6x:/opt/airflow/dags -n kdp-data
-kubectl cp demo.py airflow-worker-584b97f6cb-8gxq8:/opt/airflow/dags -n kdp-data
-```
-
-Note: When using this example, please modify `kdp-data` to your namespace, modify `airflow-scheduler-7cf5ddb9c5-fql6x` to your scheduler pod name, modify `airflow-worker-584b97f6cb-8gxq8` to your worker pod name.
-
-##### 2.2.3 Visit airflow web
-
-Visit airflow web by ingress address, or using kubectl port-forward, as follows:
+You can access the Airflow web interface through the configured ingress (http://airflow-web-kdp-data.kdp-e2e.io/home) or by using kubectl port-forward, as shown in the following command:
 
 ```shell
 kubectl port-forward svc/airflow-webserver -n kdp-data 8080:8080
 ```
 
-Default login user/password is `admin/admin`
+The default login username/password is admin/admin.
 
-#### 2.2.4 View DAG and task execution
 
-The current configured scheduler scanning frequency is 1 minute, and the demo DAG can be seen on the web page. Click the 'Trigger DAG' button on the right to trigger DAG execution.
+### 2.2.4 Configuring DAG Files
 
-### 3. FAQ
+DAG files are stored in a Git repository. The default installation configuration places the DAG files in a Git repository, which you can modify to change the DAG files. Alternatively, you can fork the repository, modify the DAG files, and then commit them to the Git repository. You can also install and configure the DAG repository, branch, etc., on the KDP page and then update it.
 
-#### 3.1. DAG execution failed
+### 2.2.4 Running DAGs
 
-Reasons and results:
+DAGs are set to a paused state by default and need to be manually started. Manually activate the DAG named `hello_airflow` by clicking the switch next to its name. This DAG runs once a day and will automatically catch up on yesterday's tasks after activation. You can also manually trigger it by clicking the `Trigger DAG` button on the right side of the `hello_airflow` DAG.
 
-1. Check whether the demo.py file exists in the `/opt/airflow/dags` directory of the scheduler and worker pod;
-2. View the output information of scheduler and worker pod logs.
+### 3. Troubleshooting Common Issues
+
+#### 3.1. DAG Execution Failure
+
+Causes and Troubleshooting:
+
+- Check if the DAG code synchronization is successful by checking the logs: `kubectl logs -l component=scheduler,release=airflow -c git-sync -n kdp-data`
+- Review the log output information for the scheduler and worker pods.
 
 ### 4. Appendix
 
-#### 4.1. Concept
+#### 4.1. Concept Introduction
 
 **DAG**
 
-A DAG (Directed Acyclic Graph) is the core concept of Airflow, collecting Tasks together, organized with dependencies and relationships to say how they should run.
-
+Directed Acyclic Graph, which is the basic unit for describing workflows in Airflow.
