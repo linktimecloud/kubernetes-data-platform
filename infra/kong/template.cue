@@ -59,7 +59,9 @@ _kong: {
 					repository: "\(parameter.registry)/kong/kubernetes-ingress-controller"
 					tag: "2.12"
 				ingressClass: "kong"
-				ingressClassAnnotations: {}
+				ingressClassAnnotations: {
+					"ingressclass.kubernetes.io/is-default-class": "true"
+				}
 			}
 			waitImage: {
 				enabled: true
