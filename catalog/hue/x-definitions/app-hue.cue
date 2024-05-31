@@ -275,7 +275,6 @@ template: {
 
 						{
 							properties: {
-								ingressClassName: parameter.ingressClassName
 								stickySession:    true
 								service: {
 									ports: [
@@ -443,10 +442,6 @@ template: {
 				memory: *"1024Mi" | string
 			}
 		}
-
-		// +ui:description=配置访问 Ingress 地址的 IngressClass, 如果您不清楚IngressClass，请勿随意更改
-		// +ui:order=4
-		ingressClassName: *"kong" | string
 
 		// +ui:description=容器镜像
 		// +ui:options={"disabled": true}

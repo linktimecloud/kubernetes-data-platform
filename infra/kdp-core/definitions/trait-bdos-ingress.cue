@@ -13,6 +13,8 @@ import "strings"
 template: {
 	import ("strings")
 
+	// could be "kong" or "nginx" ...
+	_ingressClassName: ""
 	// declare _ingressName
 	_ingressName: string
 	if parameter.ingressName != _|_ {
@@ -77,7 +79,9 @@ template: {
 			}
 
 			spec: {
-				ingressClassName: parameter.ingressClassName
+				if _ingressClassName != _|_ && _ingressClassName != "" {
+					ingressClassName: _ingressClassName
+				}
 				rules: [
 					for v in parameter.rules {
 						_rule_domain: *v.host | string
@@ -138,11 +142,13 @@ template: {
 					"\(k)": v
 				}
 			}
+
 			// KongIngress CR
-			if parameter.stickySession && parameter.ingressClassName == "kong"{
+			if parameter.stickySession && _ingressClassName == "kong"
+			// nginxIngress CR
+			{
 				"konghq.com/override": context.name + "-sticky-session"
 			}
-			// nginxIngress CR
 		}
 		metalabels: {
 			"app": context.name
@@ -169,10 +175,11 @@ template: {
 
 	}
 
-	
 	outputs: {
 		// KongIngress CR
-		if parameter.stickySession && parameter.ingressClassName == "kong"{
+		if parameter.stickySession && _ingressClassName == "kong"
+		// nginxIngress CR
+		{
 			"kongIngress": {
 				apiVersion: "configuration.konghq.com/v1"
 				kind:       "KongIngress"
@@ -189,7 +196,6 @@ template: {
 				}
 			}
 		}
-		// nginxIngress CR
 	}
 
 	parameter: {
@@ -197,8 +203,7 @@ template: {
 		ingressName?: string
 		gateway?: [string]:     string
 		annotations?: [string]: string
-		ingressClassName: *"kong" | string
-		stickySession:    *false | bool
+		stickySession: *false | bool
 		service?: {
 			serviceName?: string
 			annotations?: [string]: string
