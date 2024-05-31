@@ -252,9 +252,9 @@ template: {
 		dags: {
 			// +ui:description=git 同步配置 (必须配置)
 			gitSync: {
-				// +ui:description=git 仓库地址
+				// +ui:description=git 仓库地址。 备用镜像仓库： https://gitee.com/linktime-cloud/example-datasets.git
 				// +ui:order=1
-				repo: *"https://gitee.com/linktime-cloud/example-datasets.git" | string
+				repo: *"https://github.com/linktimecloud/example-datasets.git" | string
 				// +ui:description=git 仓库分支
 				// +ui:order=2
 				branch: *"airflow" | string
