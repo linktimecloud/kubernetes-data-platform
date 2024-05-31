@@ -1,9 +1,4 @@
-import (
-	"strconv"
-	"strings"
-)
-
-import ("encoding/json")
+import "strings"
 
 airflow: {
 	annotations: {}
@@ -65,6 +60,16 @@ template: {
 						values: {
 							defaultAirflowRepository: _imageRegistry + "apache/airflow"
 							defaultAirflowTag:        parameter.images.airflow.tag
+							executor:                 "KubernetesExecutor"
+							dags: {
+								gitSync: {
+									enabled: true
+									repo:    parameter.dags.gitSync.repo
+									branch:  parameter.dags.gitSync.branch
+									rev:     parameter.dags.gitSync.rev
+									subPath: parameter.dags.gitSync.subPath
+								}
+							}
 							config: {
 								core: {
 									"default_timezone": "Asia/Shanghai"
@@ -198,10 +203,6 @@ template: {
 									enabled: false
 								}
 							}
-							redis: {
-								enabled:                       true
-								terminationGracePeriodSeconds: 30
-							}
 							ingress: {
 								web: {
 									enabled: true
@@ -210,18 +211,17 @@ template: {
 											name: "airflow-web-" + context.namespace + "." + context["ingress.root_domain"]
 										},
 									]
-									ingressClassName: "kong"
 								}
 							}
 							images: {
 								statsd: {
 									repository: _imageRegistry + "prometheus/statsd-exporter"
-									tag:        "v0.26.1"
 								}
-								redis: {
-									repository: _imageRegistry + "redis"
-									tag:        "7-bookworm"
+								gitSync: {
+									repository: _imageRegistry + "git-sync/git-sync"
+									tag:        "v4.2.3"
 								}
+
 							}
 						}
 					}
@@ -246,8 +246,29 @@ template: {
 				mysqlSecret: string
 			}
 		}
-		// +ui:title=Webserver
+
+		// ui:title=DAG 配置
 		// +ui:order=2
+		dags: {
+			// +ui:description=git 同步配置 (必须配置)
+			gitSync: {
+				// +ui:description=git 仓库地址
+				// +ui:order=1
+				repo: *"https://gitee.com/linktime-cloud/example-datasets.git" | string
+				// +ui:description=git 仓库分支
+				// +ui:order=2
+				branch: *"airflow" | string
+				// +ui:description=git 仓库提交 ID 
+				// +ui:order=3
+				rev: *"HEAD" | string
+				// +ui:description= DAG 代码目录 (默认为根目录)
+				// +ui:order=4
+				subPath: *"dags" | string
+			}
+		}
+
+		// +ui:title=Webserver
+		// +ui:order=3
 		webserver: {
 			// +ui:description=资源规格
 			// +ui:order=1
@@ -288,7 +309,7 @@ template: {
 			replicas: *1 | int
 		}
 		// +ui:title=Scheduler
-		// +ui:order=3
+		// +ui:order=4
 		scheduler: {
 			// +ui:description=资源规格
 			// +ui:order=1
@@ -329,7 +350,7 @@ template: {
 			replicas: *1 | int
 		}
 		// +ui:title=Workers
-		// +ui:order=4
+		// +ui:order=5
 		workers: {
 			// +ui:description=资源规格
 			// +ui:order=1
@@ -380,7 +401,7 @@ template: {
 		images: {
 			airflow: {
 				// +ui:options={"disabled":true}
-				tag: *"2.9.1" | string
+				tag: *"v1.0.0-2.9.1" | string
 			}
 		}
 	}
