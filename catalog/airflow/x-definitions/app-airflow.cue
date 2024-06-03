@@ -291,7 +291,7 @@ template: {
 			// +minimum=1
 			// +ui:description=worker 数量，增大可以提高webserver并发
 			// +ui:order=3
-			workerCount: *2 | int
+			workerCount: *1 | int
 		}
 		// +ui:title=Scheduler
 		// +ui:order=4
