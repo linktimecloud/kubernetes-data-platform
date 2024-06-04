@@ -348,7 +348,7 @@ template: {
 		// +ui:description=mysql部署模式，standalone: 单机部署，replication: 主备部署。注意: standalone切换replication会导致应用一直处于执行中且无法切换成功。
 		// +ui:order=3
 		// +ui:hidden={{rootFormData.architecture != ""}}
-		architecture: *""| "standalone" | "replication"
+		architecture: *"standalone" | "replication"
 		// +ui:description={{rootFormData.architecture == "standalone" ? 'standalone模式鉴权信息': 'replication模式鉴权信息'}}
 		// +ui:order=4
 		auth: {
