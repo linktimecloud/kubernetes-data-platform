@@ -223,6 +223,7 @@ template: {
 										}
 										// https: //artifacthub.io/packages/helm/bitnami/redis
 										redis: {
+											global: imageRegistry: _contextImageRegistry
 											enabled:      true
 											architecture: "standalone"
 										}
