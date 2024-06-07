@@ -52,7 +52,7 @@ template: {
 					type: "helm"
 					properties: {
 						chart:           "airflow"
-						version:         parameter.chartVersion
+						version:         "1.14.0"
 						url:             context["helm_repo_url"]
 						repoType:        "oci"
 						releaseName:     context.name
@@ -81,12 +81,32 @@ template: {
 									"dag_dir_list_interval": 60
 								}
 							}
+							enableBuiltInSecretEnvVars: {
+								"AIRFLOW_CONN_AIRFLOW_DB":             false
+								"AIRFLOW__CORE__SQL_ALCHEMY_CONN":     false
+								"AIRFLOW__DATABASE__SQL_ALCHEMY_CONN": false
+							}
 							extraEnvFrom: """
 							   - secretRef:
 							       name: '\(parameter.dependencies.mysql.mysqlSecret)'
 							   - configMapRef:
 							       name: '\(parameter.dependencies.mysql.mysqlSetting)'
 							"""
+
+							extraEnv: """
+							- name: AIRFLOW__DATABASE__SQL_ALCHEMY_CONN
+							  value: "mysql://$(MYSQL_USER):$(MYSQL_PASSWORD)@$(MYSQL_HOST):$(MYSQL_PORT)/\(_databaseName)"
+							"""
+
+							migrateDatabaseJob: {
+								command: [
+									"bash", "-c",
+								]
+								args: [
+									"mysql -h $MYSQL_HOST -P $MYSQL_PORT -u $MYSQL_USER -p$MYSQL_PASSWORD -e \"CREATE DATABASE IF NOT EXISTS \(_databaseName) CHARACTER SET utf8mb4;\" && airflow db migrate",
+								]
+							}
+
 							data: {
 								metadataConnection: {
 									protocol: "mysql"
@@ -103,6 +123,14 @@ template: {
 							webserverSecretKey: "feab0e05d989b76acb325a8b35e596c9"
 							webserver: {
 								replicas: parameter.webserver.replicas
+								args: [
+									"airflow",
+									"webserver",
+									"--workers",
+									"\(parameter.webserver.workerCount)",
+									"--workerclass",
+									"gevent",
+								]
 								resources: {
 									limits: {
 										cpu:    parameter.webserver.resources.limits.cpu
@@ -136,55 +164,7 @@ template: {
 									failureThreshold: 20
 									periodSeconds:    10
 								}
-								extraInitContainers: [
-									{
-										name:  "create-mysql-database"
-										image: _imageRegistry + "bitnami/mysql:8.0.22"
-										env: [
-											{
-												name: "PASSWORD"
-												valueFrom: {
-													secretKeyRef: {
-														key:  "MYSQL_PASSWORD"
-														name: "\(parameter.dependencies.mysql.mysqlSecret)"
-													}
-												}
-											},
-											{
-												name: "USER"
-												valueFrom: {
-													secretKeyRef: {
-														key:  "MYSQL_USER"
-														name: "\(parameter.dependencies.mysql.mysqlSecret)"
-													}
-												}
-											},
-											{
-												name:  "DATABASE"
-												value: _databaseName
-											},
-											{
-												name: "MYSQL_HOST"
-												valueFrom: configMapKeyRef: {
-													name: "\(parameter.dependencies.mysql.mysqlSetting)"
-													key:  "MYSQL_HOST"
-												}
-											},
-											{
-												name: "MYSQL_PORT"
-												valueFrom: configMapKeyRef: {
-													name: "\(parameter.dependencies.mysql.mysqlSetting)"
-													key:  "MYSQL_PORT"
-												}
-											},
-										]
-										command: [
-											"sh",
-											"-c",
-											"mysql -h $MYSQL_HOST -P $MYSQL_PORT -u $USER -p$PASSWORD -e \"CREATE DATABASE IF NOT EXISTS $DATABASE CHARACTER SET utf8mb4;\"",
-										]
-									},
-								]
+
 							}
 							workers: {
 								replicas:                      parameter.workers.replicas
@@ -307,6 +287,11 @@ template: {
 			// // +pattern=^([1-9]\d*)$
 			// +err:options={"pattern":"请输入正确的副本数"}
 			replicas: *1 | int
+			
+			// +minimum=1
+			// +ui:description=worker 数量，增大可以提高webserver并发
+			// +ui:order=3
+			workerCount: *1 | int
 		}
 		// +ui:title=Scheduler
 		// +ui:order=4
@@ -391,10 +376,6 @@ template: {
 			replicas: *1 | int
 		}
 
-		// +ui:description=Helm Chart 版本号
-		// +ui:order=100
-		// +ui:options={"disabled":true}
-		chartVersion: string
 		// +ui:description=镜像版本
 		// +ui:order=101
 		// +ui:options={"disabled":true}
