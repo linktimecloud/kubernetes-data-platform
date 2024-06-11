@@ -9,22 +9,22 @@
 
 - 用户基本信息表： tianchi_mum_baby
 
-| 字段     | 字段说明     | 说明                                                       |
-| -------- | ------------ | ---------------------------------------------------------- |
-| user_id  | 用户标识     | 抽样 & 字段脱敏                                            |
-| birthday | 婴儿出生日期 | 由 user_id 填写，有可能不真实，格式：YYYYMMDD              |
+| 字段     | 字段说明     | 说明                                                          |
+| -------- | ------------ | ------------------------------------------------------------- |
+| user_id  | 用户标识     | 抽样 & 字段脱敏                                               |
+| birthday | 婴儿出生日期 | 由 user_id 填写，有可能不真实，格式：YYYYMMDD                 |
 | gender   | 婴儿性别     | （0 男孩，1 女孩，2 性别不明），由 user_id 填写，有可能不真实 |
 
 - 商品交易信息表： tianchi_mum_baby_trade_history
 
-| 字段       | 字段说明       | 说明 |
-| ---------- | -------------- | ---- |
-| user_id    | 用户标识       |      |
-| auction_id | 交易 ID        |      |
-| category_1 | 商品一级类目 ID |     |
-| category_2 | 商品二级类目 ID |     |
-| buy_amount | 购买数量       |      |
-| auction_id | 订单 ID        |      |
+| 字段       | 字段说明        | 说明 |
+| ---------- | --------------- | ---- |
+| user_id    | 用户标识        |      |
+| auction_id | 交易 ID         |      |
+| category_1 | 商品一级类目 ID |      |
+| category_2 | 商品二级类目 ID |      |
+| buy_amount | 购买数量        |      |
+| auction_id | 订单 ID         |      |
 
 ## 1.2 目标
 借助 KDP 平台的开源组件 `Airbyte`、`ClickHouse`、`Superset` 完成如下简单的商业分析任务，通过数据分析和可视化展示，充分挖掘数据的价值，让数据更好地为业务服务。
@@ -76,7 +76,7 @@
 
 # 3 数据开发
 将数据从 CSV 文件导入到 ClickHouse 后，对数据进行 ETL 处理，供 Superset 进行可视化分析。
-Airflow 中相关的代码如下，具体代码参考 [Github](https://github.com/linktimecloud/example-datasets/blob/airflow/dags/taobao_mom_baby.py) 或者 [Gitee](https://gitee.com/linktime-cloud/example-datasets/blob/airflow/dags/taobao_mom_baby.py)。
+Airflow 中相关的代码如下，具体代码参考 [Github](https://github.com/linktimecloud/example-datasets/blob/airflow/dags/taobao-mom-baby.py) 或者 [Gitee](https://gitee.com/linktime-cloud/example-datasets/blob/airflow/dags/taobao-mom-baby.py)。
 
 ```python
 @task

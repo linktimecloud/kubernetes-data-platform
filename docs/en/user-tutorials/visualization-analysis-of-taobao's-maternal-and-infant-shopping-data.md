@@ -10,22 +10,22 @@ The data for this analysis comes from the [Taobao Mother and Baby Shopping Behav
 
 - User Basic Information Table: tianchi_mum_baby
 
-| Field     | Description     | Note                                                       |
-| -------- | ------------ | ---------------------------------------------------------- |
-| user_id  | User ID     | Sample & Field Anonymization                                            |
-| birthday | Baby's Birth Date | Filled by user_id, may not be accurate, format: YYYYMMDD              |
+| Field    | Description       | Note                                                               |
+| -------- | ----------------- | ------------------------------------------------------------------ |
+| user_id  | User ID           | Sample & Field Anonymization                                       |
+| birthday | Baby's Birth Date | Filled by user_id, may not be accurate, format: YYYYMMDD           |
 | gender   | Baby's Gender     | (0 Boy, 1 Girl, 2 Unknown), filled by user_id, may not be accurate |
 
 - Product Transaction Information Table: tianchi_mum_baby_trade_history
 
-| Field       | Description       | Note |
-| ---------- | -------------- | ---- |
-| user_id    | User ID       |      |
-| auction_id | Transaction ID        |      |
-| category_1 | Product Primary Category ID |     |
-| category_2 | Product Secondary Category ID |     |
-| buy_amount | Purchase Quantity       |      |
-| auction_id | Order ID        |      |
+| Field      | Description                   | Note |
+| ---------- | ----------------------------- | ---- |
+| user_id    | User ID                       |      |
+| auction_id | Transaction ID                |      |
+| category_1 | Product Primary Category ID   |      |
+| category_2 | Product Secondary Category ID |      |
+| buy_amount | Purchase Quantity             |      |
+| auction_id | Order ID                      |      |
 
 ## 1.2 Objectives
 Using the open-source components `Airbyte`, `ClickHouse`, and `Superset` of the KDP platform to complete the following simple business analysis tasks, fully mining the value of the data through data analysis and visual display, making data better serve the business.
@@ -77,7 +77,7 @@ After completing the above operations, the data has been successfully imported i
 
 # 3 Data Development
 After importing the data from the CSV file into ClickHouse, perform ETL processing on the data for visual analysis in Superset.
-The relevant code in Airflow is as follows, refer to [Github](https://github.com/linktimecloud/example-datasets/blob/airflow/dags/taobao_mom_baby.py) or [Gitee](https://gitee.com/linktime-cloud/example-datasets/blob/airflow/dags/taobao_mom_baby.py) for specific code.
+The relevant code in Airflow is as follows, refer to [Github](https://github.com/linktimecloud/example-datasets/blob/airflow/dags/taobao-mom-baby.py) or [Gitee](https://gitee.com/linktime-cloud/example-datasets/blob/airflow/dags/taobao-mom-baby.py) for specific code.
 
 ```python
 @task
