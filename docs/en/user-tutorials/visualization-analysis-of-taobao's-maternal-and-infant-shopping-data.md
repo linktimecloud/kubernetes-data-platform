@@ -146,7 +146,7 @@ Refer to [Using the Airbyte Operator to orchestrate Airbyte OSS](https://docs.ai
 
 
 
-3. Enable the DAG named `taobao_user_purchases_example` in Airflow, the job is scheduled daily, and the first time it is enabled, it will backfill the schedule for the previous day. It can also be triggered manually. Click the DAG name to view the job running status.
+3. Enable the DAG named `taobao-user-purchases-example` in Airflow, the job is scheduled daily, and the first time it is enabled, it will backfill the schedule for the previous day. It can also be triggered manually. Click the DAG name to view the job running status.
    
     > DAG List
     ![](../../zh/user-tutorials/images/airflow04.png)
