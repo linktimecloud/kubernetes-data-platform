@@ -9,7 +9,7 @@
 将数据从 csv file 导入 clickhouse
 1. 在 airbyte 中添加一个 file 类型 source。
 ![](./images/airbyte01.png)
-   - Dataset Name: `tmall-order-sample` (请误修改)
+   - Dataset Name: `tmall-order-sample` (请勿修改)
    - URL: `https://gitee.com/linktime-cloud/example-datasets/raw/main/airbyte/tmall-order-sample.csv`
       
 1. 在 airbyte 中添加一个 clickhouse 类型 destination。 
