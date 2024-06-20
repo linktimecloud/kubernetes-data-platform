@@ -1,0 +1,13 @@
+apiVersion: bdc.kdp.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    app.core.bdos/catalog: juicefs
+  labels:
+    app: juicefs
+    app.core.bdos/type: system
+spec:
+  name: juicefs
+  type: juicefs
+  properties:
+    mode: distributed
