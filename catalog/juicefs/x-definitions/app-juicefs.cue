@@ -293,22 +293,23 @@ template: {
 									"setting.ctx.bdc.kdp.io/origin": "system"
 									"setting.ctx.bdc.kdp.io/type":   "juicefs"
 								}
-								name:      context["namespace"] + "-" + context["name"] + "-context"
+								name:      context["namespace"] + "-" + context["name"] + "-context-setting"
 								namespace: context["namespace"]
 							}
 							spec: {
-								name: context["name"] + "-context"
+								name:      context["name"] + "-context-setting"
+								_port:     "9000"
+								_hostname: context["name"] + "." + context["namespace"] + ".svc.cluster.local"
 								properties: {
-									authSecretName: "juicefs-secret"
-									host:           context["name"] + "." + context["namespace"] + ".svc.cluster.local:9000"
+									hostname: _hostname
+									port:     _port
+									host:     _hostname + ":" + _port
 								}
 								type: "juicefs"
 							}
 						}]
-
 					}
 				},
-
 				{
 					name: context["name"] + "-create-database-job"
 					type: "k8s-objects"
@@ -372,7 +373,6 @@ template: {
 								restartPolicy: "Never"
 							}
 						}]
-
 					}
 				},
 

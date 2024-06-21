@@ -24,12 +24,14 @@ template: {
 			annotations: context.bdcAnnotations
 		}
 		data: {
-			"host":           parameter.host
-			"authSecretName": parameter.authSecretName
+			"host":     parameter.host
+			"hostname": parameter.hostname
+			"port":     parameter.port
 		}
 	}
 	parameter: {
-		host:           string
-		authSecretName: string
+		host:     string
+		hostname: string
+		port:     string
 	}
 }
