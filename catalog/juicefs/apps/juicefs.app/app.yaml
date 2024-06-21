@@ -10,4 +10,10 @@ spec:
   name: juicefs
   type: juicefs
   properties:
-    mode: distributed
+    replicaCount: 1
+    mysql:
+      mysqlSecret: mysql-secret
+      mysqlSetting: mysql-setting
+    minio:
+      contextSecret: minio-context-secret
+      contextSetting: minio-context-setting

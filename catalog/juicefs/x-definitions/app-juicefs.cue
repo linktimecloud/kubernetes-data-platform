@@ -4,6 +4,41 @@ import "strings"
 	annotations: {}
 	labels: {}
 	attributes: {
+		dynamicParameterMeta: [
+			{
+				name:        "mysql.mysqlSetting"
+				type:        "ContextSetting"
+				refType:     "mysql"
+				refKey:      ""
+				description: "mysql setting name"
+				required:    true
+			},
+			{
+				name:        "mysql.mysqlSecret"
+				type:        "ContextSecret"
+				refType:     "mysql"
+				refKey:      ""
+				description: "mysql secret name"
+				required:    true
+			},
+			{
+				name:        "minio.contextSetting"
+				type:        "ContextSetting"
+				refType:     "minio"
+				refKey:      ""
+				description: ""
+				required:    true
+			},
+			{
+				name:        "minio.contextSecret"
+				type:        "ContextSecret"
+				refType:     "minio"
+				refKey:      ""
+				description: ""
+				required:    true
+			},
+
+		]
 		apiResource: {
 			definition: {
 				apiVersion: "bdc.kdp.io/v1alpha1"
@@ -46,15 +81,158 @@ template: {
 								repository: "\(_imageRegistry)juicedata/mount"
 								tag:        "ce-v1.1.0"
 							}
+							replicaCount: parameter.replicaCount
 							secret: {
-								name:      "jfs-volume"
-								metaurl:   ""
-								storage:   "minio"
-								accessKey: "admin"
-								secretKey: "admin.password"
-								bucket:    "http://minio:9000/juicefs"
+								name:    "jfs-volume"
+								storage: "minio"
+								// Do not remove the empty string, otherwise the chart will not work
+								accessKey: " "
+								secretKey: " "
+								bucket:    " "
 							}
 							options: "--multi-buckets"
+							envs: [
+								{
+									name: "MYSQL_PASSWORD"
+									valueFrom: {
+										secretKeyRef: {
+											key:  "MYSQL_PASSWORD"
+											name: "\(parameter.mysql.mysqlSecret)"
+										}
+									}
+								},
+								{
+									name: "MYSQL_USER"
+									valueFrom: {
+										secretKeyRef: {
+											key:  "MYSQL_USER"
+											name: "\(parameter.mysql.mysqlSecret)"
+										}
+									}
+								},
+								{
+									name:  "DATABASE"
+									value: _databaseName
+								},
+								{
+									name: "MYSQL_HOST"
+									valueFrom: configMapKeyRef: {
+										name: "\(parameter.mysql.mysqlSetting)"
+										key:  "MYSQL_HOST"
+									}
+								},
+								{
+									name: "MYSQL_PORT"
+									valueFrom: configMapKeyRef: {
+										name: "\(parameter.mysql.mysqlSetting)"
+										key:  "MYSQL_PORT"
+									}
+								},
+								{
+									name:  "METAURL"
+									value: "mysql://$(MYSQL_USER):$(MYSQL_PASSWORD)@($(MYSQL_HOST):$(MYSQL_PORT))/$(DATABASE)"
+								},
+								{
+									name: "MINIO_ROOT_PASSWORD"
+									valueFrom: {
+										secretKeyRef: {
+											key:  "MINIO_ROOT_PASSWORD"
+											name: "\(parameter.minio.contextSecret)"
+										}
+									}
+								},
+								{
+									name: "MINIO_ROOT_USER"
+									valueFrom: {
+										secretKeyRef: {
+											key:  "MINIO_ROOT_USER"
+											name: "\(parameter.minio.contextSecret)"
+										}
+									}
+								},
+							]
+							initEnvs: [
+								{
+									name: "MYSQL_PASSWORD"
+									valueFrom: {
+										secretKeyRef: {
+											key:  "MYSQL_PASSWORD"
+											name: "\(parameter.mysql.mysqlSecret)"
+										}
+									}
+								},
+								{
+									name: "MYSQL_USER"
+									valueFrom: {
+										secretKeyRef: {
+											key:  "MYSQL_USER"
+											name: "\(parameter.mysql.mysqlSecret)"
+										}
+									}
+
+								},
+								{
+									name:  "DATABASE"
+									value: _databaseName
+								},
+								{
+									name: "MYSQL_HOST"
+									valueFrom: configMapKeyRef: {
+										name: "\(parameter.mysql.mysqlSetting)"
+										key:  "MYSQL_HOST"
+									}
+								},
+								{
+									name: "MYSQL_PORT"
+									valueFrom: configMapKeyRef: {
+										name: "\(parameter.mysql.mysqlSetting)"
+										key:  "MYSQL_PORT"
+									}
+								},
+								{
+									name:  "metaurl"
+									value: "mysql://$(MYSQL_USER):$(MYSQL_PASSWORD)@($(MYSQL_HOST):$(MYSQL_PORT))/$(DATABASE)"
+								},
+								{
+									name: "secretkey"
+									valueFrom: {
+										secretKeyRef: {
+											key:  "MINIO_ROOT_PASSWORD"
+											name: "\(parameter.minio.contextSecret)"
+										}
+									}
+								},
+								{
+									name: "accesskey"
+									valueFrom: {
+										secretKeyRef: {
+											key:  "MINIO_ROOT_USER"
+											name: "\(parameter.minio.contextSecret)"
+										}
+									}
+								},
+								{
+									name: "bucketHost"
+									valueFrom: {
+										configMapKeyRef: {
+											key:  "host"
+											name: "\(parameter.minio.contextSetting)"
+										}
+									}
+								},
+								{
+									name:  "bucket"
+									value: "http://$(bucketHost)/juicefs"
+								},
+
+							]
+
+							if parameter.resources != _|_ {
+								resources: parameter.resources
+							}
+							if parameter.affinity != _|_ {
+								affinity: parameter.affinity
+							}
 						}
 						version: "0.11.2"
 					}
@@ -94,10 +272,6 @@ template: {
 										portName: "juicefs-s3-gateway"
 									},
 								]
-								// matchLabels: {
-								//  "app.kubernetes.io/instance": "minio"
-								//  "app.kubernetes.io/name":     "minio"
-								// }
 								monitortype: "service"
 								namespace:   context["namespace"]
 							}
@@ -107,7 +281,6 @@ template: {
 					]
 					type: "helm"
 				},
-
 				{
 					name: context["name"] + "-context"
 					type: "k8s-objects"
@@ -136,6 +309,73 @@ template: {
 					}
 				},
 
+				{
+					name: context["name"] + "-create-database-job"
+					type: "k8s-objects"
+					properties: {
+						objects: [{
+							apiVersion: "batch/v1"
+							kind:       "Job"
+							metadata: name: "create-mysql-database"
+							labels: {
+								app:                  context.name
+								"app.core.bdos/type": "system"
+							}
+							spec: template: spec: {
+								containers: [{
+									name:  "create-mysql-database"
+									image: _imageRegistry + "bitnami/mysql:8.0.22"
+									env: [
+										{
+											name: "PASSWORD"
+											valueFrom: {
+												secretKeyRef: {
+													key:  "MYSQL_PASSWORD"
+													name: "\(parameter.mysql.mysqlSecret)"
+												}
+											}
+										},
+										{
+											name: "USER"
+											valueFrom: {
+												secretKeyRef: {
+													key:  "MYSQL_USER"
+													name: "\(parameter.mysql.mysqlSecret)"
+												}
+											}
+										},
+										{
+											name:  "DATABASE"
+											value: _databaseName
+										},
+										{
+											name: "MYSQL_HOST"
+											valueFrom: configMapKeyRef: {
+												name: "\(parameter.mysql.mysqlSetting)"
+												key:  "MYSQL_HOST"
+											}
+										},
+										{
+											name: "MYSQL_PORT"
+											valueFrom: configMapKeyRef: {
+												name: "\(parameter.mysql.mysqlSetting)"
+												key:  "MYSQL_PORT"
+											}
+										},
+									]
+									command: [
+										"sh",
+										"-c",
+										"mysql -h $MYSQL_HOST -P $MYSQL_PORT -u $USER -p$PASSWORD -e \"CREATE DATABASE IF NOT EXISTS $DATABASE CHARACTER SET utf8 COLLATE utf8_general_ci; CREATE DATABASE IF NOT EXISTS ${DATABASE}_examples CHARACTER SET utf8 COLLATE utf8_general_ci;\"",
+									]
+								}]
+								restartPolicy: "Never"
+							}
+						}]
+
+					}
+				},
+
 			]
 			policies: [
 				{
@@ -153,42 +393,44 @@ template: {
 					}
 					type: "shared-resource"
 				},
+				{
+					type: "apply-once"
+					name: "apply-once-res"
+					properties: rules: [
+						{
+							selector: resourceTypes: ["Job"]
+							strategy: {
+								path: ["*"]
+							}
+						},
+					]
+				},
 			]
 		}
 	}
 
 	parameter: {
-		// +ui:title=部署模式
-		// +ui:description="standalone"模式仅用于测试，生产环境请使用"distributed"
+		// +ui:description=数据库依赖
 		// +ui:order=1
-		mode: "distributed" | "standalone"
+		mysql: {
+			// +ui:description=数据库连接信息
+			// +err:options={"required":"请先安装mysql"}
+			mysqlSetting: string
 
-		// +ui:title=存储配置
-		// +ui:description=仅在"distributed"模式下生效
-		// +ui:hidden={{rootFormData.mode == "standalone"}}
+			// +ui:description=数据库认证信息
+			// +err:options={"required":"请先安装mysql"}
+			mysqlSecret: string
+		}
+
+		minio: {
+			contextSetting: string
+			contextSecret:  string
+		}
+
+		// +minimum=1
+		// +ui:description=副本数
 		// +ui:order=2
-		persistence: {
-			// +ui:hidden=true
-			enabled: *true | bool
-			// +ui:description=每个节点的存储大小，请提前规划。可以增大存储大小，不支持减小存储大小。
-			// +pattern=^([1-9]\d*)(Ti|Gi|Mi)$
-			// +err:options={"pattern":"请输入正确格式，如1024Mi, 1Gi, 1Ti"}
-			size: *"1Gi" | string
-		}
-
-		// +ui:title=节点配置
-		// +ui:description=仅在"distributed"模式下生效
-		// +ui:hidden={{rootFormData.mode == "standalone"}}
-		// +ui:order=3
-		statefulset: {
-			// +minimum=4
-			// +ui:description=每个Zone节点数量，生产环境至少4个节点。注意：发布后请不要修改副本数，请提前规划。 
-			replicaCount: *4 | int
-
-			// minimum=1
-			// +ui:description=Zone数量，水平扩容时请增加Zone数量，不支持减少Zone数量。注意：不要随意修改Zone数量。
-			zones: *1 | int
-		}
+		replicaCount: *1 | int
 
 		// +ui:description=资源规格
 		// +ui:order=5
@@ -221,16 +463,9 @@ template: {
 			}
 		}
 
-		// +ui:title=管理员账号
-		// +ui:order=7
-		auth: {
-			// +ui:description=管理员账号
-			// +ui:options={"showPassword":true}
-			rootUser: *"admin" | string
+		// +ui:description=配置kubernetes亲和性和反亲和性，请根据实际情况调整
+		// +ui:order=6
+		affinity?: {}
 
-			// +ui:description=管理员密码
-			// +ui:options={"showPassword":true}
-			rootPassword: *"admin.password" | string
-		}
 	}
 }
