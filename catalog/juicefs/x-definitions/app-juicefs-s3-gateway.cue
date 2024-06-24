@@ -43,11 +43,11 @@ import "strings"
 			definition: {
 				apiVersion: "bdc.kdp.io/v1alpha1"
 				kind:       "Application"
-				type:       "juicefs"
+				type:       "juicefs-s3-gateway"
 			}
 		}
 	}
-	description: "juicefs"
+	description: "juicefs-s3-gateway"
 	type:        "xdefinition"
 }
 
@@ -304,7 +304,7 @@ template: {
 							metadata: {
 								annotations: {
 									"setting.ctx.bdc.kdp.io/origin": "system"
-									"setting.ctx.bdc.kdp.io/type":   "juicefs"
+									"setting.ctx.bdc.kdp.io/type":   "juicefs-s3-gateway"
 								}
 								name:      context["namespace"] + "-" + context["name"] + "-context-setting"
 								namespace: context["namespace"]
@@ -318,7 +318,7 @@ template: {
 									port:     _port
 									host:     _hostname + ":" + _port
 								}
-								type: "juicefs"
+								type: "juicefs-s3-gateway"
 							}
 						}]
 					}

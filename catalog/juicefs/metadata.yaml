@@ -1,9 +1,8 @@
-name: Minio
+name: JuiceFS
 category: 系统/存储系统
-description: MinIO 是一款开源的对象存储服务器，兼容亚马逊的S3协议，对Kubernetes能够友好的支持，专为AI等云原生工作负载而设计。
+description: JuiceFS 是基于云的高性能分布式文件系统，百亿级文件存储规模，适用于大数据、人工智能、自动驾驶、基因测序等海量数据存储需求。
 i18n:
   en:
     category: system.storage
     description: >-
-      MinIO is a High Performance Object Storage released under GNU Affero General Public License v3.0. 
-      It is API compatible with Amazon S3 cloud storage service.
+      JuiceFS is a cloud-based high-performance distributed file system designed to handle storage at a scale of billions of files. It is well-suited for massive data storage needs such as big data, artificial intelligence, autonomous driving, and genomic sequencing.

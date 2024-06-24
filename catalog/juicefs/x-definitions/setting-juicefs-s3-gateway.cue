@@ -6,7 +6,7 @@
 			definition: {
 				apiVersion: "bdc.kdp.io/v1alpha1"
 				kind:       "ContextSetting"
-				type:       "juicefs"
+				type:       "juicefs-s3-gateway"
 			}
 		}
 	}
