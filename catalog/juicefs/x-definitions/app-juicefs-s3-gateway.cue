@@ -90,7 +90,8 @@ template: {
 								secretKey: " "
 								bucket:    " "
 							}
-							options: "--multi-buckets"
+							formatOptions: parameter.formatOptions
+							options:       parameter.options
 							envs: [
 								{
 									name: "MYSQL_PASSWORD"
@@ -435,18 +436,24 @@ template: {
 			mysqlSecret: string
 		}
 
+		// +ui:description=MinIO依赖
+		// +ui:order=2
 		minio: {
+			// +ui:description=MinIO 连接信息
+			// +err:options={"required":"请先安装minio"}
 			contextSetting: string
-			contextSecret:  string
+			// +ui:description=MinIO 认证信息
+			// +err:options={"required":"请先安装minio"}
+			contextSecret: string
 		}
 
 		// +minimum=1
 		// +ui:description=副本数
-		// +ui:order=2
+		// +ui:order=3
 		replicaCount: *1 | int
 
 		// +ui:description=资源规格
-		// +ui:order=5
+		// +ui:order=4
 		resources: {
 			// +ui:description=预留
 			// +ui:order=1
@@ -476,8 +483,15 @@ template: {
 			}
 		}
 
-		// +ui:description=配置kubernetes亲和性和反亲和性，请根据实际情况调整
+		// +ui:description=格式化选项，使用空格分隔。Ref: https://juicefs.com/docs/community/command_reference#format。Example: Example: "--inodes=1000000 --block-size=4M"
+		// +ui:order=5
+		formatOptions: *"" | string
+		// +ui:description=Gateway配置选项，使用空格分隔。Ref: https://juicefs.com/docs/community/command_reference#gateway。Example: "--get-timeout=60 --put-timeout=60" 
 		// +ui:order=6
+		options: *"--multi-buckets=true --cache-partial-only=true --cache-size=10240" | string
+
+		// +ui:description=配置kubernetes亲和性和反亲和性，请根据实际情况调整
+		// +ui:order=7
 		affinity?: {}
 
 	}
