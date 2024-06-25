@@ -3,7 +3,7 @@ kind: Application
 metadata:
   annotations:
     app.core.bdos/catalog: "flink"
-    app.core.bdos/extra-image: flink/flink:v1.0.0-1.17.1_scala_2.12
+    app.core.bdos/extra-image: flink/flink:v1.1.0-1.17.1_scala_2.12
   labels:
     app: flink-session-cluster
     app.core.bdos/type: system
