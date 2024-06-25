@@ -11,6 +11,7 @@ spec:
   name: flink-session-cluster
   type: flink
   properties:
+    flink17Image: flink/flink:v1.1.0-1.17.1_scala_2.12
     extraFlinkConfiguration:
       "kubernetes.jobmanager.cpu.limit-factor": "10.0"
       "kubernetes.jobmanager.memory.limit-factor": "1.0"
