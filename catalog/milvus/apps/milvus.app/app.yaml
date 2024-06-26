@@ -1,0 +1,15 @@
+apiVersion: bdc.kdp.io/v1alpha1
+kind: Application
+metadata:
+  labels:
+    app: milvus
+    app.core.bdos/type: system
+  annotations:
+    app.core.bdos/catalog: milvus
+    definition.bdc.kdp.io/description: milvus
+spec:
+  type: milvus
+  properties:
+    scheduler:
+      replicas: 1
+
