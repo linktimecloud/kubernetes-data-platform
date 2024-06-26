@@ -1,0 +1,114 @@
+# Iceberg 快速开始
+
+Hive 是当今数据仓库事实上的标准，围绕 Hive 生态的工具非常成熟。但 Hive 也有其缺点，例如
+
+- Hive 在分区级别实现事务的原子性，但在文件跟踪级别不能提供事务支持。
+- Hive 的事务性只能保证单个分区操作的原子性，因此不能以一致的方式同时更改多个分区中的数据。
+- 多个进程同时更改数据时会导致数据丢失，因为都以最后一次写入为准，中间的操作都被最后一次操作覆盖。因此需要自行定义和组织协调修改顺序。
+- 跨分区查询性能低下。
+- Hive 表的统计信息都是通过异步、定期读取作业中的方式收集的，因此统计信息通常已过时。
+
+Hive 表格式的大多数问题都源于它的一个原始设计问题，这个问题起初看起来相当小，但最终会产生重大后果——表中的数据在文件夹级别进行跟踪。
+
+Netflix 发现解决 Hive 表格式引起的主要问题的关键是要在文件级别跟踪表中的数据。他们不是一个指向一个目录或一组目录的表，而是将一个表定义为一个规范的文件列表。事实上，他们意识到文件级跟踪不仅可以解决他们使用 Hive 表格式遇到的问题，还可以为实现更广泛的分析目标奠定基础。
+
+![Iceberg Metadata](images/iceberg-quickstart-metadata.png)
+
+Iceberg 新定义的表结构有元数据层和数据层。数据层就是数据文件。元数据层是它很重要的设计点，可以复用 Hive 的 MetaStore，指向最新的快照。元数据里面分多层，记录了具体的文件列表。每次有新的 Commit，就会创建出新的快照，读请求可以访问旧的快照，写请求写新的。在写的过程中，新创建的数据文件读是不可见的，只有在提交后把最新的版本指过去，新写入的文件才可见。做到了读写分离。同时修改操作是原子的，能够支持细粒度的分区内部的修改。
+
+Iceberg 数仓相比 Hive 数仓在事务性和实时性上都有巨大优势。Iceberg 还可以作为数据湖使用，例如用 Flink CDC 将 Kafka 中的半格式化数据写入 Iceberg，数据分析师可以直接连接 Iceberg 进行查询分析。越来越多的公司利用 Iceberg 实现湖仓一体（Data Lakehouse）。Iceberg 已经逐渐成为湖仓一体事实上的标准。
+
+下面我们分别以 Spark 和 Flink 作为计算引擎，Hive Metastore 作为统一的元数据中心，MinIO 作为存储，介绍如何在 KDP 上使用 Iceberg 表。
+
+## 安装配置 Hive Metastore 和 MinIO
+
+请在 KDP 中依次安装以下组件：
+
+- minio
+- mysql
+- hdfs
+- hive-metastore
+
+其中 hive-metastore 需要在 `hiveConf` 中添加如下配置：
+
+```yaml
+fs.s3a.access.key: admin
+fs.s3a.endpoint: http://minio:9000
+fs.s3a.path.style.access: 'true'
+fs.s3a.secret.key: admin.password
+iceberg.engine.hive.enabled: 'true'
+```
+
+`admin` 和 `admin.password` 是安装 MinIO 时的默认账密。如果做过修改，需要设为实际值。
+
+这样就在 `hive-site.xml` 中指定了 MinIO 的地址和账密，后面 Spark/Flink 对接 Hive Metastore 时都能得知 MinIO 信息。
+
+## Spark 快速开始
+
+## Flink 快速开始
+
+### 组件依赖
+
+请在 KDP 中依次安装以下组件：
+
+- flink-kubernetes-operator
+- flink-session-cluster
+
+其中 flink-session-cluster 需要将 Flink on Hive 设为 `enable`。
+
+### 在 Flink SQL 中使用 Iceberg
+
+执行以下命令进入 Flink SQL：
+
+```shell
+# 获得 flink-session-cluster pod 名称
+kubectl get pods -n kdp-data -l app=flink-session-cluster -l component=jobmanager -o name
+# 进入 flink-session-cluster 容器
+# flink-session-cluster-xxxxx 替换成 pod 真实名称
+kubectl exec -it flink-session-cluster-xxxxx -n kdp-data -- bash
+# 启动 Flink SQL
+./bin/sql-client.sh
+```
+
+执行一下 SQL 命令进行数据写入和查询操作：
+
+```sql
+-- 创建一个 iceberg 类型的 catalog，元数据保存在 hive-metastore 中，数据存储在 minio 的 default bucket 中。如果需要更换 bucket，注意要先在 minio 中创建。
+CREATE CATALOG iceberg_hive WITH (
+    'type' = 'iceberg',
+    'catalog-type'='hive',
+    'warehouse' = 's3a://default/warehouse',
+    'hive-conf-dir' = '/opt/hive-conf');
+
+-- 创建数据库
+CREATE DATABASE IF NOT EXISTS `iceberg_hive`.`iceberg_db`;
+
+-- 创建表
+CREATE TABLE IF NOT EXISTS `iceberg_hive`.`iceberg_db`.`orders` (
+    order_id STRING,
+    name STRING,
+    order_value DOUBLE,
+    priority INT,
+    state STRING,
+    order_date STRING,
+    customer_id STRING,
+    ts STRING
+);
+
+-- 以 batch 模式执行 SQL，以 tableau 模式返回结果
+SET 'execution.runtime-mode'='batch';
+SET 'sql-client.execution.result-mode' = 'tableau';
+
+-- 插入数据
+INSERT INTO `iceberg_hive`.`iceberg_db`.`orders`
+VALUES
+    ('order001', 'Product A', 100.00, 1, 'California', '2024-04-03', 'cust001', '1234567890'),
+    ('order002', 'Product B', 150.00, 2, 'New York', '2024-04-03', 'cust002', '1234567890'),
+    ('order003', 'Product C', 200.00, 1, 'Texas', '2024-04-03', 'cust003', '1234567890');
+
+-- 查询数据
+SELECT * FROM `iceberg_hive`.`iceberg_db`.`orders`;
+
+-- 可以多次执行 insert 操作，然后观察 snapshot 的变化
+SELECT * FROM `iceberg_hive`.`iceberg_db`.`orders`.`snapshots`;
+```
