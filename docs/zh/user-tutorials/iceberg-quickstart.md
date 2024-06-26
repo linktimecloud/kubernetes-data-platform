@@ -70,10 +70,11 @@ kubectl exec -it flink-session-cluster-xxxxx -n kdp-data -- bash
 ./bin/sql-client.sh
 ```
 
-执行一下 SQL 命令进行数据写入和查询操作：
+执行以下 SQL 命令进行数据写入和查询操作：
 
 ```sql
--- 创建一个 iceberg 类型的 catalog，元数据保存在 hive-metastore 中，数据存储在 minio 的 default bucket 中。如果需要更换 bucket，注意要先在 minio 中创建。
+-- 创建一个 iceberg 类型的 catalog，元数据保存在 hive-metastore 中，数据存储在 minio 的 default bucket 中。
+-- 如果需要更换 bucket，注意要先在 minio 中创建。
 CREATE CATALOG iceberg_hive WITH (
     'type' = 'iceberg',
     'catalog-type'='hive',
