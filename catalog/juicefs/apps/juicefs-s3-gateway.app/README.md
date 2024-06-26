@@ -23,42 +23,42 @@
 
 
 ```bash
-
 export ALIAS=jfs
-# s3 gateway address, like http://juicefs-s3-gateway-kdp-data.kdp-e2e.io
-export API_ENDPOINT=http://juicefs-s3-gateway-kdp-data.kdp-e2e.io
+# s3 gateway address
+export API_ENDPOINT="http://juicefs-s3-gateway-kdp-data.kdp-e2e.io"
 # minio root user and password
 export ACCESS_KEY=admin
 export SECRET_KEY=admin.password
-
 # set bucket name
-export BUCKET_NAME=<your-bucket-name>
-# file path for upload to s3
-export LOCAL_FILE_PATH=<your-local-file-path>
+export BUCKET_NAME=my-bucket
 # file name for upload to s3
-export OBJECT_NAME=<your-object-name>
+export OBJECT_NAME=s3-test.txt
+# file path for upload to s3
+export LOCAL_FILE_PATH=/tmp/${OBJECT_NAME}
+echo "hello world" > ${LOCAL_FILE_PATH}
 # create an alias for the Minio server
-mc alias set $ALIAS $API_ENDPOINT $ACCESS_KEY $SECRET_KEY
+mc alias set ${ALIAS} ${API_ENDPOINT} ${ACCESS_KEY} ${SECRET_KEY}
 # test the Connection
-mc admin info $ALIAS
+mc admin info ${ALIAS}
 # list all buckets
-mc ls $ALIAS
+mc ls ${ALIAS}
 # create a bucket
-mc mb $ALIAS/$BUCKET_NAME
+mc mb ${ALIAS}/${BUCKET_NAME}
 # upload a file
-mc cp $LOCAL_FILE_PATH $ALIAS/$BUCKET_NAME/$OBJECT_NAME
+mc cp ${LOCAL_FILE_PATH} ${ALIAS}/${BUCKET_NAME}/${OBJECT_NAME}
 # ls all objects in the bucket
-mc ls $ALIAS/$BUCKET_NAME
+mc ls ${ALIAS}/${BUCKET_NAME}
 # download a file
-mc cp $ALIAS/$BUCKET_NAME/$OBJECT_NAME $LOCAL_FILE_PATH
+mc cp ${ALIAS}/${BUCKET_NAME}/${OBJECT_NAME} ${LOCAL_FILE_PATH}.download
 # delete a file
-mc rm $ALIAS/$BUCKET_NAME/$OBJECT_NAME
+mc rm ${ALIAS}/${BUCKET_NAME}/${OBJECT_NAME}
 # clean up the bucket content
-mc rm --recursive $ALIAS/$BUCKET_NAME --force
+mc rm --recursive ${ALIAS}/${BUCKET_NAME} --force
 # delete the bucket
-mc rb $ALIAS/$BUCKET_NAME
+mc rb ${ALIAS}/${BUCKET_NAME}
 # delete alias
-mc alias remove $ALIAS
+mc alias remove ${ALIAS}
+
 ```
 
 > 提示：可以进入任意一个 minio pod 容器, 环境中已经安装 minio CLI, 可以执行上述命令。endpoint 需要调整 `export API_ENDPOINT=juicefs-s3-gateway:9000`, 不要使用 ingress 地址，集群内dns可能无法解析。
@@ -81,7 +81,17 @@ aws --endpoint-url http://juicefs-s3-gateway-kdp-data.kdp-e2e.io s3 ls
 
 # List objects in bucket
 aws --endpoint-url http://juicefs-s3-gateway-kdp-data.kdp-e2e.io s3 ls s3://<bucket>
+
 ```
+
+### 2.3 API
+Object API (Amazon S3 compatible):
+- Go:         https://docs.min.io/docs/golang-client-quickstart-guide
+- Java:       https://docs.min.io/docs/java-client-quickstart-guide
+- Python:     https://docs.min.io/docs/python-client-quickstart-guide
+- JavaScript: https://docs.min.io/docs/javascript-client-quickstart-guide
+- .NET:       https://docs.min.io/docs/dotnet-client-quickstart-guide
+
 
 ### 3. FAQ
 
