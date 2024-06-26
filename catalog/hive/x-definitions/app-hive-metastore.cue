@@ -891,6 +891,7 @@ template: {
                   }
                 }
                 spec: {
+                  ttlSecondsAfterFinished: 600
                   template: {
                     spec: {
                       containers: [{
