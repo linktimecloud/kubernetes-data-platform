@@ -10,6 +10,5 @@ metadata:
 spec:
   type: milvus
   properties:
-    scheduler:
-      replicas: 1
+    clusterMode: false
 
