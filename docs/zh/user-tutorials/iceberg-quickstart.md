@@ -41,9 +41,115 @@ iceberg.engine.hive.enabled: 'true'
 
 `admin` 和 `admin.password` 是安装 MinIO 时的默认账密。如果做过修改，需要设为实际值。
 
-这样就在 `hive-site.xml` 中指定了 MinIO 的地址和账密，后面 Spark/Flink 对接 Hive Metastore 时都能得知 MinIO 信息。
+这样就在 `hive-site.xml` 中指定了 MinIO 的地址和账密，让 Hive Metastore 能访问到 MinIO。
 
 ## Spark 快速开始
+
+### 准备 Spark SQL 环境
+
+KDP 中并没有直接提供 spark-sql，我们可以发一个 Pod 到集群上作为 spark-sql 的执行环境。
+
+在本地创建名为 `spark-sql.yaml` 的文件，填入以下内容：
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: spark-sql
+  namespace: kdp-data
+spec:
+  volumes:
+    - name: hdfs-conf
+      configMap:
+        name: hdfs-config
+    - name: hive-conf
+      configMap:
+        name: hive-metastore-context
+  containers:
+    - name: spark
+      image: od-registry.linktimecloud.com/ltc-spark:v1.1.0-3.3.0
+      command: ["tail", "-f", "/dev/null"]
+      resources:
+        limits:
+          cpu: '2'
+          memory: 2048Mi
+        requests:
+          cpu: '0.5'
+          memory: 2048Mi
+      volumeMounts:
+        - name: hdfs-conf
+          mountPath: /opt/spark/conf/core-site.xml
+          subPath: core-site.xml
+        - name: hdfs-conf
+          mountPath: /opt/spark/conf/hdfs-site.xml
+          subPath: hdfs-site.xml
+        - name: hive-conf
+          mountPath: /opt/spark/conf/hive-site.xml
+          subPath: hive-site.xml
+```
+
+这个 Pod 使用 spark 镜像，并且挂载了 hdfs 和 hive 的配置文件。注意 `spec.containers[0].image` 可能需要修改为集群上的镜像仓库地址。 执行以下命令发布 Pod 到集群上：
+
+```shell
+kubectl apply -f spark-sql.yaml
+```
+
+### 在 Spark SQL 中使用 Iceberg
+
+执行以下命令进入 Spark SQL：
+
+```shell
+# 进入 spark-sql 容器
+kubectl exec -it spark-sql -n kdp-data -- bash
+# 启动 Spark SQL
+# AWS_REGION 可以是任意值，但不能为空
+export AWS_REGION=us-east-1
+# admin 和 admin.password 是安装 MinIO 时的默认账密。如果做过修改，需要设为实际值。
+export AWS_ACCESS_KEY_ID=admin
+export AWS_SECRET_ACCESS_KEY=admin.password
+/opt/spark/bin/spark-sql \
+    --conf spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions \
+    --conf spark.sql.catalog.iceberg_minio=org.apache.iceberg.spark.SparkCatalog \
+    --conf spark.sql.catalog.iceberg_minio.type=hive \
+    --conf spark.sql.catalog.iceberg_minio.io-impl=org.apache.iceberg.aws.s3.S3FileIO \
+    --conf spark.sql.catalog.iceberg_minio.s3.endpoint=http://minio:9000 \
+    --conf spark.sql.catalog.iceberg_minio.s3.path-style-access=true \
+    --conf iceberg.engine.hive.enabled=true
+```
+
+注意上面的 --conf 参数，我们创建了一个名为 `iceberg_minio` 的 catalog，它的元数据保存在 hive-metastore，数据存储在 MinIO。
+
+执行以下 SQL 命令进行数据写入和查询操作：
+
+```sql
+-- 创建数据库
+CREATE DATABASE IF NOT EXISTS iceberg_minio.iceberg_db;
+
+-- 创建表
+CREATE TABLE IF NOT EXISTS iceberg_minio.iceberg_db.orders (
+    order_id STRING,
+    name STRING,
+    order_value DOUBLE,
+    priority INT,
+    state STRING,
+    order_date STRING,
+    customer_id STRING,
+    ts STRING
+);
+
+-- 插入数据
+INSERT INTO iceberg_minio.iceberg_db.orders
+VALUES
+    ('order001', 'Product A', 100.00, 1, 'California', '2024-04-03', 'cust001', '1234567890'),
+    ('order002', 'Product B', 150.00, 2, 'New York', '2024-04-03', 'cust002', '1234567890'),
+    ('order003', 'Product C', 200.00, 1, 'Texas', '2024-04-03', 'cust003', '1234567890');
+
+-- 查询数据
+SELECT * FROM iceberg_minio.iceberg_db.orders;
+
+-- 可以多次执行 insert 操作，然后观察 snapshot 的变化
+SELECT * FROM iceberg_minio.iceberg_db.orders.snapshots;
+```
 
 ## Flink 快速开始
 
