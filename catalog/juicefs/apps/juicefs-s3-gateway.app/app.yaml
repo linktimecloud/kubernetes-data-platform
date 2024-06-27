@@ -11,9 +11,3 @@ spec:
   type: juicefs-s3-gateway
   properties:
     replicaCount: 1
-    mysql:
-      mysqlSecret: mysql-secret
-      mysqlSetting: mysql-setting
-    minio:
-      contextSecret: minio-context-secret
-      contextSetting: minio-context-setting
