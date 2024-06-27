@@ -22,28 +22,28 @@ hue: {
 				required:    true
 			},
 			{
-				name:        "hue.httpfsContext"
+				name:        "hue.hdfs.httpfsContext"
 				type:        "ContextSetting"
 				refType:     "httpfs"
 				refKey:      ""
 				description: "httpfs context name"
-				required:    true
+				required:    false
 			},
 			{
-				name:        "hue.zookeeperContext"
+				name:        "hue.hive.zookeeperContext"
 				type:        "ContextSetting"
 				refType:     "zookeeper"
 				refKey:      ""
 				description: "zookeeper context name"
-				required:    true
+				required:    false
 			},
 			{
-				name:        "hue.hs2Context"
+				name:        "hue.hive.hs2Context"
 				type:        "ContextSetting"
 				refType:     "hive-server2"
 				refKey:      ""
 				description: "hive-server2 context name"
-				required:    true
+				required:    false
 			},
 
 		]
@@ -61,6 +61,65 @@ hue: {
 }
 
 template: {
+	_defaultAppBlacklist: "security,jobbrowser,jobsub,pig,hbase,sqoop,spark,oozie,search"
+	_hdfsEnv: [...]
+	_hiveEnv: [...]
+	_hiveAppName: *"" | string
+	_hdfsAppName: *"" | string
+
+	if parameter.hue.hdfs.enabled == false {
+		_hdfsAppName: ",filebrowser"
+	}
+	if parameter.hue.hive.enabled == false {
+		_hiveAppName: ",beeswax"
+	}
+	if parameter.hue.hdfs.enabled {
+		_hdfsEnv: [
+			{
+				name: "HTTPFS_GATEWAY_HOSTNAME"
+				valueFrom: {
+					configMapKeyRef: {
+						name: "\(parameter.hue.hdfs.httpfsContext)"
+						key:  "hostname"
+					}
+				}
+			},
+			{
+				name: "HTTPFS_GATEWAY_PORT"
+				valueFrom: {
+					configMapKeyRef: {
+						name: "\(parameter.hue.hdfs.httpfsContext)"
+						key:  "port"
+					}
+				}
+			},
+		]
+	}
+
+	if parameter.hue.hive.enabled {
+
+		_hiveEnv: [
+			{
+				name: "ZOOKEEPER_VIP"
+				valueFrom: {
+					configMapKeyRef: {
+						name: "\(parameter.hue.hive.zookeeperContext)"
+						key:  "host"
+					}
+				}
+			},
+			{
+				name: "ZOOKEEPER_PATH"
+				valueFrom: {
+					configMapKeyRef: {
+						name: "\(parameter.hue.hive.hs2Context)"
+						key:  "zookeeper_node"
+					}
+				}
+			},
+		]
+	}
+
 	output: {
 		apiVersion: "core.oam.dev/v1beta1"
 		kind:       "Application"
@@ -153,53 +212,19 @@ template: {
 													}
 												}
 											},
-											// httpfs config
-											{
-												name: "HTTPFS_GATEWAY_HOSTNAME"
-												valueFrom: {
-													configMapKeyRef: {
-														name: "\(parameter.hue.httpfsContext)"
-														key:  "hostname"
-													}
-												}
-											},
-											{
-												name: "HTTPFS_GATEWAY_PORT"
-												valueFrom: {
-													configMapKeyRef: {
-														name: "\(parameter.hue.httpfsContext)"
-														key:  "port"
-													}
-												}
-											},
-											{
-												name: "ZOOKEEPER_VIP"
-												valueFrom: {
-													configMapKeyRef: {
-														name: "\(parameter.hue.zookeeperContext)"
-														key:  "host"
-													}
-												}
-											},
-											// hs2 zk node
-											{
-												name: "ZOOKEEPER_PATH"
-												valueFrom: {
-													configMapKeyRef: {
-														name: "\(parameter.hue.hs2Context)"
-														key:  "zookeeper_node"
-													}
-												}
-											},
 											{
 												name:  "TIMEZONE"
 												value: "Asia/Shanghai"
 											},
 											{
+												name:  "APP_BLACKLIST"
+												value: _defaultAppBlacklist + _hiveAppName + _hdfsAppName
+											},
+											{
 												name:  "DJANGO_DEBUG_ENABLE"
 												value: "\(parameter.hue.djangoDebugEnable)"
 											},
-										]
+										] + _hdfsEnv + _hiveEnv
 										image: context["docker_registry"] + "/" + parameter.image
 										if parameter.command != _|_ {
 											command: parameter.command
@@ -275,7 +300,7 @@ template: {
 
 						{
 							properties: {
-								stickySession:    true
+								stickySession: true
 								service: {
 									ports: [
 										{
@@ -375,26 +400,9 @@ template: {
 		// +ui:title=组件依赖
 		// +ui:order=1
 		hue: {
-			// +ui:description=Hadoop httpfs 依赖配置
-			// +ui:order=1
-			// +err:options={"required":"请先安装Hadoop httpfs-gateway组件"}
-			httpfsContext: string
-
-			// +ui:description=Hive server2 依赖配置
-			// +ui:order=2
-			// +err:options={"required":"请先安装Hive server2组件"}
-			hs2Context: string
-
-			// +ui:description=Zookeeper 依赖配置
-			// +ui:order=3
-			// +err:options={"required":"请先安装Zookeeper组件"}
-			zookeeperContext: string
-
-			// +ui:hidden=true
-			djangoDebugEnable: *false | bool
 
 			// +ui:description=Hue 元数据库配置
-			// +ui:order=4
+			// +ui:order=1
 			mysql: {
 				// +ui:description=数据库连接信息
 				// +err:options={"required":"请先安装MySQL组件"}
@@ -404,6 +412,43 @@ template: {
 				// +err:options={"required":"请先安装MySQL组件"}
 				mysqlSecret: string
 			}
+
+			// +ui:description=HDFS 依赖配置
+			// +ui:order=2
+			hdfs: {
+				// +ui:description=是否需要浏览HDFS文件
+				// +ui:order=1
+				enabled: *true | bool
+				// +ui:description=Hadoop httpfs 依赖配置
+				// +ui:hidden={{rootFormData.hue.hdfs.enabled == false}}
+				// +ui:order=2
+				// +err:options={"required":"请先安装Hadoop httpfs-gateway组件"}
+				httpfsContext: string
+			}
+
+			// +ui:description=Hive 依赖配置
+			// +ui:order=3
+			hive: {
+				// +ui:description=是否使用Hive SQL查询数据
+				// +ui:hidden=true
+				// +ui:order=1
+				enabled: *true | bool // 安装后不可以随意切换，否则会启动失败
+
+				// +ui:description=Hive server2 依赖配置
+				// +ui:hidden={{rootFormData.hue.hive.enabled == false}}
+				// +ui:order=2
+				// +err:options={"required":"请先安装Hive server2组件"}
+				hs2Context: string
+
+				// +ui:description=Zookeeper 依赖配置
+				// +ui:hidden={{rootFormData.hue.hive.enabled == false}}
+				// +ui:order=3
+				// +err:options={"required":"请先安装Zookeeper组件"}
+				zookeeperContext: string
+			}
+
+			// +ui:hidden=true
+			djangoDebugEnable: *false | bool
 		}
 
 		// +minimum=1
@@ -446,7 +491,7 @@ template: {
 		// +ui:description=容器镜像
 		// +ui:options={"disabled": true}
 		// +ui:order=5
-		image: *"hue:v1.0.0-4.10.0" | string
+		image: *"hue:v1.0.1-4.10.0" | string
 	}
 
 }
