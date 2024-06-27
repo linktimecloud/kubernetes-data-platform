@@ -223,3 +223,20 @@ SELECT * FROM flink_iceberg.iceberg_db.orders.snapshots;
 ```
 
 更多内容请参考[官方文档](https://iceberg.apache.org/docs/nightly/flink/)
+
+## 利用 JuiceFS 加速 MinIO 访问性能
+
+对象存储相比 HDFS 虽然降低了存储成本，但在处理大量小文件时性能较差。JuiceFS通过在对象存储上提供一个POSIX兼容的文件系统层，优化了元数据管理和文件操作性能。它利用本地缓存和分布式元数据管理，显著提高了处理小文件的效率。KDP 中也提供了 JuiceFS，通过 JuiceFS S3 Gateway，所有对接 MinIO 的组件都可以无缝迁移到 JuiceFS。
+
+### 安装 JuiceFS
+
+请在 KDP 应用目录中找到并安装 JuiceFS。安装完毕后，需要访问 JuiceFS 管理页面，创建一个 bucket，比如 `lakehouse`。
+
+### 切换到 JuiceFS
+
+对上文用例做以下修改：
+
+1. 将 http://minio:9000 替换为 http://juicefs-s3-gateway:9000
+2. 将 bucket 名称（比如 s3a://default）替换为 JuiceFS 中的 bucket（比如 s3a://lakehouse）
+
+其他内容不用做任何修改，即可获得 JuiceFS 提供的性能提升。
