@@ -188,10 +188,10 @@ CREATE CATALOG iceberg_hive WITH (
     'hive-conf-dir' = '/opt/hive-conf');
 
 -- 创建数据库
-CREATE DATABASE IF NOT EXISTS `iceberg_hive`.`iceberg_db`;
+CREATE DATABASE IF NOT EXISTS iceberg_hive.iceberg_db;
 
 -- 创建表
-CREATE TABLE IF NOT EXISTS `iceberg_hive`.`iceberg_db`.`orders` (
+CREATE TABLE IF NOT EXISTS iceberg_hive.iceberg_db.orders (
     order_id STRING,
     name STRING,
     order_value DOUBLE,
@@ -207,15 +207,15 @@ SET 'execution.runtime-mode'='batch';
 SET 'sql-client.execution.result-mode' = 'tableau';
 
 -- 插入数据
-INSERT INTO `iceberg_hive`.`iceberg_db`.`orders`
+INSERT INTO iceberg_hive.iceberg_db.orders
 VALUES
     ('order001', 'Product A', 100.00, 1, 'California', '2024-04-03', 'cust001', '1234567890'),
     ('order002', 'Product B', 150.00, 2, 'New York', '2024-04-03', 'cust002', '1234567890'),
     ('order003', 'Product C', 200.00, 1, 'Texas', '2024-04-03', 'cust003', '1234567890');
 
 -- 查询数据
-SELECT * FROM `iceberg_hive`.`iceberg_db`.`orders`;
+SELECT * FROM iceberg_hive.iceberg_db.orders;
 
 -- 可以多次执行 insert 操作，然后观察 snapshot 的变化
-SELECT * FROM `iceberg_hive`.`iceberg_db`.`orders`.`snapshots`;
+SELECT * FROM iceberg_hive.iceberg_db.orders.snapshots;
 ```
