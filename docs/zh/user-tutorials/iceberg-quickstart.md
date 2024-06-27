@@ -135,7 +135,7 @@ CREATE TABLE IF NOT EXISTS iceberg_minio.iceberg_db.orders (
     order_date STRING,
     customer_id STRING,
     ts STRING
-) USING iceberg LOCATION 's3a://default/warehouse/orders';");
+) USING iceberg LOCATION 's3a://default/warehouse/orders';
 
 -- 插入数据
 INSERT INTO iceberg_minio.iceberg_db.orders
