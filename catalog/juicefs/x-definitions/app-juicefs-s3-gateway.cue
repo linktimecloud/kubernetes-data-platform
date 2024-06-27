@@ -79,7 +79,7 @@ template: {
 						values: {
 							image: {
 								repository: "\(_imageRegistry)juicedata/mount"
-								tag:        "ce-v1.1.0"
+								tag:        "ce-v1.2.0"
 							}
 							replicaCount: parameter.replicaCount
 							secret: {
