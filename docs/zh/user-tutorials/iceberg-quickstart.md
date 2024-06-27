@@ -109,24 +109,24 @@ export AWS_ACCESS_KEY_ID=admin
 export AWS_SECRET_ACCESS_KEY=admin.password
 /opt/spark/bin/spark-sql \
     --conf spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions \
-    --conf spark.sql.catalog.iceberg_minio=org.apache.iceberg.spark.SparkCatalog \
-    --conf spark.sql.catalog.iceberg_minio.type=hive \
-    --conf spark.sql.catalog.iceberg_minio.io-impl=org.apache.iceberg.aws.s3.S3FileIO \
-    --conf spark.sql.catalog.iceberg_minio.s3.endpoint=http://minio:9000 \
-    --conf spark.sql.catalog.iceberg_minio.s3.path-style-access=true \
+    --conf spark.sql.catalog.spark_iceberg=org.apache.iceberg.spark.SparkCatalog \
+    --conf spark.sql.catalog.spark_iceberg.type=hive \
+    --conf spark.sql.catalog.spark_iceberg.io-impl=org.apache.iceberg.aws.s3.S3FileIO \
+    --conf spark.sql.catalog.spark_iceberg.s3.endpoint=http://minio:9000 \
+    --conf spark.sql.catalog.spark_iceberg.s3.path-style-access=true \
     --conf iceberg.engine.hive.enabled=true
 ```
 
-注意上面的 --conf 参数，我们创建了一个名为 `iceberg_minio` 的 catalog，它的元数据保存在 hive-metastore，数据存储在 MinIO。
+注意上面的 --conf 参数，我们创建了一个名为 `spark_iceberg` 的 catalog，它的元数据保存在 hive-metastore，数据存储在 MinIO。
 
 执行以下 SQL 命令进行数据写入和查询操作：
 
 ```sql
 -- 创建数据库
-CREATE DATABASE IF NOT EXISTS iceberg_minio.iceberg_db;
+CREATE DATABASE IF NOT EXISTS spark_iceberg.iceberg_db;
 
 -- 创建表
-CREATE TABLE IF NOT EXISTS iceberg_minio.iceberg_db.orders (
+CREATE TABLE IF NOT EXISTS spark_iceberg.iceberg_db.orders (
     order_id STRING,
     name STRING,
     order_value DOUBLE,
@@ -138,17 +138,17 @@ CREATE TABLE IF NOT EXISTS iceberg_minio.iceberg_db.orders (
 ) USING iceberg LOCATION 's3a://default/warehouse/orders';
 
 -- 插入数据
-INSERT INTO iceberg_minio.iceberg_db.orders
+INSERT INTO spark_iceberg.iceberg_db.orders
 VALUES
     ('order001', 'Product A', 100.00, 1, 'California', '2024-04-03', 'cust001', '1234567890'),
     ('order002', 'Product B', 150.00, 2, 'New York', '2024-04-03', 'cust002', '1234567890'),
     ('order003', 'Product C', 200.00, 1, 'Texas', '2024-04-03', 'cust003', '1234567890');
 
 -- 查询数据
-SELECT * FROM iceberg_minio.iceberg_db.orders;
+SELECT * FROM spark_iceberg.iceberg_db.orders;
 
 -- 可以多次执行 insert 操作，然后观察 snapshot 的变化
-SELECT * FROM iceberg_minio.iceberg_db.orders.snapshots;
+SELECT * FROM spark_iceberg.iceberg_db.orders.snapshots;
 ```
 
 ## Flink 快速开始
@@ -181,17 +181,17 @@ kubectl exec -it flink-session-cluster-xxxxx -n kdp-data -- bash
 ```sql
 -- 创建一个 iceberg 类型的 catalog，元数据保存在 hive-metastore 中，数据存储在 minio 的 default bucket 中。
 -- 如果需要更换 bucket，注意要先在 minio 中创建。
-CREATE CATALOG iceberg_hive WITH (
+CREATE CATALOG flink_iceberg WITH (
     'type' = 'iceberg',
     'catalog-type'='hive',
     'warehouse' = 's3a://default/warehouse',
     'hive-conf-dir' = '/opt/hive-conf');
 
 -- 创建数据库
-CREATE DATABASE IF NOT EXISTS iceberg_hive.iceberg_db;
+CREATE DATABASE IF NOT EXISTS flink_iceberg.iceberg_db;
 
 -- 创建表
-CREATE TABLE IF NOT EXISTS iceberg_hive.iceberg_db.orders (
+CREATE TABLE IF NOT EXISTS flink_iceberg.iceberg_db.orders (
     order_id STRING,
     name STRING,
     order_value DOUBLE,
@@ -207,15 +207,15 @@ SET 'execution.runtime-mode'='batch';
 SET 'sql-client.execution.result-mode' = 'tableau';
 
 -- 插入数据
-INSERT INTO iceberg_hive.iceberg_db.orders
+INSERT INTO flink_iceberg.iceberg_db.orders
 VALUES
     ('order001', 'Product A', 100.00, 1, 'California', '2024-04-03', 'cust001', '1234567890'),
     ('order002', 'Product B', 150.00, 2, 'New York', '2024-04-03', 'cust002', '1234567890'),
     ('order003', 'Product C', 200.00, 1, 'Texas', '2024-04-03', 'cust003', '1234567890');
 
 -- 查询数据
-SELECT * FROM iceberg_hive.iceberg_db.orders;
+SELECT * FROM flink_iceberg.iceberg_db.orders;
 
 -- 可以多次执行 insert 操作，然后观察 snapshot 的变化
-SELECT * FROM iceberg_hive.iceberg_db.orders.snapshots;
+SELECT * FROM flink_iceberg.iceberg_db.orders.snapshots;
 ```
