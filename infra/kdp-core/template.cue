@@ -34,6 +34,7 @@ output: {
 			_configReplicator,
 			_configReloader,
 			_kdpCloudTty,
+			_kdpCloudttyIngress,
 			_KdpTerminalConfig,
 			_kdpTerminalConfigTask,
 			_kdpOAMOperator,
@@ -165,6 +166,11 @@ output: {
 						type: "apply-component"
 						name: "apply-cloudtty"
 						properties: component: parameter.namePrefix + "cloudtty"
+					},
+					{
+						type: "apply-component"
+						name: "apply-cloudtty-ingress"
+						properties: component: parameter.namePrefix + "cloudtty-ingress"
 					},
 					{
 						type: "apply-component"
