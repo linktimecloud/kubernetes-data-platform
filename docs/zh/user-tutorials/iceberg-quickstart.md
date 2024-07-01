@@ -217,9 +217,6 @@ VALUES
 
 -- 查询数据
 SELECT * FROM flink_iceberg.iceberg_db.orders;
-
--- 可以多次执行 insert 操作，然后观察 snapshot 的变化
-SELECT * FROM flink_iceberg.iceberg_db.orders.snapshots;
 ```
 
 更多内容请参考[官方文档](https://iceberg.apache.org/docs/nightly/flink/)
