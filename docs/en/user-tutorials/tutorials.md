@@ -20,5 +20,6 @@ Users can refer to the following scenario tutorials to practice how to do data i
   * [Data Import from External HDFS to KDP HDFS](./import-from-hdfs-to-hdfs.md)
   * [Exploring data using Airbyte/ClickHouse/Superset](./exploring-data-using-airbyte-clickhouse-superset.md)
   * [Batch Job Scheduling for Hive SQL with Apache Airflow](./batch-job-scheduling-for-hive-sql-with-apache-airflow.md)
+  * [Iceberg Quickstart](./iceberg-quickstart.md)
   * More...
 

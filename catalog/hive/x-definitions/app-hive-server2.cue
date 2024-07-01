@@ -884,7 +884,7 @@ template: {
 			// +ui:description=Spark 镜像版本
 			// +ui:order=1
 			// +ui:options={"disabled":true}
-			image: *"ltc-spark:3.3.0-hos-3.1.3-1.10" | string
+			image: string
 			// +ui:description=自定义 spark-defaults.conf 内容
 			// +ui:order=3
 			sparkDefaults: *{
@@ -895,6 +895,6 @@ template: {
 		// +ui:description=镜像版本
 		// +ui:order=100
 		// +ui:options={"disabled":true}
-		image: *"ltc-hs2:v1.0.0-3.1.3" | string
+		image: string
 	}
 }

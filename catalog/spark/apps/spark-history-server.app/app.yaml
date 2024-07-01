@@ -10,7 +10,7 @@ metadata:
 spec:
   type: spark-history-server
   properties:
-    image: "ltc-spark:v1.0.0-3.3.0"
+    image: "ltc-spark:v1.1.0-3.3.0"
     replicas: 1
     resources:
       requests:

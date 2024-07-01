@@ -338,7 +338,7 @@ template: {
 		// +ui:order=2
 		// +ui:hidden={{rootFormData.flinkVersion != "v1_17"}}
 		// +ui:options={"disabled": true}
-		flink17Image: *"flink/flink:v1.0.0-1.17.1_scala_2.12" | string
+		flink17Image: string
 
 		// +ui:description=job manager资源配置
 		// +ui:order=3
