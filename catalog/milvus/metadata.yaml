@@ -3,6 +3,6 @@ category: 系统/存储系统
 description: Milvus 是一款云原生向量数据库。
 i18n:
   en:
-    category: system.database
+    category: system.dataManagement
     description: >-
       Milvus is a cloud-native vector database.
