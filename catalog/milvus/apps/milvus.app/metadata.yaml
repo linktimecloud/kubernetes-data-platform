@@ -1,0 +1,8 @@
+version: 2.4.4
+alias: milvus
+description: Milvus 是一款云原生向量数据库。
+isGlobal: false
+i18n:
+  en:
+    description: >-
+      Milvus is a cloud-native vector database.
