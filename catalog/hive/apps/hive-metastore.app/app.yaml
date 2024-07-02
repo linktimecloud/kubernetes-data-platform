@@ -11,7 +11,7 @@ metadata:
 spec:
   type: hive-metastore
   properties:
-    image: "ltc-hms:v1.0.0-3.1.3"
+    image: "ltc-hms:v1.1.0-3.1.3"
     replicas: 2
     resources:
       requests:
