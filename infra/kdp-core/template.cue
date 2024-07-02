@@ -34,6 +34,10 @@ output: {
 			_configReplicator,
 			_configReloader,
 			_kdpCloudTty,
+			if parameter.ingress.class == "traefik" {
+				_kdpTraefikMiddleware,
+			},
+			_kdpCloudttyIngress,
 			_KdpTerminalConfig,
 			_kdpTerminalConfigTask,
 			_kdpOAMOperator,
@@ -127,6 +131,13 @@ output: {
 					}
 				]
 			},
+			if parameter.ingress.class == "traefik" {
+					{
+						type: "apply-component"
+						name: "apply-traefik-middleware"
+						properties: component: parameter.namePrefix + "traefik-middleware"
+					},
+			},
 			{
 				type: "step-group"
 				name: "apply-workloads"
@@ -165,6 +176,11 @@ output: {
 						type: "apply-component"
 						name: "apply-cloudtty"
 						properties: component: parameter.namePrefix + "cloudtty"
+					},
+					{
+						type: "apply-component"
+						name: "apply-cloudtty-ingress"
+						properties: component: parameter.namePrefix + "cloudtty-ingress"
 					},
 					{
 						type: "apply-component"
