@@ -38,33 +38,41 @@ mc --help
 
 ##### 2.2.2 Minio client commands
 ```bash
-export ALIAS=<your-alias-name>
-export API_ENDPOINT=<your-api-endpoint>
-export ACCESS_KEY=<your-access-key>
-export SECRET_KEY=<your-secret-key>
-export BUCKET_NAME=<your-bucket-name>
-export LOCAL_FILE_PATH=<your-local-file-path>
-export OBJECT_NAME=<your-object-name>
+export ALIAS=local
+export API_ENDPOINT=http://localhost:9000
+#  minio default root user and password, change to your minio root user and password
+export ACCESS_KEY=admin
+export SECRET_KEY=admin.password
+# set bucket name
+export BUCKET_NAME=my-bucket
+# file name for upload to s3
+export OBJECT_NAME=s3-test.txt
+# file path for upload to s3
+export LOCAL_FILE_PATH=/tmp/${OBJECT_NAME}
+echo "hello world" > ${LOCAL_FILE_PATH}
 # create an alias for the Minio server
-mc alias set $ALIAS $API_ENDPOINT $ACCESS_KEY $SECRET_KEY
+mc alias set ${ALIAS} ${API_ENDPOINT} ${ACCESS_KEY} ${SECRET_KEY}
 # test the Connection
-mc admin info $ALIAS
+mc admin info ${ALIAS}
 # list all buckets
-mc ls $ALIAS
+mc ls ${ALIAS}
 # create a bucket
-mc mb $ALIAS/$BUCKET_NAME
+mc mb ${ALIAS}/${BUCKET_NAME}
 # upload a file
-mc cp $LOCAL_FILE_PATH $ALIAS/$BUCKET_NAME
+mc cp ${LOCAL_FILE_PATH} ${ALIAS}/${BUCKET_NAME}/${OBJECT_NAME}
 # ls all objects in the bucket
-mc ls $ALIAS/$BUCKET_NAME
+mc ls ${ALIAS}/${BUCKET_NAME}
 # download a file
-mc cp $ALIAS/$BUCKET_NAME/$OBJECT_NAME $LOCAL_FILE_PATH
+mc cp ${ALIAS}/${BUCKET_NAME}/${OBJECT_NAME} ${LOCAL_FILE_PATH}.download
 # delete a file
-mc rm $ALIAS/$BUCKET_NAME/$OBJECT_NAME
+mc rm ${ALIAS}/${BUCKET_NAME}/${OBJECT_NAME}
 # clean up the bucket content
-mc rm --recursive $ALIAS/$BUCKET_NAME
+mc rm --recursive ${ALIAS}/${BUCKET_NAME} --force
 # delete the bucket
-mc rb $ALIAS/$BUCKET_NAME
+mc rb ${ALIAS}/${BUCKET_NAME}
+# delete alias
+mc alias remove ${ALIAS}
+
 # for more commands, please refer to https://min.io/docs/minio/linux/reference/minio-mc.html
 ```
 
