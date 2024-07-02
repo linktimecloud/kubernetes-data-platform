@@ -1,3 +1,5 @@
+import "encoding/base64"
+
 "minio": {
 	annotations: {}
 	labels: {}
@@ -207,29 +209,55 @@ template: {
 					]
 					type: "helm"
 				},
+
 				{
 					name: context["name"] + "-context"
+					type: "k8s-objects"
 					properties: {
-						apiVersion: "bdc.kdp.io/v1alpha1"
-						kind:       "ContextSetting"
-						metadata: {
-							annotations: {
-								"setting.ctx.bdc.kdp.io/origin": "system"
-								"setting.ctx.bdc.kdp.io/type":   "minio"
+						objects: [{
+							apiVersion: "bdc.kdp.io/v1alpha1"
+							kind:       "ContextSetting"
+							metadata: {
+								annotations: {
+									"setting.ctx.bdc.kdp.io/origin": "system"
+									"setting.ctx.bdc.kdp.io/type":   "minio"
+								}
+								name:      context["namespace"] + "-" + context["name"] + "-context-setting"
+								namespace: context["namespace"]
 							}
-							name:      context["namespace"] + "-" + context["name"] + "-context"
-							namespace: context["namespace"]
-						}
-						spec: {
-							name: context["name"] + "-context"
-							properties: {
-								authSecretName: "minio"
-								host:           context["name"] + "." + context["namespace"] + ".svc.cluster.local:9000"
+							spec: {
+								name: context["name"] + "-context-setting"
+								properties: {
+									host:     context["name"] + "." + context["namespace"] + ".svc.cluster.local:9000"
+									hostname: context["name"] + "." + context["namespace"] + ".svc.cluster.local"
+									port:     "9000"
+								}
+								type: "minio"
 							}
-							type: "minio"
-						}
+						},
+							{
+								apiVersion: "bdc.kdp.io/v1alpha1"
+								kind:       "ContextSecret"
+								metadata: {
+									annotations: {
+										"setting.ctx.bdc.kdp.io/origin": "system"
+										"setting.ctx.bdc.kdp.io/type":   "minio"
+									}
+									name:      context["namespace"] + "-" + context["name"] + "-context-secret"
+									namespace: context["namespace"]
+								}
+								spec: {
+									name: context["name"] + "-context-secret"
+									type: "minio"
+									properties: {
+										"MINIO_ROOT_USER":     base64.Encode(null, parameter.auth.rootUser)
+										"MINIO_ROOT_PASSWORD": base64.Encode(null, parameter.auth.rootPassword)
+									}
+								}
+							},
+						]
 					}
-					type: "raw"
+
 				},
 				{
 					name: "minio-grafana-dashboard"

@@ -1,0 +1,13 @@
+apiVersion: bdc.kdp.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    app.core.bdos/catalog: juicefs
+  labels:
+    app: juicefs-s3-gateway
+    app.core.bdos/type: system
+spec:
+  name: juicefs-s3-gateway
+  type: juicefs-s3-gateway
+  properties:
+    replicaCount: 1

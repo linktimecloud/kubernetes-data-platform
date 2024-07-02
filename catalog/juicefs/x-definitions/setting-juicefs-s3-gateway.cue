@@ -1,12 +1,12 @@
-"ctx-setting-minio": {
-	description: "Init minio context setting resource"
+"ctx-setting-juicefs": {
+	description: "Init juicefs context setting resource"
 	type:        "xdefinition"
 	attributes: {
 		apiResource: {
 			definition: {
 				apiVersion: "bdc.kdp.io/v1alpha1"
 				kind:       "ContextSetting"
-				type:       "minio"
+				type:       "juicefs-s3-gateway"
 			}
 		}
 	}
