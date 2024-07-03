@@ -161,8 +161,8 @@ nodes:
     - containerPath: /etc/ssl/certs/192.168.0.205.pem
       hostPath: /opt/nexus/ssl/192.168.0.205.pem
 ```
-### 修改fluxcd相关pod挂载本地https证书
-#### 修改文件列表
+### 修改fluxcd相关代码挂载本地https证书
+#### 修改fluxcd代码文件列表
 ```yaml
 infra/fluxcd/resources/components/helm-controller.cue
 infra/fluxcd/resources/components/image-automation-controller.cue
@@ -170,7 +170,7 @@ infra/fluxcd/resources/components/image-reflector-controller.cue
 infra/fluxcd/resources/components/kustomize-controller.cue
 infra/fluxcd/resources/components/source-controller.cue
 ```
-#### volumeMounts资源挂载本地https证书
+#### 修改fluxcd代码示例
 详情参考[KubeVela webservice](https://kubevela.io/docs/end-user/components/references/)组件类型
 ```yaml
 hostPath:[{
