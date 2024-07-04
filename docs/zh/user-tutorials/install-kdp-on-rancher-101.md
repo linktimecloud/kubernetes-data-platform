@@ -38,7 +38,7 @@ Rancher 集成了这些 [Kubernetes 发行版](https://ranchermanager.docs.ranch
 
 ### 安装KDP CLI
 
-* 可选使用本地终端工具或 KubeSphere 网页终端进行操作：
+* 可选使用本地终端工具或 Rancher 网页终端进行操作：
   - 通过本地Shell：打开您计算机上的Bash或Zsh终端。
   * 通过'Kubectl Shell'：如下所示在 Rancher 控制台中打开'Kubectl Shell(Ctrl+`)'，您将连接到一个网页终端：
 ![rancher-kubectl-shell](./images/rancher-kubectl-shell.png)
