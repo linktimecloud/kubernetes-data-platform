@@ -1,0 +1,16 @@
+apiVersion: bdc.kdp.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    app.core.bdos/catalog: ollama
+  labels:
+    app: ollama
+    app.core.bdos/type: system
+spec:
+  name: ollama
+  type: ollama
+  properties:
+    replicaCount: 1
+    ollama:
+      gpu:
+        type: nvidia
