@@ -891,6 +891,7 @@ template: {
                   }
                 }
                 spec: {
+                  ttlSecondsAfterFinished: 600
                   template: {
                     spec: {
                       containers: [{
@@ -1252,6 +1253,6 @@ template: {
     // +ui:description=镜像版本
     // +ui:order=100
     // +ui:options={"disabled":true}
-    image: *"ltc-hms:v1.0.0-3.1.3" | string
+    image: string
   }
 }

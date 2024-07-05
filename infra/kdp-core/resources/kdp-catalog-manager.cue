@@ -52,7 +52,7 @@ _kdpCatalogManager: {
 								{
 									name: "prep-catalog"
 									image: "\(parameter.registry)/linktimecloud/kubernetes-data-platform:\(_version.kdp)"
-									imagePullPolicy: "IfNotPresent"
+									imagePullPolicy: "Always"
 									command: ["sh", "-c", "cp -vrf catalog/* /opt"]
 									volumeMounts: [
 										{
