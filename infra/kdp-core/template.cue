@@ -101,6 +101,12 @@ output: {
 						strategy: {
 							path: ["*"]
 						}
+					},
+					{
+						selector: componentNames: [parameter.namePrefix + "cloudtty-ingress"]
+						strategy: {
+							path: ["*"]
+						}
 					}
 				]
 			}
