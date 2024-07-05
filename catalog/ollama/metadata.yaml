@@ -1,6 +1,6 @@
 name: Ollama
 category: 大型语言模型
-description: Ollama 是一个开源项目，它提供了一个强大且用户友好的平台，让您能够在本地机器上运行大型语言模型（LLMs）。
+description: Ollama 是一个简单易用且开源的本地大模型运行平台。。
 i18n:
   en:
     category: system.llm

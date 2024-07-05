@@ -1,97 +1,153 @@
 ### 1. 简介
-Ollama 是一个[开源项目]()，它提供了一个强大且用户友好的平台，让您能够在本地机器上运行大型语言模型（LLMs）。
+Ollama [开源项目](https://github.com/ollama/ollama) 是一个简单易用且开源的本地大模型运行平台。
 
 ### 2. 快速开始
 
-应用依赖 Minio 存储数据，依赖 MySQL 存储元数据。请在 KDP 提前安装 Minio 和 MySQL。
+#### 2.1 安装模型
+在 KDP 页面安装的时候`模型列表`参数默认是空值，可以在[这里](https://ollama.com/library)找到需要的模型，填写模型名称即可，点击安装后会在应用启动阶段自动下载模型。通常模型比较大，下载时间较长，请耐心等待(无法查看进度)。或者保持`模型列表`参数是空值，安装启动后进入容器手动下载(以下载`qwen:0.5b`为例)：
+`kubectl exec -it $(kubectl get pods -l app.kubernetes.io/name=ollama -n kdp-data -o jsonpath='{.items[0].metadata.name}') -n kdp-data -- ollama pull qwen:0.5b`
 
-#### 2.1 使用 Web UI 访问
-
-浏览器打开 ingress 地址，例如 http://juicefs-s3-gateway-kdp-data.kdp-e2e.io
-输入默认用户名/密码（`admin/admin.password`）登录即可, 默认账号密码是安装 Minio 时设置的管理员账号密码
-
-#### 2.2 使用 Minio CLI 访问 (推荐)
-
-为避免兼容性问题，我们推荐采用的 mc 的版本为 `RELEASE.2021-04-22T17-40-00Z`，你可以在[这个地址](https://dl.min.io/client/mc/release)找到历史版本和不同架构的 mc, 推荐版本下载地址：
-- [linux amd64](https://dl.min.io/client/mc/release/linux-amd64/archive/mc.RELEASE.2021-04-22T17-40-00Z)
-- [mac amd64](https://dl.min.io/client/mc/release/darwin-amd64/archive/mc.RELEASE.2021-04-22T17-40-00Z)
-- [mac arm64](https://dl.min.io/client/mc/release/darwin-arm64/archive/mc.RELEASE.2021-04-22T17-40-00Z)
-- [windows amd64](https://dl.min.io/client/mc/release/windows-amd64/archive/mc.RELEASE.2021-04-22T17-40-00Z)
-- ....
-
+#### 2.2 使用 REST API
 
 ```bash
-export ALIAS=jfs
-# s3 gateway address
-export API_ENDPOINT="http://juicefs-s3-gateway-kdp-data.kdp-e2e.io"
-# minio root user and password
-export ACCESS_KEY=admin
-export SECRET_KEY=admin.password
-# set bucket name
-export BUCKET_NAME=my-bucket
-# file name for upload to s3
-export OBJECT_NAME=s3-test.txt
-# file path for upload to s3
-export LOCAL_FILE_PATH=/tmp/${OBJECT_NAME}
-echo "hello world" > ${LOCAL_FILE_PATH}
-# create an alias for the Minio server
-mc alias set ${ALIAS} ${API_ENDPOINT} ${ACCESS_KEY} ${SECRET_KEY}
-# test the Connection
-mc admin info ${ALIAS}
-# list all buckets
-mc ls ${ALIAS}
-# create a bucket
-mc mb ${ALIAS}/${BUCKET_NAME}
-# upload a file
-mc cp ${LOCAL_FILE_PATH} ${ALIAS}/${BUCKET_NAME}/${OBJECT_NAME}
-# ls all objects in the bucket
-mc ls ${ALIAS}/${BUCKET_NAME}
-# download a file
-mc cp ${ALIAS}/${BUCKET_NAME}/${OBJECT_NAME} ${LOCAL_FILE_PATH}.download
-# delete a file
-mc rm ${ALIAS}/${BUCKET_NAME}/${OBJECT_NAME}
-# clean up the bucket content
-mc rm --recursive ${ALIAS}/${BUCKET_NAME} --force
-# delete the bucket
-mc rb ${ALIAS}/${BUCKET_NAME}
-# delete alias
-mc alias remove ${ALIAS}
+
+export ollama_endpoint=http://ollama-kdp-data.kdp-e2e.io
+export ollama_model=qwen:0.5b
+
+curl ${ollama_endpoint}/api/generate -d '{
+  "model": "'"${ollama_model}"'",
+  "prompt": "Why is the sky blue?"
+}'
 
 ```
+高级参数：https://github.com/ollama/ollama/blob/main/docs/api.md#generate-request-with-options
+更多请参考： https://github.com/ollama/ollama/blob/main/docs/api.md
 
-> 提示：可以进入任意一个 minio pod 容器, 环境中已经安装 minio CLI, 可以执行上述命令。endpoint 需要调整 `export API_ENDPOINT=juicefs-s3-gateway:9000`, 不要使用 ingress 地址，集群内dns可能无法解析。
+
+#### 2.3 使用 Python SDK
+
+- Install
+
+```sh
+# Python version >= 3.8
+pip install ollama
+```
+
+- Usage
+
+```python
+import ollama
+response = ollama.chat(model='qwen:0.5b', messages=[
+  {
+    'role': 'user',
+    'content': 'Why is the sky blue?',
+  },
+])
+print(response['message']['content'])
+```
+参考文档：https://github.com/ollama/ollama-python
+另外 JavaScript SDK：https://github.com/ollama/ollama-js
 
 
-#### 2.3 使用 AWS CLI 访问
+更多使用示例：https://github.com/ollama/ollama/blob/main/docs/tutorials.md
 
-从 https://aws.amazon.com/cli 下载并安装 AWS CLI，然后进行配置：
+### 3. 常用命令
+```bash
+export ollama_model=qwen:0.5b
+# download model
+ollama pull ${ollama_model}
+# list models
+ollama list 
+# run model
+ollama run ${ollama_model}
+# list running models
+ollama ps
+# delete model
+ollama rm ${ollama_model}
+
+```
+### 4. Open AI 兼容性
+Ollama 部分兼容 OpenAI API，您可以使用 OpenAI SDK 与 Ollama 进行交互。参考 https://github.com/ollama/ollama/blob/main/docs/openai.md
+
+```py
+from openai import OpenAI
+
+client = OpenAI(
+    base_url='http://ollama-kdp-data.kdp-e2e.io/v1/',
+
+    # required but ignored
+    api_key='ollama',
+)
+
+chat_completion = client.chat.completions.create(
+    messages=[
+        {
+            'role': 'user',
+            'content': 'Say this is a test',
+        }
+    ],
+    model='qwen:0.5b',
+)
+```
+
+### 5. GPU 兼容性
+https://github.com/ollama/ollama/blob/main/docs/gpu.md
+
+
+### 6. 自定义模型
 
 ```bash
-aws configure
-# Access Key ID and Secret Access Key are the same as the Minio admin username and password
-AWS Access Key ID [None]: admin
-AWS Secret Access Key [None]: admin.password
-Default region name [None]:
-Default output format [None]:
+# download model
+ollama pull qwen:0.5b
 
-# List buckets
-aws --endpoint-url http://juicefs-s3-gateway-kdp-data.kdp-e2e.io s3 ls
+# create model file
+cat > Modelfile << EOF
+FROM qwen:0.5b
+# set the temperature to 1 [higher is more creative, lower is more coherent]
+PARAMETER temperature 1
+# set the system message
+SYSTEM """
+You are Mario from Super Mario Bros. Answer as Mario, the assistant, only.
+"""
+EOF
 
-# List objects in bucket
-aws --endpoint-url http://juicefs-s3-gateway-kdp-data.kdp-e2e.io s3 ls s3://<bucket>
+# build model
+ollama create mario -f ./Modelfile
 
+# run model
+ollama run mario
+>>> hi
+Hello! It's your friend Mario.
 ```
 
-### 2.3 API
-Object API (Amazon S3 compatible):
-- Go:         https://docs.min.io/docs/golang-client-quickstart-guide
-- Java:       https://docs.min.io/docs/java-client-quickstart-guide
-- Python:     https://docs.min.io/docs/python-client-quickstart-guide
-- JavaScript: https://docs.min.io/docs/javascript-client-quickstart-guide
-- .NET:       https://docs.min.io/docs/dotnet-client-quickstart-guide
+更多参考： https://github.com/ollama/ollama/blob/main/docs/modelfile.md 
 
 
-### 3. FAQ
+### 7. 自定义 Ollama docker image
+如果部署环境无法下载模型，可以构建自定义 Ollama docker image。
 
-https://juicefs.com/docs/zh/community/faq
+```bash
+# wire Dockerfile
+cat > Dockerfile << EOF
+FROM ollama/ollama:latest
+RUN ollama pull qwen:0.5b
+EOF
 
+docker build -t ollama-custom:1.0.0 .
+docker push ollama-custom:1.0.0
+```
+在`catalog/ollama/x-definitions/app-ollama.cue`文件中新增`tag`配置
+
+```cue
+values: {
+	image: {
+	    repository: "\(_imageRegistry)ollama/ollama"
+        // use custom image
+        tag: "ollama-custom:1.0.0"
+	}
+    ....
+}
+```
+
+### 7. FAQ
+https://github.com/ollama/ollama/blob/main/docs/faq.md

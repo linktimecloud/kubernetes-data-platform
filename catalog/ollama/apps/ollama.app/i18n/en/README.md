@@ -1,115 +1,154 @@
 ### 1. Introduction
-[JuiceFS S3 Gateway](https://juicefs.com/docs/zh/community/guide/gateway) is one of the supported access methods for JuiceFS, allowing the JuiceFS file system to be served over the S3 protocol, enabling applications to access files stored on JuiceFS via the S3 SDK.
-
-In JuiceFS, files are stored in chunks as objects in the underlying object storage. JuiceFS provides various access methods including FUSE POSIX, WebDAV, S3 Gateway, CSI Driver, among which the S3 Gateway is commonly used.
+Ollama [open-source project](https://github.com/ollama/ollama) is a user-friendly and open-source platform for running large models locally.
 
 ### 2. Quick Start
-The application relies on Minio for data storage and MySQL for metadata storage. Please ensure Minio and MySQL are installed in KDP beforehand.
 
-#### 2.1 Access via Web UI
-Open the ingress address in a browser, for example, http://juicefs-s3-gateway-kdp-data.kdp-e2e.io. Enter the default username/password (`admin/admin.password`) to log in. The default credentials are the administrator username and password set during Minio installation.
-
-#### 2.2 Access via Minio CLI (Recommended)
-To avoid compatibility issues, we recommend using the `RELEASE.2021-04-22T17-40-00Z` version of mc. You can find historical versions and different architectures of mc at [this address](https://dl.min.io/client/mc/release). Recommended version download links:
-- [linux amd64](https://dl.min.io/client/mc/release/linux-amd64/archive/mc.RELEASE.2021-04-22T17-40-00Z)
-- [mac amd64](https://dl.min.io/client/mc/release/darwin-amd64/archive/mc.RELEASE.2021-04-22T17-40-00Z)
-- [mac arm64](https://dl.min.io/client/mc/release/darwin-arm64/archive/mc.RELEASE.2021-04-22T17-40-00Z)
-- [windows amd64](https://dl.min.io/client/mc/release/windows-amd64/archive/mc.RELEASE.2021-04-22T17-40-00Z)
-- ...
-
-
-```bash
-export ALIAS=jfs
-# s3 gateway address
-export API_ENDPOINT="http://juicefs-s3-gateway-kdp-data.kdp-e2e.io"
-# minio root user and password
-export ACCESS_KEY=admin
-export SECRET_KEY=admin.password
-# set bucket name
-export BUCKET_NAME=my-bucket
-# file name for upload to s3
-export OBJECT_NAME=s3-test.txt
-# file path for upload to s3
-export LOCAL_FILE_PATH=/tmp/${OBJECT_NAME}
-echo "hello world" > ${LOCAL_FILE_PATH}
-# create an alias for the Minio server
-mc alias set ${ALIAS} ${API_ENDPOINT} ${ACCESS_KEY} ${SECRET_KEY}
-# test the Connection
-mc admin info ${ALIAS}
-# list all buckets
-mc ls ${ALIAS}
-# create a bucket
-mc mb ${ALIAS}/${BUCKET_NAME}
-# upload a file
-mc cp ${LOCAL_FILE_PATH} ${ALIAS}/${BUCKET_NAME}/${OBJECT_NAME}
-# ls all objects in the bucket
-mc ls ${ALIAS}/${BUCKET_NAME}
-# download a file
-mc cp ${ALIAS}/${BUCKET_NAME}/${OBJECT_NAME} ${LOCAL_FILE_PATH}.download
-# delete a file
-mc rm ${ALIAS}/${BUCKET_NAME}/${OBJECT_NAME}
-# clean up the bucket content
-mc rm --recursive ${ALIAS}/${BUCKET_NAME} --force
-# delete the bucket
-mc rb ${ALIAS}/${BUCKET_NAME}
-# delete alias
-mc alias remove ${ALIAS}
-
+#### 2.1 Installing Models
+When installing on the KDP page, the `model list` parameter defaults to an empty value. You can find the required models [here](https://ollama.com/library) and simply fill in the model name. After clicking install, the model will be automatically downloaded during the application startup phase. Typically, models are large and may take a long time to download, so please be patient (progress cannot be viewed). Alternatively, you can keep the `model list` parameter empty, install and start the application, and then manually download the model inside the container (taking `qwen:0.5b` as an example):
+```shell
+kubectl exec -it $(kubectl get pods -l app.kubernetes.io/name=ollama -n kdp-data -o jsonpath='{.items[0].metadata.name}') -n kdp-data -- ollama pull qwen:0.5b
 ```
 
-> 提示：可以进入任意一个 minio pod 容器, 环境中已经安装 minio CLI, 可以执行上述命令。endpoint 需要调整 `export API_ENDPOINT=juicefs-s3-gateway:9000`, 不要使用 ingress 地址，集群内dns可能无法解析。
-
-
-#### 2.3 使用 AWS CLI 访问
-
-从 https://aws.amazon.com/cli 下载并安装 AWS CLI，然后进行配置：
+#### 2.2 Using the REST API
 
 ```bash
-aws configure
-# Access Key ID and Secret Access Key are the same as the Minio admin username and password
-AWS Access Key ID [None]: admin
-AWS Secret Access Key [None]: admin.password
-Default region name [None]:
-Default output format [None]:
 
-# List buckets
-aws --endpoint-url http://juicefs-s3-gateway-kdp-data.kdp-e2e.io s3 ls
+export ollama_endpoint=http://ollama-kdp-data.kdp-e2e.io
+export ollama_model=qwen:0.5b
 
-# List objects in bucket
-aws --endpoint-url http://juicefs-s3-gateway-kdp-data.kdp-e2e.io s3 ls s3://<bucket>
+
+curl ${ollama_endpoint}/api/generate -d '{
+  "model": "'"${ollama_model}"'",
+  "prompt": "Why is the sky blue?"
+}'
 
 ```
+高级参数：https://github.com/ollama/ollama/blob/main/docs/api.md#generate-request-with-options
+更多请参考： https://github.com/ollama/ollama/blob/main/docs/api.md
 
-> Tip: You can enter any Minio pod container where the Minio CLI is already installed and execute the above commands. Adjust the endpoint with `export API_ENDPOINT=juicefs-s3-gateway:9000`, and do not use the ingress address as the cluster's internal DNS may not resolve it correctly.
 
+#### 2.3 Using  Python SDK
 
-#### 2.3 Access via AWS CLI
-Download and install the AWS CLI from https://aws.amazon.com/cli, then proceed with the configuration:
+- Install
+
+```sh
+# Python version >= 3.8
+pip install ollama
+```
+
+- Usage
+
+```python
+import ollama
+response = ollama.chat(model='qwen:0.5b', messages=[
+  {
+    'role': 'user',
+    'content': 'Why is the sky blue?',
+  },
+])
+print(response['message']['content'])
+```
+Reference Documentation: [Ollama Python SDK](https://github.com/ollama/ollama-python)
+Additionally, JavaScript SDK: [Ollama JS](https://github.com/ollama/ollama-js)
+
+More usage examples: [Tutorials](https://github.com/ollama/ollama/blob/main/docs/tutorials.md)
+
+### 3. Common Commands
+```bash
+export ollama_model=qwen:0.5b
+# download model
+ollama pull ${ollama_model}
+# list models
+ollama list 
+# run model
+ollama run ${ollama_model}
+# list running models
+ollama ps
+# delete model
+ollama rm ${ollama_model}
+
+```
+### 4. OpenAI Compatibility
+Ollama is partially compatible with the OpenAI API, allowing you to interact with Ollama using the OpenAI SDK. Refer to [OpenAI Compatibility Documentation](https://github.com/ollama/ollama/blob/main/docs/openai.md) for more details.
+
+```py
+from openai import OpenAI
+
+client = OpenAI(
+    base_url='http://ollama-kdp-data.kdp-e2e.io/v1/',
+
+    # required but ignored
+    api_key='ollama',
+)
+
+chat_completion = client.chat.completions.create(
+    messages=[
+        {
+            'role': 'user',
+            'content': 'Say this is a test',
+        }
+    ],
+    model='qwen:0.5b',
+)
+```
+
+### 5. GPU Compatibility
+For GPU compatibility details, please refer to the [GPU Documentation](https://github.com/ollama/ollama/blob/main/docs/gpu.md).
+
+### 6. Custom Models
 
 ```bash
-aws configure
-# Access Key ID and Secret Access Key are the same as the Minio admin username and password
-AWS Access Key ID [None]: admin
-AWS Secret Access Key [None]: admin.password
-Default region name [None]:
-Default output format [None]:
+# download model
+ollama pull qwen:0.5b
 
-# List buckets
-aws --endpoint-url http://juicefs-s3-gateway-kdp-data.kdp-e2e.io s3 ls
+# create model file
+cat > Modelfile << EOF
+FROM qwen:0.5b
+# set the temperature to 1 [higher is more creative, lower is more coherent]
+PARAMETER temperature 1
+# set the system message
+SYSTEM """
+You are Mario from Super Mario Bros. Answer as Mario, the assistant, only.
+"""
+EOF
 
-# List objects in bucket
-aws --endpoint-url http://juicefs-s3-gateway-kdp-data.kdp-e2e.io s3 ls s3://<bucket>
+# build model
+ollama create mario -f ./Modelfile
+
+# run model
+ollama run mario
+>>> hi
+Hello! It's your friend Mario.
 ```
 
-### 2.3 API
-Object API (Amazon S3 compatible):
-- Go:         https://docs.min.io/docs/golang-client-quickstart-guide
-- Java:       https://docs.min.io/docs/java-client-quickstart-guide
-- Python:     https://docs.min.io/docs/python-client-quickstart-guide
-- JavaScript: https://docs.min.io/docs/javascript-client-quickstart-guide
-- .NET:       https://docs.min.io/docs/dotnet-client-quickstart-guide
+For more references on custom models, see [Model File Documentation](https://github.com/ollama/ollama/blob/main/docs/modelfile.md).
 
-### 3. FAQ
+### 7. Custom Ollama Docker Image
+If your deployment environment cannot download models, you can build a custom Ollama Docker image.
 
-https://juicefs.com/docs/zh/community/faq
+```bash
+# wire Dockerfile
+cat > Dockerfile << EOF
+FROM ollama/ollama:latest
+RUN ollama pull qwen:0.5b
+EOF
 
+docker build -t ollama-custom:1.0.0 .
+docker push ollama-custom:1.0.0
+```
+
+Add the `tag` configuration in the `catalog/ollama/x-definitions/app-ollama.cue` file.
+
+```cue
+values: {
+	image: {
+	    repository: "\(_imageRegistry)ollama/ollama"
+        // use custom image
+        tag: "ollama-custom:1.0.0"
+	}
+    ....
+}
+```
+
+### 7. FAQ
+https://github.com/ollama/ollama/blob/main/docs/faq.md

@@ -35,7 +35,7 @@ template: {
 				{
 					name: context["name"]
 					properties: {
-						chart:           "ollama"
+						chart:           "ollama" // https://github.com/otwld/ollama-helm
 						releaseName:     context["name"]
 						repoType:        "oci"
 						targetNamespace: context["namespace"]
@@ -58,12 +58,6 @@ template: {
 									//-- Specify the number of GPU
 									"number": parameter.ollama.gpu.number
 								}
-								//-- List of models to pull at container startup
-								// models: [
-								//  "phi3:3.8b",
-								//  "qwen:0.5b",
-								// ]
-
 								models: parameter.ollama.models
 							}
 
@@ -134,7 +128,6 @@ template: {
 
 				// +ui:description=GPU类型
 				// +ui:order=2
-				// type: "nvidia" | "amd"
 				type: "nvidia" | "amd"
 
 				// +minimum=1
@@ -142,8 +135,10 @@ template: {
 				// +ui:order=3
 				"number": *1 | int
 			}
+			// +ui:description=模型列表，支持模型请参考 https://ollama.com/library ，默认为空，指定后会在启动前耗时较长地下载模型。也可以进入容器执行: ollama pull your-model-name
+			// +ui:order=5
+			// +ui:order=4
 			models: [...string]
-
 			// models: ["qwen:0.5b", "nomic-embed-text:v1.5", ...string]
 		}
 
@@ -190,7 +185,7 @@ template: {
 			}
 		}
 
-		// +ui:description=配置kubernetes亲和性和反亲和性，请根据实际情况调整
+		// +ui:description=配置kubernetes亲和性，请根据实际情况调整
 		// +ui:order=7
 		affinity?: {}
 
