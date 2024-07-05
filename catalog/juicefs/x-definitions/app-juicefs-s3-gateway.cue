@@ -90,8 +90,10 @@ template: {
 								secretKey: " "
 								bucket:    " "
 							}
-							formatOptions: parameter.formatOptions
-							options:       parameter.options
+							if parameter.formatOptions != _|_ {
+								formatOptions: parameter.formatOptions
+							}
+							options: parameter.options
 							envs: [
 								{
 									name: "MYSQL_PASSWORD"
@@ -393,26 +395,11 @@ template: {
 			]
 			policies: [
 				{
-					name: "shared-resource"
-					properties: {
-						rules: [
-							{
-								selector: {
-									componentNames: [
-										// "minio-grafana-dashboard",
-									]
-								}
-							},
-						]
-					}
-					type: "shared-resource"
-				},
-				{
 					type: "apply-once"
 					name: "apply-once-res"
 					properties: rules: [
 						{
-							selector: resourceTypes: ["Job"]
+							selector: resourceTypes: ["Namespace", "Job"]
 							strategy: {
 								path: ["*"]
 							}
@@ -485,7 +472,7 @@ template: {
 
 		// +ui:description=格式化选项，使用空格分隔。Ref: https://juicefs.com/docs/community/command_reference#format。Example: Example: "--inodes=1000000 --block-size=4M"
 		// +ui:order=5
-		formatOptions: *"" | string
+		formatOptions?: string
 		// +ui:description=Gateway配置选项，使用空格分隔。Ref: https://juicefs.com/docs/community/command_reference#gateway。Example: "--get-timeout=60 --put-timeout=60" 
 		// +ui:order=6
 		options: *"--multi-buckets=true --cache-partial-only=true --cache-size=10240" | string

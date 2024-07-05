@@ -34,8 +34,6 @@ export LOCAL_FILE_PATH=/tmp/${OBJECT_NAME}
 echo "hello world" > ${LOCAL_FILE_PATH}
 # create an alias for the Minio server
 mc alias set ${ALIAS} ${API_ENDPOINT} ${ACCESS_KEY} ${SECRET_KEY}
-# test the Connection
-mc admin info ${ALIAS}
 # list all buckets
 mc ls ${ALIAS}
 # create a bucket
@@ -57,30 +55,7 @@ mc alias remove ${ALIAS}
 
 ```
 
-> 提示：可以进入任意一个 minio pod 容器, 环境中已经安装 minio CLI, 可以执行上述命令。endpoint 需要调整 `export API_ENDPOINT=juicefs-s3-gateway:9000`, 不要使用 ingress 地址，集群内dns可能无法解析。
-
-
-#### 2.3 使用 AWS CLI 访问
-
-从 https://aws.amazon.com/cli 下载并安装 AWS CLI，然后进行配置：
-
-```bash
-aws configure
-# Access Key ID and Secret Access Key are the same as the Minio admin username and password
-AWS Access Key ID [None]: admin
-AWS Secret Access Key [None]: admin.password
-Default region name [None]:
-Default output format [None]:
-
-# List buckets
-aws --endpoint-url http://juicefs-s3-gateway-kdp-data.kdp-e2e.io s3 ls
-
-# List objects in bucket
-aws --endpoint-url http://juicefs-s3-gateway-kdp-data.kdp-e2e.io s3 ls s3://<bucket>
-
-```
-
-> Tip: You can enter any Minio pod container where the Minio CLI is already installed and execute the above commands. Adjust the endpoint with `export API_ENDPOINT=juicefs-s3-gateway:9000`, and do not use the ingress address as the cluster's internal DNS may not resolve it correctly.
+> Tip: You can enter any Minio pod container where the Minio CLI is already installed and execute the above commands. Adjust the endpoint with `export API_ENDPOINT=http://juicefs-s3-gateway:9000`, and do not use the ingress address as the cluster's internal DNS may not resolve it correctly.
 
 
 #### 2.3 Access via AWS CLI

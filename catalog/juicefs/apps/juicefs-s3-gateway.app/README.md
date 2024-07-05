@@ -38,8 +38,6 @@ export LOCAL_FILE_PATH=/tmp/${OBJECT_NAME}
 echo "hello world" > ${LOCAL_FILE_PATH}
 # create an alias for the Minio server
 mc alias set ${ALIAS} ${API_ENDPOINT} ${ACCESS_KEY} ${SECRET_KEY}
-# test the Connection
-mc admin info ${ALIAS}
 # list all buckets
 mc ls ${ALIAS}
 # create a bucket
@@ -61,7 +59,7 @@ mc alias remove ${ALIAS}
 
 ```
 
-> 提示：可以进入任意一个 minio pod 容器, 环境中已经安装 minio CLI, 可以执行上述命令。endpoint 需要调整 `export API_ENDPOINT=juicefs-s3-gateway:9000`, 不要使用 ingress 地址，集群内dns可能无法解析。
+> 提示：可以进入任意一个 minio pod 容器, 环境中已经安装 minio CLI, 可以执行上述命令。endpoint 需要调整 `export API_ENDPOINT=http://juicefs-s3-gateway:9000`, 不要使用 ingress 地址，集群内dns可能无法解析。
 
 
 #### 2.3 使用 AWS CLI 访问
