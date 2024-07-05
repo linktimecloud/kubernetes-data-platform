@@ -46,7 +46,7 @@ _kdpUX: {
 								{
 									name: _UXName
 									image: "\(parameter.registry)/linktimecloud/kdp-ux:\(_version.ux)"
-									imagePullPolicy: "IfNotPresent"
+									imagePullPolicy: "Always"
 									command: ["npm", "start"]
 									ports: [
 										{
