@@ -400,14 +400,17 @@ template: {
 				{
 					type: "apply-once"
 					name: "apply-once-res"
-					properties: rules: [
-						{
-							selector: resourceTypes: ["Namespace", "Job"]
-							strategy: {
-								path: ["*"]
-							}
-						},
-					]
+					properties: {
+						enable: true
+						rules: [
+							{
+								selector: resourceTypes: ["Namespace", "Job"]
+								strategy: {
+									path: ["*"]
+								}
+							},
+						]
+					}
 				},
 			]
 		}
