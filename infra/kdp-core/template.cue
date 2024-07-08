@@ -91,18 +91,30 @@ output: {
 			{
 				type: "apply-once"
 				name: "apply-once-res"
-				properties: rules: [
-					{
-						selector: resourceTypes: [
-							"Namespace",
-							"Job",
-							"CronJob"
+				properties: {
+					enable: true
+					rules: [
+							{
+								selector: resourceTypes: [
+									"Namespace",
+									"Job",
+									"CronJob"
+								]
+								strategy: {
+									path: ["*"]
+								}
+							},
+							{
+								selector: resourceTypes: [
+									"Ingress"
+								]
+								strategy: {
+									affect: "onStateKeep"
+									path: ["*"]
+								}
+							}
 						]
-						strategy: {
-							path: ["*"]
-						}
-					}
-				]
+				}
 			}
 		]
 
