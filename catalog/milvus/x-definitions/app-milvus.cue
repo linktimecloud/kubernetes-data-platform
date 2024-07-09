@@ -14,35 +14,19 @@ milvus: {
 				"required":    true
 			},
 			{
-				name:        "dependencies.minio.host"
+				name:        "dependencies.minio.contextSetting"
 				type:        "ContextSetting"
 				refType:     "minio"
-				refKey:      "host"
-				description: "minio host"
+				refKey:      ""
+				description: "minio host/port"
 				required:    true
 			},
 			{
-				name:        "dependencies.minio.port"
-				type:        "ContextSetting"
-				refType:     "minio"
-				refKey:      "port"
-				description: "minio port"
-				required:    true
-			},
-			{
-				name:        "dependencies.minio.accessKey"
+				name:        "dependencies.minio.contextSecret"
 				type:        "ContextSecret"
 				refType:     "minio"
-				refKey:      "root-user"
-				description: "minio root user"
-				required:    true
-			},
-			{
-				name:        "dependencies.minio.secretKey"
-				type:        "ContextSecret"
-				refType:     "minio"
-				refKey:      "root-password"
-				description: "minio root user password"
+				refKey:      ""
+				description: "minio user info"
 				required:    true
 			},
 		]
@@ -56,6 +40,36 @@ template: {
 	if context.docker_registry != _|_ && len(context.docker_registry) > 0 {
 		_imageRegistry: context.docker_registry + "/"
 	}
+
+  _extraEnv: [
+  	{
+  		name: "MINIO_ADDRESS"
+			valueFrom: {
+				configMapKeyRef: {
+					name: parameter.dependencies.minio.contextSetting,
+					key:  "host"
+				}
+			}
+		},
+    {
+      name: "MINIO_ACCESS_KEY_ID",
+      valueFrom: {
+        secretKeyRef: {
+          name: parameter.dependencies.minio.contextSecret,
+          key: "MINIO_ROOT_USER"
+        }
+      }
+    },
+    {
+    	name: "MINIO_SECRET_ACCESS_KEY",
+      valueFrom: {
+        secretKeyRef: {
+          name: parameter.dependencies.minio.contextSecret,
+          key: "MINIO_ROOT_PASSWORD"
+        }
+      }
+    }
+  ]
 
 	output: {
 		apiVersion: "core.oam.dev/v1beta1"
@@ -101,19 +115,6 @@ template: {
 									"tag":        parameter.images.tools
 									"pullPolicy": "IfNotPresent"
 								}
-							}
-							"ingress": {
-								"enabled":     true
-								"annotations": null
-								"labels": {}
-								"rules": [
-									{
-										"host":     "milvus-" + context.namespace + "." + context["ingress.root_domain"]
-										"path":     "/"
-										"pathType": "Prefix"
-									},
-								]
-								"tls": []
 							}
 							"serviceAccount": {
 								"create": true
@@ -176,6 +177,7 @@ template: {
 										"subPath":       ""
 									}
 								}
+								extraEnv: _extraEnv
 							}
 							"proxy": {
 								"enabled":   true
@@ -184,6 +186,7 @@ template: {
 								"profiling": {
 									"enabled": true
 								}
+								extraEnv: _extraEnv
 							}
 							"rootCoordinator": {
 								"enabled":   true
@@ -195,6 +198,7 @@ template: {
 								"activeStandby": {
 									"enabled": false
 								}
+								extraEnv: _extraEnv
 							}
 							"queryCoordinator": {
 								"enabled":   true
@@ -206,6 +210,7 @@ template: {
 								"activeStandby": {
 									"enabled": false
 								}
+								extraEnv: _extraEnv
 							}
 							"queryNode": {
 								"enabled":   true
@@ -220,6 +225,7 @@ template: {
 								"profiling": {
 									"enabled": true
 								}
+								extraEnv: _extraEnv
 							}
 							"indexCoordinator": {
 								"enabled":   true
@@ -231,6 +237,7 @@ template: {
 								"activeStandby": {
 									"enabled": false
 								}
+								extraEnv: _extraEnv
 							}
 							"indexNode": {
 								"enabled":   true
@@ -245,6 +252,7 @@ template: {
 										"enabled": false
 									}
 								}
+								extraEnv: _extraEnv
 							}
 							"dataCoordinator": {
 								"enabled":   true
@@ -256,6 +264,7 @@ template: {
 								"activeStandby": {
 									"enabled": false
 								}
+								extraEnv: _extraEnv
 							}
 							"dataNode": {
 								"enabled":   true
@@ -264,6 +273,7 @@ template: {
 								"profiling": {
 									"enabled": false
 								}
+								extraEnv: _extraEnv
 							}
 							"mixCoordinator": {
 								"enabled": false
@@ -321,10 +331,6 @@ template: {
 							}
 							"externalS3": {
 								"enabled":   true
-								"host":      parameter.dependencies.minio.host
-								"port":      parameter.dependencies.minio.port
-								"accessKey": parameter.dependencies.minio.accessKey
-								"secretKey": parameter.dependencies.minio.secretKey
 								"useSSL":    false
 								if parameter.dependencies.minio.bucketName != _|_ && parameter.dependencies.minio.bucketName != "" {
 									"bucketName": parameter.dependencies.minio.bucketName
@@ -360,13 +366,14 @@ template: {
 	parameter: {
 		// +ui:order=0
 		// +ui:title=部署模式
+		// +ui:description=False：standalone模式，True：cluster模式。注意: 目前Milvus单机版无法“在线”升级到Milvus集群。
 		clusterMode: *false | bool
 		// +ui:order=1
 		// +ui:title=组件依赖
-		// +ui:hidden={{rootFormData.clusterMode == false}}
 		dependencies: {
 			// +ui:description=Kafka
 			// +ui:order=1
+			// +ui:hidden={{rootFormData.clusterMode == false}}
 			kafka: {
 				// +ui:description=Kafka 连接地址
 				// +ui:order=1
@@ -377,22 +384,14 @@ template: {
 			// +ui:description=Minio
 			// +ui:order=2
 			minio: {
-				// +ui:description=Minio 连接地址
+				// +ui:description=Minio 连接信息
 				// +ui:order=1
 				// +err:options={"required":"请先安装Minio，或添加Minio集群配置"}
-				host: string
-				// +ui:description=Minio 连接端口
+				contextSetting: string
+				// +ui:description=Minio 用户信息
 				// +ui:order=2
 				// +err:options={"required":"请先安装Minio，或添加Minio集群配置"}
-				port: string
-				// +ui:description=Minio 用户
-				// +ui:order=3
-				// +err:options={"required":"请先安装Minio，或添加Minio集群配置"}
-				accessKey: string
-				// +ui:description=Minio 密码
-				// +ui:order=4
-				// +err:options={"required":"请先安装Minio，或添加Minio集群配置"}
-				secretKey: string
+				contextSecret: string
 				// +ui:description=Minio 存储桶名称
 				// +ui:order=5
 				bucketName: *"milvus" | string
