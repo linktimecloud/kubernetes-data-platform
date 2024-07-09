@@ -12,7 +12,7 @@
 
 直接使用Flink构建实时数仓，由Flink进行清洗加工转换和聚合汇总，将各层结果集写入Kafka中。
 
-Click house从Kafka分别订阅各层数据，将各层数据持久化到Click house中，用于之后的查询分析。
+ClickHouse从Kafka分别订阅各层数据，将各层数据持久化到ClickHouse中，用于之后的查询分析。
 
 ## 1.2 数据说明
 
@@ -46,6 +46,15 @@ Click house从Kafka分别订阅各层数据，将各层数据持久化到Click h
 - ClickHouse: 数据存储
 - Superset: 数据可视化
 - Airflow: 作业调度
+
+Mysql 开启binlog配置：
+
+```
+[mysqld]
+log-bin=mysql_bin
+binlog-format=row
+binlog-row-image=full
+```
 
 # 2. 数据集成
 
@@ -91,7 +100,7 @@ bin/kafka-topics.sh --create --topic dws-agg-by-region --replication-factor 3 --
 
 ## 2.3 创建 ClickHouse 表
 
-进入click-house pod，使用`clickhouse-client`执行命令创建表，以下为建表语句：
+进入ClickHouse pod，使用`clickhouse-client`执行命令创建表，以下为建表语句：
 
 ```sql
 CREATE DATABASE IF NOT EXISTS kdp_demo;
@@ -309,9 +318,7 @@ GROUP BY
 -- END;
 ```
 
-### 2.4.2 使用Stream Park 创建 Flink SQL 作业
-
-具体使用参考Stream Park 文档。
+### 2.4.2 依赖部分
 
 maven 依赖：
 ```xml
@@ -321,6 +328,10 @@ maven 依赖：
     <version>3.0.1</version>
 </dependency>
 ```
+
+### 2.4.3 配置部分
+
+具体使用参考[StreamPark 文档](https://streampark.apache.org/docs/get-started/how-to-use)
 
 ## 2.5 创建 Airflow DAG
 
@@ -385,9 +396,9 @@ insert_data_orders
 
 ### 2.6 数据验证
 
-使用Click House验证数据：
+使用ClickHouse验证数据：
 
-进入Click House客户端：
+进入ClickHouse客户端：
 
 ```shell
 clickhouse-client
@@ -415,7 +426,7 @@ select count(*) from kdp_demo.orders;
 
 ### 导入我们制作好的图表
 
-1. [下载面板](https://gitee.com/linktime-cloud/example-datasets/blob/main/superset/Real-time-incremental-data-analysis-superset-export.zip)
+1. [下载面板](https://raw.githubusercontent.com/linktimecloud/example-datasets/feature%23superset/superset/Real-time-incremental-data-analysis-superset-export.zip)
 
 2. 导入面板
 
