@@ -48,6 +48,15 @@ Install the following components on the KDP page and complete their QuickStart:
 - Superset: Data visualization.
 - Airflow: Job scheduling.
 
+Mysql enable binlog configuration：
+
+```
+[mysqld]
+log-bin=mysql_bin
+binlog-format=row
+binlog-row-image=full
+```
+
 # 2. Data Integration
 
 Please modify the account and password information used in the document according to the actual cluster configuration.
@@ -310,7 +319,7 @@ GROUP BY
 -- END;
 ```
 
-### 2.4.2 Using Stream Park to create Flink SQL job
+### 2.4.2 Dependencies part
 
 Please refer to the Stream Park documentation for specific usage details.
 
@@ -323,6 +332,10 @@ maven dependency：
     <version>3.0.1</version>
 </dependency>
 ```
+
+### 2.4.3 StreamPark configuration
+
+Usage reference: [Stream Park Docs](https://streampark.apache.org/docs/get-started/how-to-use)
 
 ## 2.5 Create Airflow DAG
 
@@ -418,7 +431,7 @@ Login to Superset using the username `admin` and password `admin` at `http://sup
 
 ### Import the charts we have created
 
-1. [Download Dashboard](https://gitee.com/linktime-cloud/example-datasets/blob/main/superset/Real-time-incremental-data-analysis-superset-export.zip)
+1. [Download Dashboard](https://raw.githubusercontent.com/linktimecloud/example-datasets/feature%23superset/superset/Real-time-incremental-data-analysis-superset-export.zip)
 
 2. Import dashboard
 

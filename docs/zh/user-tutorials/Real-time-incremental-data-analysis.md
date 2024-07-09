@@ -47,6 +47,15 @@ Click house从Kafka分别订阅各层数据，将各层数据持久化到Click h
 - Superset: 数据可视化
 - Airflow: 作业调度
 
+Mysql 开启binlog配置：
+
+```
+[mysqld]
+log-bin=mysql_bin
+binlog-format=row
+binlog-row-image=full
+```
+
 # 2. 数据集成
 
 文中使用的账号密码信息请根据实际集群配置进行修改。
@@ -309,9 +318,7 @@ GROUP BY
 -- END;
 ```
 
-### 2.4.2 使用Stream Park 创建 Flink SQL 作业
-
-具体使用参考Stream Park 文档。
+### 2.4.2 依赖部分
 
 maven 依赖：
 ```xml
@@ -321,6 +328,10 @@ maven 依赖：
     <version>3.0.1</version>
 </dependency>
 ```
+
+### 2.4.3 配置部分
+
+具体使用参考[Stream Park 文档](https://streampark.apache.org/docs/get-started/how-to-use)
 
 ## 2.5 创建 Airflow DAG
 
@@ -415,7 +426,7 @@ select count(*) from kdp_demo.orders;
 
 ### 导入我们制作好的图表
 
-1. [下载面板](https://gitee.com/linktime-cloud/example-datasets/blob/main/superset/Real-time-incremental-data-analysis-superset-export.zip)
+1. [下载面板](https://raw.githubusercontent.com/linktimecloud/example-datasets/feature%23superset/superset/Real-time-incremental-data-analysis-superset-export.zip)
 
 2. 导入面板
 
