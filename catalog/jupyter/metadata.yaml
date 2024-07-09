@@ -1,0 +1,8 @@
+name: Jupyter
+category: 开发工具
+description: Jupyter是一个大型的伞形项目，涵盖了许多不同的软件产品和工具，包括流行的Jupyter Notebook和JupyterLab基于网络的笔记本创作和编辑应用程序。
+i18n:
+  en:
+    category: devtools
+    description: >-
+      Jupyter is a large umbrella project that covers many different software offerings and tools, including the popular Jupyter Notebook and JupyterLab web-based notebook authoring and editing applications.
