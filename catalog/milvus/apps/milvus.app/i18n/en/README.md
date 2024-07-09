@@ -45,21 +45,21 @@ pip install milvus-cli
 
 1. Enter Milvus_CLI
 
-    ```shell
-    milvus-cli
-    ```
+```shell
+    milvus_cli
+```
 
 2. Connect to Milvus server
 
    Connect Milvus using port forward method here, refer to 2.2.1 for connection information.
 
-    ```shell
+```shell
     connect -uri http://localhost:19530/
-    ```
+```
 
 3. Database operation
 
-    ```shell
+```shell
     create database -db test"
     
     list databases
@@ -67,11 +67,11 @@ pip install milvus-cli
     use database -db test
     
     delete database -db test
-    ```
+```
 
 4. Collection operation
 
-    ```shell
+```shell
     # collection basic operation
     create collection -c car -f id:INT64:primary_field -f vector:FLOAT_VECTOR:128 -f color:INT64:color -f brand:ARRAY:64:VARCHAR:128 -p id -A -desc car_collection
     
@@ -105,11 +105,11 @@ pip install milvus-cli
     create alias -c car -a carAlias1
     
     delete alias -a carAlias1
-    ```
+```
 
 5. Data operation
 
-    ```shell
+```shell
     # notice: `import` is used in the document, but milvus cli v0.4.3 uses `insert`
     insert -c car 'https://raw.githubusercontent.com/linktimecloud/example-datasets/milvus/data/car.sample.100.csv'
     
@@ -124,7 +124,7 @@ pip install milvus-cli
     
     # release from RAM
     release collection -c car
-    ```
+```
 
 #### 2.2.3 Using Milvus API
 
