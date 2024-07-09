@@ -101,7 +101,7 @@ bin/kafka-topics.sh --create --topic dws-agg-by-region --replication-factor 3 --
 
 ## 2.3 Create ClickHouse tables
 
-Enter the click-house pod and use the 'clickhouse-client' command to create tables. The following is the table creation statement:
+Enter the ClickHouse pod and use the 'clickhouse-client' command to create tables. The following is the table creation statement:
 
 ```sql
 CREATE DATABASE IF NOT EXISTS kdp_demo;
