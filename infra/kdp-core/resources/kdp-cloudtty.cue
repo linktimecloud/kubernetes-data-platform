@@ -6,11 +6,11 @@ _kdpCloudTty: {
 	name: parameter.namePrefix + _CloudTtyName
 	type: "helm"
 	properties: {
-		url:             "\(parameter.helmURL)"
-		chart:           _CloudTtyName
-		releaseName:     parameter.namePrefix + _CloudTtyName
-		repoType:        "oci"
-		version:         "0.5.7"
+		url:         "\(parameter.helmURL)"
+		chart:       _CloudTtyName
+		releaseName: parameter.namePrefix + _CloudTtyName
+		repoType:    "oci"
+		version:     "0.5.7"
 		values: {
 			global: {
 				imageRegistry: "\(parameter.registry)"
@@ -24,115 +24,114 @@ _kdpCloudTty: {
 }
 
 _kdpTerminalConfigTask: {
-	name: parameter.namePrefix +"terminal-config-task"
+	name: parameter.namePrefix + "terminal-config-task"
 	type: "k8s-objects"
 	properties: {
 		objects: [
-				{
-					apiVersion: "batch/v1"
-					kind: "Job"
-					metadata: {
-						name: parameter.namePrefix + "init-kubeconfig"
-					}
-					spec: {
-						ttlSecondsAfterFinished: 60
-						template: {
-							spec: {
-								volumes: [
-										{
-											name: "template"
-											projected: {
-												defaultMode: 420
-												sources: [
-													{
-														configMap: {
-															name: "kubeconfig-template"
-															items: [
-																{
-																	key: "kubeconfig-template"
-																	path: "kubeconfig-template"
-																},
-																{
-																	key: "kubeconfig-secret-template"
-																	path: "kubeconfig-secret-template"
-																},
-																{
-																	key: "create-kubeconfig"
-																	path: "create-kubeconfig.sh"
-																},
-																{
-																	key: "terminal-ingress-template"
-																	path: "terminal-ingress-template.yaml"
-																}
-															]
-														}
-													}
-												]
-											}
-										}
-									]
-								containers: [
-									{
-										name: "init-kubeconfig"
-										image: "\(parameter.registry)/cloudtty/cloudshell:v0.5.7"
-										imagePullPolicy: "IfNotPresent"
-										env: [
-											if parameter.ingress.tlsSecretName != "" {
-												{
-														name: "HTTPTYPE"
-														value: "https"
-												}
-											},
-											if parameter.ingress.tlsSecretName == "" {
-												{
-														name: "HTTPTYPE"
-														value: "http"
-												}
-											},
-										]
-										volumeMounts: [
+			{
+				apiVersion: "batch/v1"
+				kind:       "Job"
+				metadata: {
+					name: parameter.namePrefix + "init-kubeconfig"
+				}
+				spec: {
+					ttlSecondsAfterFinished: 60
+					template: {
+						spec: {
+							volumes: [
+								{
+									name: "template"
+									projected: {
+										defaultMode: 420
+										sources: [
 											{
-												name: "template"
-												mountPath: "/opt"
-											}
+												configMap: {
+													name: "kubeconfig-template"
+													items: [
+														{
+															key:  "kubeconfig-template"
+															path: "kubeconfig-template"
+														},
+														{
+															key:  "kubeconfig-secret-template"
+															path: "kubeconfig-secret-template"
+														},
+														{
+															key:  "create-kubeconfig"
+															path: "create-kubeconfig.sh"
+														},
+														{
+															key:  "terminal-ingress-template"
+															path: "terminal-ingress-template.yaml"
+														},
+													]
+												}
+											},
 										]
-										command: [
-											"bash",
-											"-c",
-											"cd /tmp;cp /opt/* ./;sh create-kubeconfig.sh"
-										]
-
 									}
-								]
-								serviceAccount: "cloudtty-controller-manager"
-								restartPolicy: "OnFailure"
-							}
+								},
+							]
+							containers: [
+								{
+									name:            "init-kubeconfig"
+									image:           "\(parameter.registry)/cloudtty/cloudshell:v0.5.7"
+									imagePullPolicy: "IfNotPresent"
+									env: [
+										if parameter.ingress.tlsSecretName != "" {
+											{
+												name:  "HTTPTYPE"
+												value: "https"
+											}
+										},
+										if parameter.ingress.tlsSecretName == "" {
+											{
+												name:  "HTTPTYPE"
+												value: "http"
+											}
+										},
+									]
+									volumeMounts: [
+										{
+											name:      "template"
+											mountPath: "/opt"
+										},
+									]
+									command: [
+										"bash",
+										"-c",
+										"cd /tmp;cp /opt/* ./;sh create-kubeconfig.sh",
+									]
+
+								},
+							]
+							serviceAccount: "cloudtty-controller-manager"
+							restartPolicy:  "OnFailure"
 						}
 					}
 				}
+			},
 		]
 	}
 }
 
-
 _KdpTerminalConfig: {
-	name: parameter.namePrefix +"terminal-config"
+	name: parameter.namePrefix + "terminal-config"
 	type: "k8s-objects"
 	properties: {
 		objects: [
 			{
 				apiVersion: "v1"
-				kind: "ServiceAccount"
+				kind:       "ServiceAccount"
 				metadata: {
-					name: "pod-terminal-sa"
+					name:      "pod-terminal-sa"
 					namespace: "\(parameter.namespace)"
 				}
 			},
 			{
 				apiVersion: "v1"
-				kind: "Secret"
+				kind:       "Secret"
 				metadata: {
-					name: "pod-terminal-token"
+					name:      "pod-terminal-token"
 					namespace: "\(parameter.namespace)"
 					annotations: {
 						"kubernetes.io/service-account.name": "pod-terminal-sa"
@@ -142,17 +141,17 @@ _KdpTerminalConfig: {
 			},
 			{
 				apiVersion: "v1"
-				kind: "ServiceAccount"
+				kind:       "ServiceAccount"
 				metadata: {
-					name: "general-terminal-sa"
+					name:      "general-terminal-sa"
 					namespace: "\(parameter.namespace)"
 				}
 			},
 			{
 				apiVersion: "v1"
-				kind: "Secret"
+				kind:       "Secret"
 				metadata: {
-					name: "general-terminal-token"
+					name:      "general-terminal-token"
 					namespace: "\(parameter.namespace)"
 					annotations: {
 						"kubernetes.io/service-account.name": "general-terminal-sa"
@@ -161,7 +160,7 @@ _KdpTerminalConfig: {
 				type: "kubernetes.io/service-account-token"
 			},
 			{
-				kind: "ClusterRole"
+				kind:       "ClusterRole"
 				apiVersion: "rbac.authorization.k8s.io/v1"
 				metadata: {
 					name: "pod-terminal-cr"
@@ -178,12 +177,12 @@ _KdpTerminalConfig: {
 						"list",
 						"exec",
 						"logs",
-						"create"
+						"create",
 					]
 				}]
 			},
 			{
-				kind: "ClusterRole"
+				kind:       "ClusterRole"
 				apiVersion: "rbac.authorization.k8s.io/v1"
 				metadata: {
 					name: "general-terminal-cr"
@@ -194,14 +193,14 @@ _KdpTerminalConfig: {
 						resources: [
 							"pods",
 							"pods/log",
-							"pods/exec"
+							"pods/exec",
 						]
 						verbs: [
 							"get",
 							"list",
 							"create",
 							"update",
-							"delete"
+							"delete",
 						]
 					},
 					{
@@ -216,7 +215,7 @@ _KdpTerminalConfig: {
 							"events",
 							"limitranges",
 							"resourcequotas",
-							"componentstatuses"
+							"componentstatuses",
 						]
 						verbs: [
 							"get",
@@ -225,7 +224,7 @@ _KdpTerminalConfig: {
 							"create",
 							"update",
 							"patch",
-							"delete"
+							"delete",
 						]
 					},
 					{
@@ -234,7 +233,7 @@ _KdpTerminalConfig: {
 							"deployments",
 							"replicasets",
 							"statefulsets",
-							"daemonsets"
+							"daemonsets",
 						]
 						verbs: [
 							"get",
@@ -243,14 +242,14 @@ _KdpTerminalConfig: {
 							"create",
 							"update",
 							"patch",
-							"delete"
+							"delete",
 						]
 					},
 					{
 						apiGroups: ["batch"]
 						resources: [
 							"jobs",
-							"cronjobs"
+							"cronjobs",
 						]
 						verbs: [
 							"get",
@@ -259,15 +258,15 @@ _KdpTerminalConfig: {
 							"create",
 							"update",
 							"patch",
-							"delete"
+							"delete",
 						]
 					},
 					{
 						apiGroups: [
-							"extensions"
+							"extensions",
 						]
 						resources: [
-							"ingresses"
+							"ingresses",
 						]
 						verbs: [
 							"get",
@@ -276,13 +275,13 @@ _KdpTerminalConfig: {
 							"create",
 							"update",
 							"patch",
-							"delete"
+							"delete",
 						]
 					},
 					{
 						apiGroups: ["bdc.kdp.io"]
 						resources: [
-							"applications"
+							"applications",
 						]
 						verbs: [
 							"get",
@@ -294,7 +293,7 @@ _KdpTerminalConfig: {
 					},
 					{
 						apiGroups: [
-							"bdc.kdp.io"
+							"bdc.kdp.io",
 						]
 						resources: [
 							"bigdataclusters",
@@ -304,13 +303,13 @@ _KdpTerminalConfig: {
 						]
 						verbs: [
 							"get",
-							"list"
+							"list",
 						]
 					},
 					{
 						apiGroups: ["cloudshell.cloudtty.io"]
 						resources: [
-							"cloudshells"
+							"cloudshells",
 						]
 						verbs: [
 							"get",
@@ -320,96 +319,96 @@ _KdpTerminalConfig: {
 					{
 						apiGroups: ["flink.apache.org"]
 						resources: [
-							"*"
+							"*",
 						]
 						verbs: [
-							"*"
+							"*",
 						]
 					},
 					{
 						apiGroups: ["kafka.strimzi.io"]
 						resources: [
-							"*"
+							"*",
 						]
 						verbs: [
-							"*"
+							"*",
 						]
 					},
 					{
 						apiGroups: ["sparkoperator.k8s.io"]
 						resources: [
-							"*"
+							"*",
 						]
 						verbs: [
-							"*"
+							"*",
 						]
 					},
 				]
 			},
 			{
-				kind: "ClusterRoleBinding"
+				kind:       "ClusterRoleBinding"
 				apiVersion: "rbac.authorization.k8s.io/v1"
 				metadata: {
 					name: "pod-terminal-crb"
 				}
 				subjects: [
 					{
-						kind: "ServiceAccount"
-						name: "pod-terminal-sa"
+						kind:      "ServiceAccount"
+						name:      "pod-terminal-sa"
 						namespace: "\(parameter.namespace)"
-					}
+					},
 				]
 				roleRef: {
 					apiGroup: "rbac.authorization.k8s.io"
-					kind: "ClusterRole"
-					name: "pod-terminal-cr"
+					kind:     "ClusterRole"
+					name:     "pod-terminal-cr"
 				}
 			},
 			{
-				kind: "ClusterRoleBinding"
+				kind:       "ClusterRoleBinding"
 				apiVersion: "rbac.authorization.k8s.io/v1"
 				metadata: {
 					name: "general-terminal-crb"
 				}
 				subjects: [
 					{
-						kind: "ServiceAccount"
-						name: "general-terminal-sa"
+						kind:      "ServiceAccount"
+						name:      "general-terminal-sa"
 						namespace: "\(parameter.namespace)"
-					}
+					},
 				]
 				roleRef: {
 					apiGroup: "rbac.authorization.k8s.io"
-					kind: "ClusterRole"
-					name: "general-terminal-cr"
+					kind:     "ClusterRole"
+					name:     "general-terminal-cr"
 				}
 			},
 			{
 				apiVersion: "v1"
-				kind: "ConfigMap"
+				kind:       "ConfigMap"
 				metadata: {
 					name: "kubeconfig-template"
 				}
 				data: {
 					"kubeconfig-template": """
-					apiVersion: v1
-					kind: Config
-					users:
-					- name: USER
-					  user:
-					    token: TOKEN_DECODE
-					clusters:
-					- cluster:
-					    certificate-authority-data: CLUSTER_AUTH
-					    server: KUBE_APISERVER
-					  name: USER-cluster
-					contexts:
-					- context:
-					      cluster: USER-cluster
-					      user: USER
-					  name: USER-cluster
-					current-context: USER-cluster
-					"""
+						apiVersion: v1
+						kind: Config
+						users:
+						- name: USER
+						  user:
+						    token: TOKEN_DECODE
+						clusters:
+						- cluster:
+						    certificate-authority-data: CLUSTER_AUTH
+						    server: KUBE_APISERVER
+						  name: USER-cluster
+						contexts:
+						- context:
+						      cluster: USER-cluster
+						      user: USER
+						  name: USER-cluster
+						current-context: USER-cluster
+						"""
 					"kubeconfig-secret-template": """
 					kind: Secret
 					apiVersion: v1
@@ -419,42 +418,7 @@ _KdpTerminalConfig: {
 					data:
 					  config: SECRECT_DATA
 					"""
-					"terminal-ingress-template": """
-					kind: Ingress
-					apiVersion: networking.k8s.io/v1
-					metadata:
-					  name: "cloudtty"
-					  namespace: "\(parameter.namespace)"
-					  annotations:
-					    "konghq.com/strip-path": "true"
-					spec:
-					  ingressClassName: "\(parameter.ingress.class)"
-					  rules:
-					    - host: "cloudtty.\(parameter.ingress.domain)"
-					      http:
-					        paths:
-					        - path: "/template"
-					          pathType: "Prefix"
-					          backend:
-					            service:
-					              name: "\(_UXName)"
-					              port:
-					                number: \(_UXPort)
-					  tls:
-					    - hosts:
-					      - "cloudtty.\(parameter.ingress.domain)"
-					      secretName: "\(parameter.ingress.tlsSecretName)"
-					"""
-					"create-kubeconfig": """
-					if [[ ${HTTPTYPE} == "http" ]];then
-						head -n -4 terminal-ingress-template.yaml >terminal-ingress.yaml
-					else
-						cat terminal-ingress-template.yaml >terminal-ingress.yaml
-					fi
-					kubectl get ingress cloudtty -n \(parameter.namespace)
-					if [[ $? -ne 0 ]];then
-						kubectl apply -f terminal-ingress.yaml
-					fi
+					"create-kubeconfig":          """
 					KUBE_APISERVER='https://kubernetes.default.svc';
 					for i in pod-terminal general-terminal;do
 							TOKEN_DECODE=$(kubectl get secret/$i-token -n \(parameter.namespace) -o jsonpath='{.data.token}'| base64 -d)
@@ -465,7 +429,66 @@ _KdpTerminalConfig: {
 							kubectl apply -f $i.yaml
 					done
 					"""
+				}
+			},
+		]
+	}
+}
 
+_kdpCloudttyIngress: {
+	name: parameter.namePrefix + "cloudtty-ingress"
+	type: "k8s-objects"
+	properties: {
+		objects: [
+			{
+				kind:       "Ingress"
+				apiVersion: "networking.k8s.io/v1"
+				metadata: {
+					name:      "cloudtty"
+					namespace: "\(parameter.namespace)"
+					annotations: {
+						if parameter.ingress.class == "kong" {
+							"konghq.com/strip-path": "true"
+						}
+						if parameter.ingress.class == "nginx" {
+							"nginx.ingress.kubernetes.io/rewrite-target": "/"
+						}
+						if parameter.ingress.class == "traefik" {
+							"traefik.ingress.kubernetes.io/router.middlewares": "\(parameter.namespace)" + "-strippath@kubernetescrd"
+						}
+					}
+				}
+				spec: {
+					ingressClassName: "\(parameter.ingress.class)"
+					rules: [{
+						host: "cloudtty.\(parameter.ingress.domain)"
+						http: {
+							paths: [
+								{path: "/template"
+									pathType: "Prefix"
+									backend: {
+										service: {
+											name: "\(_UXName)"
+											port: {
+												number: _UXPort
+											}
+										}
+									}
+								},
+							]
+						}
+					},
+					]
+					if parameter.ingress.tlsSecretName != "" {
+						tls: [
+							{
+								hosts: [
+									"cloudtty.\(parameter.ingress.domain)",
+								]
+								secretName: "\(parameter.ingress.tlsSecretName)"
+							},
+						]
+					}
 				}
 			}
 		]
