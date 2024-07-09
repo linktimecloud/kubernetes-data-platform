@@ -473,7 +473,7 @@ template: {
 			}
 		}
 
-		// +ui:description=格式化选项，使用空格分隔。Ref: https://juicefs.com/docs/community/command_reference#format。Example: Example: "--inodes=1000000 --block-size=4M"
+		// +ui:description=格式化选项，使用空格分隔。Ref: https://juicefs.com/docs/community/command_reference# Example: "--inodes=1000000 --block-size=4M"
 		// +ui:order=5
 		formatOptions?: string
 		// +ui:description=Gateway配置选项，使用空格分隔。Ref: https://juicefs.com/docs/community/command_reference#gateway。Example: "--get-timeout=60 --put-timeout=60" 
