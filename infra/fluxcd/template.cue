@@ -108,12 +108,14 @@ output: {
 				type: "apply-once"
 				name: "not-keep-CRD"
 				properties: {
-					rules: [{
-						selector: resourceTypes: ["CustomResourceDefinition"]
-						strategy: {
-							path: ["*"]
-						}
-					},
+					enable: true
+					rules: [
+						{
+							selector: resourceTypes: ["CustomResourceDefinition"]
+							strategy: {
+								path: ["*"]
+							}
+						},
 					]
 				}
 			},

@@ -43,33 +43,33 @@ pip install milvus-cli
 
 1. 进入Milvus_CLI
 
-    ```shell
-    milvus-cli
-    ```
+ ```shell
+    milvus_cli
+```
 
 2. 连接到Milvus
 
     此处使用port-forward方式连接 Milvus，参考2.2.1 获取连接信息。
 
-    ```shell
+```shell
     connect -uri http://localhost:19530/
-    ```
+```
 
 3. Database 相关操作
 
-    ```shell
-    create database -db test"
+```shell
+    create database -db test
     
     list databases
     
     use database -db test
     
     delete database -db test
-    ```
+```
 
 4. Collection 相关操作
 
-    ```shell
+```shell
     # 基本操作
     create collection -c car -f id:INT64:primary_field -f vector:FLOAT_VECTOR:128 -f color:INT64:color -f brand:ARRAY:64:VARCHAR:128 -p id -A -desc car_collection
     
@@ -103,11 +103,11 @@ pip install milvus-cli
     create alias -c car -a carAlias1
     
     delete alias -a carAlias1
-    ```
+```
 
 5. 数据操作
 
-    ```shell
+```shell
     # 注意：文档中使用import，但milvus-cli v0.4.3 使用insert
     insert -c car 'https://raw.githubusercontent.com/linktimecloud/example-datasets/milvus/data/car.sample.100.csv'
     
@@ -122,7 +122,7 @@ pip install milvus-cli
     
     # 释放
     release collection -c car
-    ```
+```
 
 #### 2.2.3 使用 Milvus API
 
