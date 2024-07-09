@@ -150,14 +150,17 @@ output: {
 			{
 				type: "apply-once"
 				name: "apply-once-res"
-				properties: rules: [
-					{
-						selector: resourceTypes: ["Namespace", "CustomResourceDefinition", "CronJob"]
-						strategy: {
-							path: ["*"]
+				properties: {
+					enable: true
+					rules: [
+						{
+							selector: resourceTypes: ["Namespace", "CustomResourceDefinition", "CronJob"]
+							strategy: {
+								path: ["*"]
+							}
 						}
-					}
-				]
+					]
+				}
 			}
 		]
 	}

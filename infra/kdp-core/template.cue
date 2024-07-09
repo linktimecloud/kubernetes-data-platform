@@ -34,6 +34,7 @@ output: {
 			_configReplicator,
 			_configReloader,
 			_kdpCloudTty,
+			_kdpCloudttyIngress,
 			_KdpTerminalConfig,
 			_kdpTerminalConfigTask,
 			_kdpOAMOperator,
@@ -41,7 +42,7 @@ output: {
 			_kdpUX,
 			_bdcDef,
 			_systemBDC,
-		]
+		] + _kdpIngressMiddleware
 
 		policies: [
 			{
@@ -90,18 +91,30 @@ output: {
 			{
 				type: "apply-once"
 				name: "apply-once-res"
-				properties: rules: [
-					{
-						selector: resourceTypes: [
-							"Namespace",
-							"Job",
-							"CronJob"
+				properties: {
+					enable: true
+					rules: [
+							{
+								selector: resourceTypes: [
+									"Namespace",
+									"Job",
+									"CronJob"
+								]
+								strategy: {
+									path: ["*"]
+								}
+							},
+							{
+								selector: resourceTypes: [
+									"Ingress"
+								]
+								strategy: {
+									affect: "onStateKeep"
+									path: ["*"]
+								}
+							}
 						]
-						strategy: {
-							path: ["*"]
-						}
-					}
-				]
+				}
 			}
 		]
 
@@ -165,6 +178,12 @@ output: {
 						type: "apply-component"
 						name: "apply-cloudtty"
 						properties: component: parameter.namePrefix + "cloudtty"
+					},
+				] + _kdpIngressMiddlewareWorkflow + [
+					{
+						type: "apply-component"
+						name: "apply-cloudtty-ingress"
+						properties: component: parameter.namePrefix + "cloudtty-ingress"
 					},
 					{
 						type: "apply-component"

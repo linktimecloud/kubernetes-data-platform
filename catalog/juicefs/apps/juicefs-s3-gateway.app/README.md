@@ -15,6 +15,7 @@
 #### 2.2 使用 Minio CLI 访问 (推荐)
 
 为避免兼容性问题，我们推荐采用的 mc 的版本为 `RELEASE.2021-04-22T17-40-00Z`，你可以在[这个地址](https://dl.min.io/client/mc/release)找到历史版本和不同架构的 mc, 推荐版本下载地址：
+
 - [linux amd64](https://dl.min.io/client/mc/release/linux-amd64/archive/mc.RELEASE.2021-04-22T17-40-00Z)
 - [mac amd64](https://dl.min.io/client/mc/release/darwin-amd64/archive/mc.RELEASE.2021-04-22T17-40-00Z)
 - [mac arm64](https://dl.min.io/client/mc/release/darwin-arm64/archive/mc.RELEASE.2021-04-22T17-40-00Z)
@@ -38,8 +39,6 @@ export LOCAL_FILE_PATH=/tmp/${OBJECT_NAME}
 echo "hello world" > ${LOCAL_FILE_PATH}
 # create an alias for the Minio server
 mc alias set ${ALIAS} ${API_ENDPOINT} ${ACCESS_KEY} ${SECRET_KEY}
-# test the Connection
-mc admin info ${ALIAS}
 # list all buckets
 mc ls ${ALIAS}
 # create a bucket
@@ -61,7 +60,7 @@ mc alias remove ${ALIAS}
 
 ```
 
-> 提示：可以进入任意一个 minio pod 容器, 环境中已经安装 minio CLI, 可以执行上述命令。endpoint 需要调整 `export API_ENDPOINT=juicefs-s3-gateway:9000`, 不要使用 ingress 地址，集群内dns可能无法解析。
+> 提示：可以进入任意一个 minio pod 容器, 环境中已经安装 minio CLI, 可以执行上述命令。endpoint 需要调整 `export API_ENDPOINT=http://juicefs-s3-gateway:9000`, 不要使用 ingress 地址，集群内dns可能无法解析。
 
 
 #### 2.3 使用 AWS CLI 访问
@@ -86,6 +85,7 @@ aws --endpoint-url http://juicefs-s3-gateway-kdp-data.kdp-e2e.io s3 ls s3://<buc
 
 ### 2.3 API
 Object API (Amazon S3 compatible):
+
 - Go:         https://docs.min.io/docs/golang-client-quickstart-guide
 - Java:       https://docs.min.io/docs/java-client-quickstart-guide
 - Python:     https://docs.min.io/docs/python-client-quickstart-guide
