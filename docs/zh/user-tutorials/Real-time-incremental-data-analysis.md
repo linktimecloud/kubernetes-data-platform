@@ -331,7 +331,7 @@ maven 依赖：
 
 ### 2.4.3 配置部分
 
-具体使用参考[Stream Park 文档](https://streampark.apache.org/docs/get-started/how-to-use)
+具体使用参考[StreamPark 文档](https://streampark.apache.org/docs/get-started/how-to-use)
 
 ## 2.5 创建 Airflow DAG
 

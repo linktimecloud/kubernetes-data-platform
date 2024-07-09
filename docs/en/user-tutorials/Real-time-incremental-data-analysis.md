@@ -321,8 +321,6 @@ GROUP BY
 
 ### 2.4.2 Dependencies part
 
-Please refer to the Stream Park documentation for specific usage details.
-
 maven dependency：
 
 ```xml
@@ -335,7 +333,7 @@ maven dependency：
 
 ### 2.4.3 StreamPark configuration
 
-Usage reference: [Stream Park Docs](https://streampark.apache.org/docs/get-started/how-to-use)
+Usage reference: [StreamPark Docs](https://streampark.apache.org/docs/get-started/how-to-use)
 
 ## 2.5 Create Airflow DAG
 
