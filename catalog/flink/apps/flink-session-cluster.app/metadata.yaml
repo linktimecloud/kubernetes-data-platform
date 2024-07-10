@@ -1,4 +1,4 @@
-version: v1.0.0-1.17.1_scala_2.12
+version: v1.1.0-1.17.1_scala_2.12
 alias: Flink Session Cluster
 description: Apache Flink 是一个分布式高性能流处理框架，可用于实时和批量数据处理。
 isGlobal: false
