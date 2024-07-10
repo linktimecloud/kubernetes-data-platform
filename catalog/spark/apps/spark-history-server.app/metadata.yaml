@@ -1,4 +1,4 @@
-version: v1.0.0-3.3.0
+version: v1.1.0-3.3.0
 alias: Spark History Server
 description: Spark History Server 是一个用户界面，用于监控已完成的 Spark 应用程序的指标和性能。
 isGlobal: false
