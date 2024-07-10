@@ -366,7 +366,7 @@ template: {
 	parameter: {
 		// +ui:order=0
 		// +ui:title=部署模式
-		// +ui:description=False：standalone模式，True：cluster模式。注意: 目前Milvus单机版无法“在线”升级到Milvus集群。
+		// +ui:description=False：standalone模式，True：cluster模式。注意: 应用安装后请勿修改部署模式。
 		clusterMode: *false | bool
 		// +ui:order=1
 		// +ui:title=组件依赖

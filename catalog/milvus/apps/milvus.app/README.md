@@ -43,7 +43,7 @@ pip install milvus-cli
 
 1. 进入Milvus_CLI
 
- ```shell
+```shell
     milvus_cli
 ```
 
@@ -84,7 +84,7 @@ pip install milvus-cli
     
     list partitions -c car
     
-    drop partition -c car -p new_partition
+    delete partition -c car -p new_partition
     
     # 索引操作，注意：milvus_cli v0.4.3 创建索引为交互式操作，需要分别指定索引参数
     milvus_cli > create index
