@@ -82,7 +82,7 @@ select * from airbyte_internal.ods_tmall_order limit 10;
 ```
 # 4.  Data Display
 In Superset, we add a ClickHouse data source and create a dashboard. For instructions on how to add a data source and create a dashboard, refer to the Superset quick start guide. Below, we complete the data source and dashboard import using the panel import feature.
-1. [Download the dashboard](https://gitee.com/linktime-cloud/example-datasets/blob/main/superset/dashboard_export_20240521T102107.zip)
+1. [Download the dashboard](https://gitee.com/linktime-cloud/example-datasets/raw/main/superset/dashboard_export_20240521T102107.zip)
 2. Import the dashboard
    - Select the downloaded file to import
 ![](./images/superset01.png)
