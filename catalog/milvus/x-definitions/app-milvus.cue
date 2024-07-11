@@ -831,14 +831,9 @@ template: {
 					memory: *"2048Mi" | string
 				}
 			}
-			// +ui:description=副本数
-			// +ui:order=2
-			// // +pattern=^([1-9]\d*)$
-			// +err:options={"pattern":"请输入正确的副本数"}
-			replicas: *1 | int
 
 			// +ui:description=存储大小
-			// +ui:order=3
+			// +ui:order=2
 			persistence: {
 				// +pattern=^([1-9]\d*)(Ti|Gi|Mi)$
 				// +ui:order=1
