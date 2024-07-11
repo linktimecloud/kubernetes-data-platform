@@ -151,7 +151,6 @@ template: {
 								}
 							}
 							"standalone": {
-								"replicas":  parameter.standalone.replicas
 								"resources": parameter.standalone.resources
 								"disk": {
 									"enabled": true
