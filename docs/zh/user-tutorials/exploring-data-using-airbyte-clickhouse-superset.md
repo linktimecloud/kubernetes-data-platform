@@ -83,7 +83,7 @@ select * from airbyte_internal.ods_tmall_order limit 10;
 ```
 # 4. 数据展示
 在 Superset 中添加 clickhouse 数据源, 并制作面板。关于如何添加数据源，如何制作面板请参考 Superset quick start。下面我们通过面板的导入功能完成数据源，面板的导入。
-1. [下载面板](https://gitee.com/linktime-cloud/example-datasets/blob/main/superset/dashboard_export_20240521T102107.zip)
+1. [下载面板](https://gitee.com/linktime-cloud/example-datasets/raw/main/superset/dashboard_export_20240521T102107.zip)
 2. 导入面板
 选择下载的文件导入
 ![](./images/superset01.png)

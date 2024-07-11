@@ -67,7 +67,7 @@
 4. 在 Airbyte 中添加一个 connection。source 选择 `tianchi_mum_baby`，destination 选择 ClickHouse，使用默认配置下一步，Schedule type 配置为 `Manual`，然后保存。
 ![](./images/airbyte05.png)
 
-5. 在 Airbyte 中添加一个 connection。source 选择 `tianchi_mum_baby_trade_history`，destination 选择 ClickHouse，使用默认配置下一步，Schedule type 配置为 `Manual`，然后保存。
+5. 在 Airbyte 中添加一个 connection。source 选择 `tianchi_mum_baby_trade_history`，destination 选择 ClickHouse，使用默认配置下一步，Schedule type 配置为 `Manual`，然后保存。手动点击同步按钮，同步数据。
    
 6. 查看 Airbyte 的 job 状态，如果成功，则说明数据已经成功导入到 ClickHouse 中。
 ![](./images/airbyte04.png)
@@ -160,7 +160,7 @@ Superset 支持 ClickHouse 数据源，我们可以通过 Superset 来可视化�
 ## 5.1 创建图表
 
 ### 方式一：导入我们制作好的图表（建议）
-1. [下载面板](https://gitee.com/linktime-cloud/example-datasets/blob/main/superset/dashboard_export_20240607T100739.zip)
+1. [下载面板](https://gitee.com/linktime-cloud/example-datasets/raw/main/superset/dashboard_export_20240607T100739.zip)
 2. 导入面板
 选择下载的文件导入
 ![](./images/superset01.png)
