@@ -180,7 +180,7 @@ template: {
 							}
 							"proxy": {
 								"enabled":   true
-								"replicas":  1
+								"replicas":  parameter.proxy.replicas
 								"resources": parameter.proxy.resources
 								"profiling": {
 									"enabled": true
@@ -189,7 +189,6 @@ template: {
 							}
 							"rootCoordinator": {
 								"enabled":   true
-								"replicas":  1
 								"resources": parameter.rootCoordinator.resources
 								"profiling": {
 									"enabled": true
@@ -201,7 +200,6 @@ template: {
 							}
 							"queryCoordinator": {
 								"enabled":   true
-								"replicas":  1
 								"resources": parameter.queryCoordinator.resources
 								"profiling": {
 									"enabled": true
@@ -213,7 +211,7 @@ template: {
 							}
 							"queryNode": {
 								"enabled":   true
-								"replicas":  1
+								"replicas":  parameter.queryNode.replicas
 								"resources": parameter.queryNode.resources
 								"disk": {
 									"enabled": true
@@ -228,7 +226,6 @@ template: {
 							}
 							"indexCoordinator": {
 								"enabled":   true
-								"replicas":  1
 								"resources": parameter.indexCoordinator.resources
 								"profiling": {
 									"enabled": true
@@ -240,7 +237,7 @@ template: {
 							}
 							"indexNode": {
 								"enabled":   true
-								"replicas":  1
+								"replicas":  parameter.indexNode.replicas
 								"resources": parameter.indexNode.resources
 								"profiling": {
 									"enabled": true
@@ -255,7 +252,6 @@ template: {
 							}
 							"dataCoordinator": {
 								"enabled":   true
-								"replicas":  1
 								"resources": parameter.dataCoordinator.resources
 								"profiling": {
 									"enabled": true
@@ -267,7 +263,7 @@ template: {
 							}
 							"dataNode": {
 								"enabled":   true
-								"replicas":  1
+								"replicas":  parameter.dataNode.replicas
 								"resources": parameter.dataNode.resources
 								"profiling": {
 									"enabled": false
@@ -437,7 +433,7 @@ template: {
 			}
 			// +ui:description=副本数
 			// +ui:order=2
-			// // +pattern=^([1-9]\d*)$
+			// +pattern=^([3-9]\d*)$
 			// +err:options={"pattern":"请输入正确的副本数"}
 			replicas: *3 | int
 			// +ui:description=持久化存储配置
@@ -488,7 +484,7 @@ template: {
 			}
 			// +ui:description=副本数
 			// +ui:order=2
-			// // +pattern=^([1-9]\d*)$
+			// +pattern=^([1-9]\d*)$
 			// +err:options={"pattern":"请输入正确的副本数"}
 			replicas: *1 | int
 		}
@@ -529,11 +525,6 @@ template: {
 					memory: *"1024Mi" | string
 				}
 			}
-			// +ui:description=副本数
-			// +ui:order=2
-			// // +pattern=^([1-9]\d*)$
-			// +err:options={"pattern":"请输入正确的副本数"}
-			replicas: *1 | int
 		}
 
 		// ui:title=ETCD 配置
@@ -572,11 +563,6 @@ template: {
 					memory: *"1024Mi" | string
 				}
 			}
-			// +ui:description=副本数
-			// +ui:order=2
-			// // +pattern=^([1-9]\d*)$
-			// +err:options={"pattern":"请输入正确的副本数"}
-			replicas: *1 | int
 		}
 
 		// ui:title=ETCD 配置
@@ -617,7 +603,7 @@ template: {
 			}
 			// +ui:description=副本数
 			// +ui:order=2
-			// // +pattern=^([1-9]\d*)$
+			// +pattern=^([1-9]\d*)$
 			// +err:options={"pattern":"请输入正确的副本数"}
 			replicas: *1 | int
 		}
@@ -658,11 +644,6 @@ template: {
 					memory: *"1024Mi" | string
 				}
 			}
-			// +ui:description=副本数
-			// +ui:order=2
-			// // +pattern=^([1-9]\d*)$
-			// +err:options={"pattern":"请输入正确的副本数"}
-			replicas: *1 | int
 		}
 
 		// ui:title=ETCD 配置
@@ -703,7 +684,7 @@ template: {
 			}
 			// +ui:description=副本数
 			// +ui:order=2
-			// // +pattern=^([1-9]\d*)$
+			// +pattern=^([1-9]\d*)$
 			// +err:options={"pattern":"请输入正确的副本数"}
 			replicas: *1 | int
 		}
@@ -744,11 +725,6 @@ template: {
 					memory: *"1024Mi" | string
 				}
 			}
-			// +ui:description=副本数
-			// +ui:order=2
-			// // +pattern=^([1-9]\d*)$
-			// +err:options={"pattern":"请输入正确的副本数"}
-			replicas: *1 | int
 		}
 
 		// ui:title=ETCD 配置
@@ -789,7 +765,7 @@ template: {
 			}
 			// +ui:description=副本数
 			// +ui:order=2
-			// // +pattern=^([1-9]\d*)$
+			// +pattern=^([1-9]\d*)$
 			// +err:options={"pattern":"请输入正确的副本数"}
 			replicas: *1 | int
 		}
