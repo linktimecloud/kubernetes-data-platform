@@ -151,7 +151,6 @@ template: {
 								}
 							}
 							"standalone": {
-								"replicas":  parameter.standalone.replicas
 								"resources": parameter.standalone.resources
 								"disk": {
 									"enabled": true
@@ -181,7 +180,7 @@ template: {
 							}
 							"proxy": {
 								"enabled":   true
-								"replicas":  1
+								"replicas":  parameter.proxy.replicas
 								"resources": parameter.proxy.resources
 								"profiling": {
 									"enabled": true
@@ -190,7 +189,6 @@ template: {
 							}
 							"rootCoordinator": {
 								"enabled":   true
-								"replicas":  1
 								"resources": parameter.rootCoordinator.resources
 								"profiling": {
 									"enabled": true
@@ -202,7 +200,6 @@ template: {
 							}
 							"queryCoordinator": {
 								"enabled":   true
-								"replicas":  1
 								"resources": parameter.queryCoordinator.resources
 								"profiling": {
 									"enabled": true
@@ -214,7 +211,7 @@ template: {
 							}
 							"queryNode": {
 								"enabled":   true
-								"replicas":  1
+								"replicas":  parameter.queryNode.replicas
 								"resources": parameter.queryNode.resources
 								"disk": {
 									"enabled": true
@@ -229,7 +226,6 @@ template: {
 							}
 							"indexCoordinator": {
 								"enabled":   true
-								"replicas":  1
 								"resources": parameter.indexCoordinator.resources
 								"profiling": {
 									"enabled": true
@@ -241,7 +237,7 @@ template: {
 							}
 							"indexNode": {
 								"enabled":   true
-								"replicas":  1
+								"replicas":  parameter.indexNode.replicas
 								"resources": parameter.indexNode.resources
 								"profiling": {
 									"enabled": true
@@ -256,7 +252,6 @@ template: {
 							}
 							"dataCoordinator": {
 								"enabled":   true
-								"replicas":  1
 								"resources": parameter.dataCoordinator.resources
 								"profiling": {
 									"enabled": true
@@ -268,7 +263,7 @@ template: {
 							}
 							"dataNode": {
 								"enabled":   true
-								"replicas":  1
+								"replicas":  parameter.dataNode.replicas
 								"resources": parameter.dataNode.resources
 								"profiling": {
 									"enabled": false
@@ -366,7 +361,7 @@ template: {
 	parameter: {
 		// +ui:order=0
 		// +ui:title=部署模式
-		// +ui:description=False：standalone模式，True：cluster模式。注意: 目前Milvus单机版无法“在线”升级到Milvus集群。
+		// +ui:description=False：standalone模式，True：cluster模式。注意: 应用安装后请勿修改部署模式。
 		clusterMode: *false | bool
 		// +ui:order=1
 		// +ui:title=组件依赖
@@ -438,7 +433,7 @@ template: {
 			}
 			// +ui:description=副本数
 			// +ui:order=2
-			// // +pattern=^([1-9]\d*)$
+			// +pattern=^([3-9]\d*)$
 			// +err:options={"pattern":"请输入正确的副本数"}
 			replicas: *3 | int
 			// +ui:description=持久化存储配置
@@ -489,7 +484,7 @@ template: {
 			}
 			// +ui:description=副本数
 			// +ui:order=2
-			// // +pattern=^([1-9]\d*)$
+			// +pattern=^([1-9]\d*)$
 			// +err:options={"pattern":"请输入正确的副本数"}
 			replicas: *1 | int
 		}
@@ -530,11 +525,6 @@ template: {
 					memory: *"1024Mi" | string
 				}
 			}
-			// +ui:description=副本数
-			// +ui:order=2
-			// // +pattern=^([1-9]\d*)$
-			// +err:options={"pattern":"请输入正确的副本数"}
-			replicas: *1 | int
 		}
 
 		// ui:title=ETCD 配置
@@ -573,11 +563,6 @@ template: {
 					memory: *"1024Mi" | string
 				}
 			}
-			// +ui:description=副本数
-			// +ui:order=2
-			// // +pattern=^([1-9]\d*)$
-			// +err:options={"pattern":"请输入正确的副本数"}
-			replicas: *1 | int
 		}
 
 		// ui:title=ETCD 配置
@@ -618,7 +603,7 @@ template: {
 			}
 			// +ui:description=副本数
 			// +ui:order=2
-			// // +pattern=^([1-9]\d*)$
+			// +pattern=^([1-9]\d*)$
 			// +err:options={"pattern":"请输入正确的副本数"}
 			replicas: *1 | int
 		}
@@ -659,11 +644,6 @@ template: {
 					memory: *"1024Mi" | string
 				}
 			}
-			// +ui:description=副本数
-			// +ui:order=2
-			// // +pattern=^([1-9]\d*)$
-			// +err:options={"pattern":"请输入正确的副本数"}
-			replicas: *1 | int
 		}
 
 		// ui:title=ETCD 配置
@@ -704,7 +684,7 @@ template: {
 			}
 			// +ui:description=副本数
 			// +ui:order=2
-			// // +pattern=^([1-9]\d*)$
+			// +pattern=^([1-9]\d*)$
 			// +err:options={"pattern":"请输入正确的副本数"}
 			replicas: *1 | int
 		}
@@ -745,11 +725,6 @@ template: {
 					memory: *"1024Mi" | string
 				}
 			}
-			// +ui:description=副本数
-			// +ui:order=2
-			// // +pattern=^([1-9]\d*)$
-			// +err:options={"pattern":"请输入正确的副本数"}
-			replicas: *1 | int
 		}
 
 		// ui:title=ETCD 配置
@@ -790,7 +765,7 @@ template: {
 			}
 			// +ui:description=副本数
 			// +ui:order=2
-			// // +pattern=^([1-9]\d*)$
+			// +pattern=^([1-9]\d*)$
 			// +err:options={"pattern":"请输入正确的副本数"}
 			replicas: *1 | int
 		}
@@ -831,14 +806,9 @@ template: {
 					memory: *"2048Mi" | string
 				}
 			}
-			// +ui:description=副本数
-			// +ui:order=2
-			// // +pattern=^([1-9]\d*)$
-			// +err:options={"pattern":"请输入正确的副本数"}
-			replicas: *1 | int
 
 			// +ui:description=存储大小
-			// +ui:order=3
+			// +ui:order=2
 			persistence: {
 				// +pattern=^([1-9]\d*)(Ti|Gi|Mi)$
 				// +ui:order=1

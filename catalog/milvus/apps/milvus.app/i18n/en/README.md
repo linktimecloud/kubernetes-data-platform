@@ -86,7 +86,7 @@ pip install milvus-cli
     
     list partitions -c car
     
-    drop partition -c car -p new_partition
+    delete partition -c car -p new_partition
     
     # index operation，notice：milvus_cli v0.4.3 creating index is an interactive operation that requires specifying index parameters separately
     milvus_cli > create index
