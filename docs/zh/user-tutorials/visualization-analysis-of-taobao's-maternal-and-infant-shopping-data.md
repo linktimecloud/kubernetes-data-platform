@@ -64,7 +64,7 @@
     - User: `default`
     - Password: `ckdba.123`
 
-4. 在 Airbyte 中添加一个 connection。source 选择 `tianchi_mum_baby`，destination 选择 ClickHouse，使用默认配置下一步，Schedule type 配置为 `Manual`，然后保存。
+4. 在 Airbyte 中添加一个 connection。source 选择 `tianchi_mum_baby`，destination 选择 ClickHouse，使用默认配置下一步，Schedule type 配置为 `Manual`，然后保存。手动点击同步按钮，同步数据。
 ![](./images/airbyte05.png)
 
 5. 在 Airbyte 中添加一个 connection。source 选择 `tianchi_mum_baby_trade_history`，destination 选择 ClickHouse，使用默认配置下一步，Schedule type 配置为 `Manual`，然后保存。手动点击同步按钮，同步数据。

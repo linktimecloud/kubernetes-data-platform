@@ -65,7 +65,7 @@ We use the Airbyte component of the platform to synchronize data from the origin
     - User: `default`
     - Password: `ckdba.123`
 
-4. Add a connection in Airbyte. Select `tianchi_mum_baby` as the source and ClickHouse as the destination, use the default configuration for the next step, set Schedule type to `Manual`, and then save.
+4. Add a connection in Airbyte. Select `tianchi_mum_baby` as the source and ClickHouse as the destination, use the default configuration for the next step, set Schedule type to `Manual`, and then save. Manually click the sync button to synchronize data.
 ![](../../zh/user-tutorials/images/airbyte05.png)
 
 5. Add a connection in Airbyte. Select `tianchi_mum_baby_trade_history` as the source and ClickHouse as the destination, use the default configuration for the next step, set Schedule type to `Manual`, and then save. Manually click the sync button to synchronize data.
