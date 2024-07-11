@@ -65,10 +65,10 @@ We use the Airbyte component of the platform to synchronize data from the origin
     - User: `default`
     - Password: `ckdba.123`
 
-4. Add a connection in Airbyte. Select `tianchi_mum_baby` as the source and ClickHouse as the destination, use the default configuration for the next step, set Schedule type to `Manual`, and then save.
+4. Add a connection in Airbyte. Select `tianchi_mum_baby` as the source and ClickHouse as the destination, use the default configuration for the next step, set Schedule type to `Manual`, and then save. Manually click the sync button to synchronize data.
 ![](../../zh/user-tutorials/images/airbyte05.png)
 
-5. Add a connection in Airbyte. Select `tianchi_mum_baby_trade_history` as the source and ClickHouse as the destination, use the default configuration for the next step, set Schedule type to `Manual`, and then save.
+5. Add a connection in Airbyte. Select `tianchi_mum_baby_trade_history` as the source and ClickHouse as the destination, use the default configuration for the next step, set Schedule type to `Manual`, and then save. Manually click the sync button to synchronize data.
    
 6. Check the job status in Airbyte. If successful, it means the data has been successfully imported into ClickHouse.
 ![](../../zh/user-tutorials/images/airbyte04.png)
@@ -164,7 +164,7 @@ Log in to Superset `http://superset-kdp-data.kdp-e2e.io` (note to add local Host
 ## 5.1 Creating Charts
 
 ### Method One: Import the prepared charts (recommended)
-1. [Download Dashboard](https://gitee.com/linktime-cloud/example-datasets/blob/main/superset/dashboard_export_20240607T100739.zip)
+1. [Download Dashboard](https://gitee.com/linktime-cloud/example-datasets/raw/main/superset/dashboard_export_20240607T100739.zip)
 2. Import Dashboard
 Select the downloaded file to import
 ![](../../zh/user-tutorials/images/superset01.png)
