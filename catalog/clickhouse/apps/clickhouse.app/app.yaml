@@ -21,4 +21,4 @@ spec:
         memory: 512Mi
       limits:
         cpu: "4.0"
-        memory: 4096Mi
+        memory: 8192Mi
