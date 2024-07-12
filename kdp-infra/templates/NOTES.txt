@@ -1,0 +1,1 @@
+Kubernetes data platform installation has triggered, please wait for the installation to complete

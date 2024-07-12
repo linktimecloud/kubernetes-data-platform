@@ -1,0 +1,27 @@
+{{- if and .Values.metrics.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include  "kdp-infra.fullname" .}}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ include  "kdp-infra.name" .}}
+    chart: {{ include  "kdp-infra.name" .}}
+    {{- if .Values.metrics.serviceMonitor.additionalLabels }}
+      {{- toYaml .Values.metrics.serviceMonitor.additionalLabels | nindent 4 }}
+    {{- end }}
+spec:
+  endpoints:
+    - port: {{ .Values.service.port }}
+      path: /metrics
+      scheme: http
+      interval: {{ .Values.metrics.serviceMonitor.interval }}
+      scrapeTimeout: {{ .Values.metrics.serviceMonitor.scrapeTimeout }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace | quote }}
+
+  selector:
+    matchLabels:
+      app: {{ include  "kdp-infra.name" .}}
+{{end}}
