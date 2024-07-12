@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 
-import filecmp
 import json
 import os
-import difflib
 import shutil
 import subprocess
 import traceback

@@ -19,7 +19,7 @@ rules:
   - verbs:
       - '*'
     apiGroups:
-      - 'installer.kdp.io'
+      - '*'
     resources:
       - '*'
 ---
