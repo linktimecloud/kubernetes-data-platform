@@ -60,10 +60,6 @@ _kdpTerminalConfigTask: {
 															key:  "create-kubeconfig"
 															path: "create-kubeconfig.sh"
 														},
-														{
-															key:  "terminal-ingress-template"
-															path: "terminal-ingress-template.yaml"
-														},
 													]
 												}
 											},
