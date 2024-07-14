@@ -9,11 +9,12 @@
 ## @param image.tag Image tag
 ## @param image.digest Image digest
 image:
-  registry: ""
+  registry: "od-registry.linktimecloud.com"
   repository: kdp-infra
-  pullPolicy: IfNotPresent
+  # IfNotPresent Always
+  pullPolicy: Always
   tag: ""
-  digest: ""
+  digest: "sha256:80943fb18936e4650fafa399853d19f04d52ccd93307a8e6fef59be6c012b353"
 
 ## @param imagePullSecrets Image pull secrets
 imagePullSecrets: []
@@ -41,7 +42,7 @@ podLabels: {}
 
 ## @param service.port Service port
 service:
-  port: 9115
+  port: "9115"
 
 ## @param resources
 resources: {}

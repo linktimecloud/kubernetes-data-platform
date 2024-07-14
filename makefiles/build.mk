@@ -41,3 +41,18 @@ kdp-cli-push:
 .PHONY: kdp-cli-clean
 kdp-cli-clean:
 	rm -rf ./cmd/output/$(VERSION)
+
+
+##@ Build infra image
+.PHONY: kdp-infra-build
+kdp-infra-build:
+	for arch in amd64 arm64; do \
+		env GOOS=linux GOARCH=$$arch \
+		go build -ldflags "-X kdp/cmd.CliVersion=$(VERSION) -X kdp/cmd.CliGoVersion=$(GO_VERSION) -X kdp/cmd.CliGitCommit=$(GIT_COMMIT) -X \"kdp/cmd.CliBuiltAt=$(BUILD_DATE)\" -X \"kdp/cmd.CliOSArch=$$arch\"" -o ./cmd/output/$(VERSION)/kdp-linux-$$arch; \
+		if [ -n "$(IMG_REGISTRY)" ]; then \
+			docker buildx build --platform linux/$$arch --build-arg VERSION="$(VERSION)" --output=type=image,name=$(IMG_REGISTRY)/kdp-infra:$(VERSION),push=true -f kdp/kdp.Dockerfile . ; \
+		else \
+			docker buildx build --platform linux/$$arch --build-arg VERSION="$(VERSION)" --output=type=docker,name=kdp-infra-$$arch:$(VERSION) -f kdp/kdp.Dockerfile . ; \
+		fi \
+	done
+
