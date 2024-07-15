@@ -1,8 +1,8 @@
-# Default values for kdp-infra.
+# Default values for kdp.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-## @section kdp-infra parameters
+## @section kdp parameters
 ## @param image.registry Image registry
 ## @param image.repository Image repository
 ## @param image.pullPolicy Image pull policy
@@ -10,17 +10,17 @@
 ## @param image.digest Image digest
 image:
   registry: "od-registry.linktimecloud.com"
-  repository: kdp-infra
-  # IfNotPresent Always
+  repository: kdp
+  # IfNotPresent, Always
   pullPolicy: Always
   tag: ""
-  digest: "sha256:80943fb18936e4650fafa399853d19f04d52ccd93307a8e6fef59be6c012b353"
+  digest: "sha256:5e00383433dbe9d05807dfa67cacad03cf0248960868bcc61d6c86e2876dacbf"
 
 ## @param imagePullSecrets Image pull secrets
 imagePullSecrets: []
-## @param nameOverride String to partially override kdp-infra.fullname
+## @param nameOverride String to partially override kdp.fullname
 nameOverride: ""
-## @param fullnameOverride String to fully override kdp-infra.name
+## @param fullnameOverride String to fully override kdp.name
 fullnameOverride: ""
 
 ## @param serviceAccount.create Create serviceAccount
@@ -109,6 +109,42 @@ metrics:
     enabled: true
     additionalLabels: {}
     interval: 30s
-    scrapeTimeout: 30s
 
+persistence:
+  enabled: true
+  ## @param persistence.storageClass PVC Storage Class for MinIO&reg; data volume
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  ##   GKE, AWS & OpenStack)
+  ##
+  storageClass: "openebs-hostpath"
+  ## @param persistence.accessModes PVC Access Modes for MinIO&reg; data volume
+  ##
+  accessModes:
+    - ReadWriteOnce
+  ## @param persistence.size PVC Storage Request for MinIO&reg; data volume
+  ##
+  size: 1Gi
+  ## @param persistence.annotations Annotations for the PVC
+  ##
+  annotations: {}
 
+installConfig:
+  ## @param installConfig.kdpRepo kdp repo url
+  kdpRepo: "https://gitee.com/linktime-cloud/kubernetes-data-platform.git"
+  ## @param installConfig.kdpRepoRef kdp repo ref
+  kdpRepoRef: "release-1.1"
+  ## @param installConfig.setParameters setParameters
+  setParameters:
+    - name: "ingress.class"
+      value: "kong"
+    - name: "dnsService.name"
+      value: "kube-dns"
+    - name: "kong.enabled"
+      value: "true"
+    - name: "prometheus.enabled"
+      value: "false"
+    - name: "loki.enabled"
+      value: "false"

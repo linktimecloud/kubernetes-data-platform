@@ -2,11 +2,11 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ include  "kdp-infra.fullname" .}}
+  name: {{ include  "kdp.fullname" .}}
   namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ include  "kdp-infra.name" .}}
-    chart: {{ include  "kdp-infra.name" .}}
+    app: {{ include  "kdp.name" .}}
+    chart: {{ include  "kdp.name" .}}
     {{- if .Values.metrics.serviceMonitor.additionalLabels }}
       {{- toYaml .Values.metrics.serviceMonitor.additionalLabels | nindent 4 }}
     {{- end }}
@@ -23,5 +23,5 @@ spec:
 
   selector:
     matchLabels:
-      app: {{ include  "kdp-infra.name" .}}
+      app: {{ include  "kdp.name" .}}
 {{end}}

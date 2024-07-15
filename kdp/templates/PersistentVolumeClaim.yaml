@@ -1,0 +1,34 @@
+{{- /*
+Copyright Broadcom, Inc. All Rights Reserved.
+SPDX-License-Identifier: APACHE-2.0
+*/}}
+
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ include  "kdp.fullname" .}}-pvc
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ include  "kdp.name" .}}
+    chart: {{ include  "kdp.name" .}}
+    release: {{ .Release.Name }}
+    monitoring: "true"
+      {{- if .Values.metrics.serviceMonitor.additionalLabels }}
+        {{- toYaml .Values.metrics.serviceMonitor.additionalLabels | nindent 4 }}
+      {{- end }}
+  {{- if or .Values.persistence.annotations}}
+  annotations:
+    {{- toYaml .Values.metrics.serviceMonitor.additionalLabels | nindent 4 }}
+  {{- end }}
+spec:
+  accessModes:
+  {{- range .Values.persistence.accessModes }}
+    - {{ . | quote }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.size | quote }}
+  storageClassName: {{ .Values.persistence.storageClass | quote }}
+{{/*  volumeName: {{ include  "kdp.fullname" .}}-pv*/}}
+{{/*  volumeMode: Filesystem*/}}

@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include  "kdp-infra.fullname" .}}
+  name: {{ include  "kdp.fullname" .}}
   namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ include  "kdp-infra.name" .}}
-    chart: {{ include  "kdp-infra.name" .}}
+    app: {{ include  "kdp.name" .}}
+    chart: {{ include  "kdp.name" .}}
     release: {{ .Release.Name }}
     monitoring: "true"
     {{- if .Values.metrics.serviceMonitor.additionalLabels }}
@@ -18,5 +18,5 @@ spec:
       port: {{ .Values.service.port }}
       protocol: TCP
   selector:
-    app: {{ include  "kdp-infra.name" . }}
+    app: {{ include  "kdp.name" . }}
     release: {{ .Release.Name }}

@@ -1,22 +1,22 @@
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-# KDP-Infra helm chart
+# KDP helm chart
 
-kdp-infra is the installation service for the kdp (Kubernetes Data Platform) management platform. Using the kdp-infra chart, kdp can be deployed in a Kubernetes cluster.
+kdp is the installation service for the kdp (Kubernetes Data Platform) management platform. Using the kdp chart, kdp can be deployed in a Kubernetes cluster.
 
 To pull this chart from the repository,
 
 ```bash
-helm pull oci://registry-1.docker.io/linktimecloud/kdp-infra-chart --version v1.0.0-rc1
+helm pull oci://registry-1.docker.io/linktimecloud/kdp-chart --version 1.0.0-rc1
 ```
 
 Other Commands,
 
 ```bash
-helm show all oci://registry-1.docker.io/linktimecloud/kdp-infra-chart --version v1.0.0-rc1
-helm template <my-release> oci://registry-1.docker.io/linktimecloud/kdp-infra-chart --version v1.0.0-rc1
-helm install <my-release> oci://registry-1.docker.io/linktimecloud/kdp-infra-chart --version v1.0.0-rc1
-helm upgrade <my-release> oci://registry-1.docker.io/linktimecloud/kdp-infra-chart --version <new-version>
+helm show all oci://registry-1.docker.io/linktimecloud/kdp-chart --version 1.0.0-rc1
+helm template <my-release> oci://registry-1.docker.io/linktimecloud/kdp-chart --version 1.0.0-rc1
+helm install <my-release> oci://registry-1.docker.io/linktimecloud/kdp-chart --version 1.0.0-rc1
+helm upgrade <my-release> oci://registry-1.docker.io/linktimecloud/kdp-chart --version <new-version>
 ```
 
 ## Prerequisites
