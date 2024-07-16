@@ -80,7 +80,7 @@ from pymilvus import MilvusClient
 from ollama import Client
 from typing import List, Optional
 import numpy as np
- 
+
 class OllamaEmbeddingFunction(BaseEmbeddingFunction):
     def __init__(
         self,
@@ -101,7 +101,7 @@ class OllamaEmbeddingFunction(BaseEmbeddingFunction):
      
     def _encode(self, texts: List[str]):
         return [np.array(self.client.embeddings(model=self.model_name, prompt=text)['embedding']) for text in texts]
- 
+
 class MyVanna(Milvus_VectorStore, Ollama):
     def __init__(self, config=None):
         fn = OllamaEmbeddingFunction(model_name=config['embedding_model'], host=config['ollama_host'])
@@ -110,7 +110,7 @@ class MyVanna(Milvus_VectorStore, Ollama):
         config['milvus_client'] = milvus
         Milvus_VectorStore.__init__(self, config=config)
         Ollama.__init__(self, config=config)
- 
+
 vn = MyVanna(config={'ollama_host': 'http://ollama:11434', 'model': 'phi3:3.8b', 'embedding_model': 'phi3:3.8b', 'milvus_host': 'http://milvus:19530'})
 ```
 
@@ -153,7 +153,7 @@ vn.connect_to_sqlite('Chinook.sqlite')
 # 遍历所有DDL语句来对表结构进行训练
 df_ddl = vn.run_sql("SELECT type, sql FROM sqlite_master WHERE sql is not null")
 for ddl in df_ddl['sql'].to_list():
-  vn.train(ddl=ddl)
+    vn.train(ddl=ddl)
 
 # 提问
 vn.ask(question="What are the top 10 billing countries by total billing?", allow_llm_to_see_data=True)
