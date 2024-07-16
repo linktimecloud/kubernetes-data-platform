@@ -1,0 +1,8 @@
+name: JuiceFS
+category: 系统/存储系统
+description: JuiceFS 是基于云的高性能分布式文件系统，百亿级文件存储规模，适用于大数据、人工智能、自动驾驶、基因测序等海量数据存储需求。
+i18n:
+  en:
+    category: system.storage
+    description: >-
+      JuiceFS is a cloud-based high-performance distributed file system designed to handle storage at a scale of billions of files. It is well-suited for massive data storage needs such as big data, artificial intelligence, autonomous driving, and genomic sequencing.
