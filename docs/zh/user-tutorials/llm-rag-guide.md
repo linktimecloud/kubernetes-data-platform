@@ -37,10 +37,10 @@ ollama 用于在本地运行大模型，milvus 用于保存向量化之后的数
 
 ### 在本地运行大模型
 
-我们以 [phi3](https://ollama.com/library/phi3) 为例运行大模型。进入 ollama 的容器，执行
+我们以 [phi3](https://ollama.com/library/phi3) 为例运行大模型。
 
 ```shell
-ollama run phi3:3.8b
+kubectl exec -it $(kubectl get pods -l app.kubernetes.io/name=ollama -n kdp-data -o jsonpath='{.items[0].metadata.name}') -n kdp-data -- ollama pull phi3:3.8b
 ```
 
 启动成功后就可以通过 `http://ollama:11434` 来访问 phi3 大模型。

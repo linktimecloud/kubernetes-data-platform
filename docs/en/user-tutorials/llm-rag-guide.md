@@ -37,10 +37,10 @@ Ollama is used to run large models locally, Milvus is used to store vectorized d
 
 ### Running Large Models Locally
 
-We will use [phi3](https://ollama.com/library/phi3) as an example to run a large model. Enter the ollama container and execute
+We will use [phi3](https://ollama.com/library/phi3) as an example to run a large model.
 
 ```shell
-ollama run phi3:3.8b
+kubectl exec -it $(kubectl get pods -l app.kubernetes.io/name=ollama -n kdp-data -o jsonpath='{.items[0].metadata.name}') -n kdp-data -- ollama pull phi3:3.8b
 ```
 
 Once successfully started, you can access the phi3 large model via `http://ollama:11434`.
