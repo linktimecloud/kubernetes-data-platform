@@ -1,4 +1,4 @@
-"juicefs": {
+"elasticsearch": {
 	annotations: {}
 	labels: {}
 	attributes: {
@@ -40,7 +40,7 @@ template: {
 						version: "21.3.1"
 						values: {
 							global: {
-								kibanaEnabled: true
+								kibanaEnabled: parameter.kibana.enabled
 								imageRegistry: context["docker_registry"]
 								storageClass:  context["storage_config.storage_class_mapping.local_disk"]
 							}
@@ -59,10 +59,67 @@ template: {
 									}
 								}
 							}
+
+							// master node
+							master: {
+								masterOnly:   true
+								replicaCount: parameter.master.replicaCount
+								persistence: {
+									enabled: parameter.master.persistence.enabled
+									size:    parameter.master.persistence.size
+								}
+								resources: parameter.master.resources
+								heapSize:  parameter.master.heapSize
+								if parameter.affinity != _|_ {
+									affinity: parameter.master.affinity
+								}
+							}
+
+							coordinating: {
+								replicaCount: parameter.coordinating.replicaCount
+								resources:    parameter.coordinating.resources
+								heapSize:     parameter.coordinating.heapSize
+								if parameter.affinity != _|_ {
+									affinity: parameter.coordinating.affinity
+								}
+							}
+
+							data: {
+								replicaCount: parameter.data.replicaCount
+								persistence: {
+									enabled: parameter.data.persistence.enabled
+									size:    parameter.data.persistence.size
+								}
+								resources: parameter.data.resources
+								if parameter.affinity != _|_ {
+									affinity: parameter.data.affinity
+								}
+							}
+
+							ingest: {
+								enabled:      parameter.ingest.enabled
+								replicaCount: parameter.ingest.replicaCount
+								resources:    parameter.ingest.resources
+								heapSize:     parameter.ingest.heapSize
+								if parameter.affinity != _|_ {
+									affinity: parameter.affinity
+								}
+							}
+							if parameter.kibana.enabled {
+								kibana: {
+									replicaCount: parameter.kibana.replicaCount
+									persistence: {
+										enabled: parameter.kibana.persistence.enabled
+										size:    parameter.kibana.persistence.size
+									}
+									resources: parameter.kibana.resources
+								}
+							}
+
+							// metrics pod
 							metrics: {
 								enabled: true
 							}
-
 						}
 					}
 					traits: [
@@ -139,7 +196,7 @@ template: {
 							}
 							spec: {
 								name:      context["name"] + "-context-setting"
-								_port:     "9000"
+								_port:     "9200"
 								_hostname: context["name"] + "." + context["namespace"] + ".svc.cluster.local"
 								properties: {
 									hostname: _hostname
@@ -151,24 +208,279 @@ template: {
 						}]
 					}
 				},
-
 			]
 			policies: []
 		}
 	}
 
 	parameter: {
-		kibanaEnabled: *true | bool
-
+		// +ui:title=master 节点配置
+		// +ui:order=1
 		master: {
-			masterOnly:   *true | bool
+			// +minimum=1
+			// +err:options={"minimum": "请至少配置一个master节点"}
+			// +ui:description=master 节点数量, 建议生产环境设置为 3
+			// +ui:order=1
 			replicaCount: *1 | int
-			heapSize:     *"128m" | string
+
+			// +ui:title=存储配置
+			// +ui:order=2
 			persistence: {
-				enabled: *true | bool
-				size:    *"1Gi" | string
+				// +ui:description=是否启用持久化存储, 建议生产环境设置为 true
+				// +ui:order=1
+				enabled: *false | bool
+
+				// pattern=^[1-9]\d*(Gi|Mi|Ti)$
+				// err:options={"pattern":"请输入正确格式，如1024Mi, 1Gi, 1Ti"}
+				// +ui:description=各节点存储大小，请根据实际情况调整
+				// +ui:order=2
+				// +ui:hidden={{rootFormData.master.persistence.enabled == false}}
+				size: *"1Gi" | string
 			}
+
 			// +ui:description=资源规格
+			// +ui:order=3
+			resources: {
+				// +ui:description=预留
+				// +ui:order=1
+				requests: {
+					// +pattern=^(\d+\.\d{1,3}?|[1-9]\d*m?)$
+					// +err:options={"pattern":"请输入正确的CPU格式，如0.25，250m"}
+					// +ui:description=CPU
+					cpu: *"25m" | string
+
+					// +pattern=^[1-9]\d*(Mi|Gi)$
+					// +err:options={"pattern":"请输入正确的内存格式，如1024Mi, 1Gi"}
+					// +ui:description=内存
+					memory: *"1Gi" | string
+				}
+
+				// +ui:description=限制
+				// +ui:order=2
+				limits: {
+					// +pattern=^(\d+\.\d{1,3}?|[1-9]\d*m?)$
+					// +err:options={"pattern":"请输入正确的CPU格式，如0.25，250m"}
+					// +ui:description=CPU
+					cpu: *"2" | string
+
+					// +pattern=^[1-9]\d*(Mi|Gi)$
+					// +err:options={"pattern":"请输入正确的内存格式，如1024Mi, 1Gi"}
+					// +ui:description=内存
+					memory: *"1Gi" | string
+				}
+			}
+
+			// pattern=^[1-9]\d*[mg]$
+			// err:options={"pattern":"请输入正确的格式，如512m, 1g"}
+			// +ui:description=各节点headSize，请根据实际情况调整. 注意单位是“m”, 参考jvm的内存配置Xmx
+			// +ui:order=4
+			heapSize: *"512m" | string
+
+			// +ui:description=配置kubernetes亲和性，请根据实际情况调整
+			// +ui:order=5
+			affinity?: {}
+		}
+
+		// +ui:title=coordinating 节点配置
+		// +ui:order=2
+		coordinating: {
+			// +minimum=0
+			// +ui:description=master 节点数量, 建议生产环境配置2个起
+			// +ui:order=1
+			replicaCount: *0 | int
+
+			// +ui:description=资源规格
+			// +ui:order=2
+			resources: {
+				// +ui:description=预留
+				// +ui:order=1
+				requests: {
+					// +pattern=^(\d+\.\d{1,3}?|[1-9]\d*m?)$
+					// +err:options={"pattern":"请输入正确的CPU格式，如0.25，250m"}
+					// +ui:description=CPU
+					cpu: *"25m" | string
+
+					// +pattern=^[1-9]\d*(Mi|Gi)$
+					// +err:options={"pattern":"请输入正确的内存格式，如1024Mi, 1Gi"}
+					// +ui:description=内存
+					memory: *"1Gi" | string
+				}
+
+				// +ui:description=限制
+				// +ui:order=2
+				limits: {
+					// +pattern=^(\d+\.\d{1,3}?|[1-9]\d*m?)$
+					// +err:options={"pattern":"请输入正确的CPU格式，如0.25，250m"}
+					// +ui:description=CPU
+					cpu: *"2" | string
+
+					// +pattern=^[1-9]\d*(Mi|Gi)$
+					// +err:options={"pattern":"请输入正确的内存格式，如1024Mi, 1Gi"}
+					// +ui:description=内存
+					memory: *"1Gi" | string
+				}
+			}
+
+			// pattern=^[1-9]\d*[mg]$
+			// err:options={"pattern":"请输入正确的格式，如512m, 1g"}
+			// +ui:description=各节点headSize，请根据实际情况调整. 注意单位是“m”, 参考jvm的内存配置Xmx
+			// +ui:order=3
+			heapSize: *"512m" | string
+
+			// +ui:description=配置kubernetes亲和性，请根据实际情况调整
+			// +ui:order=4
+			affinity?: {}
+		}
+
+		// +ui:title=data 节点配置
+		// +ui:order=3
+		data: {
+			// +minimum=1
+			// +err:options={"minimum": "请至少配置一个节点"}
+			// +ui:description=master 节点数量, 建议生产环境配置2个起
+			// +ui:order=1
+			replicaCount: *1 | int
+
+			// +ui:title=存储配置
+			// +ui:order=2
+			persistence: {
+				// +ui:description=是否启用持久化存储, 建议生产环境设置为 true
+				// +ui:order=1
+				enabled: *false | bool
+
+				// pattern=^[1-9]\d*(Gi|Mi|Ti)$
+				// err:options={"pattern":"请输入正确格式，如1024Mi, 1Gi, 1Ti"}
+				// +ui:description=各节点存储大小，请根据实际情况调整
+				// +ui:order=2
+				// +ui:hidden={{rootFormData.data.persistence.enabled == false}}
+				size: *"2Gi" | string
+			}
+
+			// +ui:description=资源规格
+			// +ui:order=3
+			resources: {
+				// +ui:description=预留
+				// +ui:order=1
+				requests: {
+					// +pattern=^(\d+\.\d{1,3}?|[1-9]\d*m?)$
+					// +err:options={"pattern":"请输入正确的CPU格式，如0.25，250m"}
+					// +ui:description=CPU
+					cpu: *"25m" | string
+
+					// +pattern=^[1-9]\d*(Mi|Gi)$
+					// +err:options={"pattern":"请输入正确的内存格式，如1024Mi, 1Gi"}
+					// +ui:description=内存
+					memory: *"2Gi" | string
+				}
+
+				// +ui:description=限制
+				// +ui:order=2
+				limits: {
+					// +pattern=^(\d+\.\d{1,3}?|[1-9]\d*m?)$
+					// +err:options={"pattern":"请输入正确的CPU格式，如0.25，250m"}
+					// +ui:description=CPU
+					cpu: *"2" | string
+
+					// +pattern=^[1-9]\d*(Mi|Gi)$
+					// +err:options={"pattern":"请输入正确的内存格式，如1024Mi, 1Gi"}
+					// +ui:description=内存
+					memory: *"2Gi" | string
+				}
+			}
+
+			// pattern=^[1-9]\d*[mg]$
+			// err:options={"pattern":"请输入正确的格式，如512m, 1g"}
+			// +ui:description=各节点headSize，请根据实际情况调整. 注意单位是“m”, 参考jvm的内存配置Xmx
+			// +ui:order=4
+			heapSize: *"512m" | string
+
+			// +ui:description=配置kubernetes亲和性，请根据实际情况调整
+			// +ui:order=5
+			affinity?: {}
+		}
+
+		// +ui:title=ingest 节点配置
+		// +ui:order=4
+		ingest: {
+			// +ui:description=是否启用ingest节点
+			// +ui:order=1
+			enabled: *false | bool
+
+			// +minimum=0
+			// +err:options={"minimum": "请至少配置一个master节点"}
+			// +ui:description=master 节点数量, 建议生产环境设置为 3
+			// +ui:order=2
+			replicaCount: *0 | int
+
+			// +ui:description=资源规格
+			// +ui:order=3
+			resources: {
+				// +ui:description=预留
+				// +ui:order=1
+				requests: {
+					// +pattern=^(\d+\.\d{1,3}?|[1-9]\d*m?)$
+					// +err:options={"pattern":"请输入正确的CPU格式，如0.25，250m"}
+					// +ui:description=CPU
+					cpu: *"25m" | string
+
+					// +pattern=^[1-9]\d*(Mi|Gi)$
+					// +err:options={"pattern":"请输入正确的内存格式，如1024Mi, 1Gi"}
+					// +ui:description=内存
+					memory: *"1Gi" | string
+				}
+
+				// +ui:description=限制
+				// +ui:order=2
+				limits: {
+					// +pattern=^(\d+\.\d{1,3}?|[1-9]\d*m?)$
+					// +err:options={"pattern":"请输入正确的CPU格式，如0.25，250m"}
+					// +ui:description=CPU
+					cpu: *"2" | string
+
+					// +pattern=^[1-9]\d*(Mi|Gi)$
+					// +err:options={"pattern":"请输入正确的内存格式，如1024Mi, 1Gi"}
+					// +ui:description=内存
+					memory: *"1Gi" | string
+				}
+			}
+
+			// pattern=^[1-9]\d*[mg]$
+			// err:options={"pattern":"请输入正确的格式，如512m, 1g"}
+			// +ui:description=各节点headSize，请根据实际情况调整. 注意单位是“m”, 参考jvm的内存配置Xmx
+			// +ui:order=4
+			heapSize: *"128m" | string
+		}
+
+		// +ui:title=kibana 配置
+		kibana: {
+			// +ui:description=是否启用kibana节点
+			// +ui:order=1
+			enabled: *false | bool
+
+			// +minimum=0
+			// +err:options={"minimum": "请至少配置一个master节点"}
+			// +ui:description=master 节点数量, 建议生产环境设置为 3
+			// +ui:hidden={{rootFormData.kibana.enabled == false}}
+			// +ui:order=2
+			replicaCount: *1 | int
+
+			// +ui:title=存储配置
+			// +ui:hidden={{rootFormData.kibana.enabled == false}}
+			// +ui:order=3
+			persistence: {
+				// +ui:description=是否启用持久化存储, 建议生产环境设置为 true
+				// +ui:order=1
+				enabled: *false | bool
+				// pattern=^[1-9]\d*(Gi|Mi|Ti)$
+				// err:options={"pattern":"请输入正确格式，如1024Mi, 1Gi, 1Ti"}
+				// +ui:description=各节点存储大小，请根据实际情况调整
+				// +ui:order=2
+				// +ui:hidden={{rootFormData.data.persistence.enabled == false}}
+				size: *"1Gi" | string
+			}
+
+			// +ui:description=资源规格
+			// +ui:hidden={{rootFormData.kibana.enabled == false}}
 			// +ui:order=4
 			resources: {
 				// +ui:description=预留
@@ -177,60 +489,33 @@ template: {
 					// +pattern=^(\d+\.\d{1,3}?|[1-9]\d*m?)$
 					// +err:options={"pattern":"请输入正确的CPU格式，如0.25，250m"}
 					// +ui:description=CPU
-					cpu: *"0.1" | string
+					cpu: *"25m" | string
 
 					// +pattern=^[1-9]\d*(Mi|Gi)$
 					// +err:options={"pattern":"请输入正确的内存格式，如1024Mi, 1Gi"}
 					// +ui:description=内存
-					memory: *"128Mi" | string
+					memory: *"1Gi" | string
 				}
+
 				// +ui:description=限制
 				// +ui:order=2
 				limits: {
 					// +pattern=^(\d+\.\d{1,3}?|[1-9]\d*m?)$
 					// +err:options={"pattern":"请输入正确的CPU格式，如0.25，250m"}
 					// +ui:description=CPU
-					cpu: *"1" | string
+					cpu: *"2" | string
 
 					// +pattern=^[1-9]\d*(Mi|Gi)$
 					// +err:options={"pattern":"请输入正确的内存格式，如1024Mi, 1Gi"}
 					// +ui:description=内存
-					memory: *"4Gi" | string
+					memory: *"1Gi" | string
 				}
-
 			}
-			// +ui:description=配置kubernetes亲和性，请根据实际情况调整
-			// +ui:order=7
-			affinity?: {}
-		}
 
-		coordinating: {
-			replicaCount: *1 | int
-			heapSize:     *"128m" | string
-			resources: {}
 			// +ui:description=配置kubernetes亲和性，请根据实际情况调整
-			// +ui:order=7
+			// +ui:hidden={{rootFormData.kibana.enabled == false}}
+			// +ui:order=5
 			affinity?: {}
-		}
-
-		data: {
-			replicaCount: *1 | int
-			heapSize:     *"128m" | string
-			persistence: {
-				enabled: *true | bool
-				size:    *"10Gi" | string
-			}
-			resources: {}
-			// +ui:description=配置kubernetes亲和性，请根据实际情况调整
-			// +ui:order=7
-			affinity?: {}
-		}
-
-		ingest: {
-			enabled:      *false | bool
-			replicaCount: *1 | int
-			heapSize:     *"128m" | string
-			resources: {}
 		}
 
 	}

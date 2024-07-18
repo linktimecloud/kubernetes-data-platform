@@ -1,16 +1,19 @@
 ### 1. Introduction
-JuiceFS is a high-performance distributed file system designed for cloud-native environments, released under the Apache 2.0 open-source license. It offers comprehensive POSIX compatibility, allowing virtually all object storage to be integrated locally as massive local disks, and can also be mounted and written simultaneously across different hosts on cross-platform and cross-region environments.
+Elasticsearch is a distributed, RESTful search and analytics engine that centrally stores your data so you can search, index, and analyze data of all shapes and sizes.
 
 ### 2. Product Features
 
-#### Multi-Protocol Access
-Fully compatible with POSIX, HDFS, and S3 protocols, making it easy to develop new applications or migrate existing ones.
+#### Distributed Architecture
+Elasticsearch is designed to be distributed, meaning it can run on multiple nodes (servers) and automatically manages the distribution of data and queries across these nodes. This ensures high availability, fault tolerance, and scalability.
 
-#### High Performance
-A distributed multi-level caching mechanism provides elastic throughput capabilities and can handle data hotspot challenges; the self-developed high-performance metadata service can handle millions of requests per second with microsecond-level latency.
+#### RESTful API
+Elasticsearch provides a RESTful API that allows users to interact with the engine using standard HTTP methods (GET, POST, PUT, DELETE). This makes it easy to integrate with various clients and tools, regardless of the programming language.performance metadata service can handle millions of requests per second with microsecond-level latency.
 
-#### Storage for Billions of Files
-Adopting a data and metadata separation architecture design, metadata storage can use open-source storage engines such as Redis and TiKV, as well as a self-developed distributed metadata service, while data storage is compatible with over 40 object storage systems, catering to various storage needs in different scenarios.
+#### Full-Text Search
+One of Elasticsearch's core features is its powerful full-text search capability. It uses inverted indices to quickly locate documents that match search queries, supporting complex search operations, fuzzy matching, and relevance scoring.
 
-#### Cloud-Native
-JuiceFS is architected for various cloud environments, including public cloud, hybrid cloud, and multi-cloud, fully leveraging the elastic scalability of cloud environments; it can also automatically replicate data across clouds and regions, helping enterprises build multi-cloud architectures.
+#### Horizontal Scalability
+Elasticsearch scales horizontally by adding more nodes to the cluster. This allows it to handle increasing amounts of data and traffic without significant performance degradation. Each node can handle part of the data and queries, providing a balanced and efficient system.
+
+#### Real-Time Data and Analytics
+Elasticsearch allows for real-time indexing and searching. Once a document is indexed, it is immediately searchable, enabling real-time analytics and reporting.
