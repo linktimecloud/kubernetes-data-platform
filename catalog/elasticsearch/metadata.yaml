@@ -1,8 +1,8 @@
-name: JuiceFS
+name: Elasticsearch
 category: 系统/存储系统
-description: JuiceFS 是基于云的高性能分布式文件系统，百亿级文件存储规模，适用于大数据、人工智能、自动驾驶、基因测序等海量数据存储需求。
+description: Elasticsearch 是一款分布式、RESTful 风格的搜索和分析引擎，它集中存储您的数据，让您能够轻松地搜索、索引和分析各种类型和大小的数据。
 i18n:
   en:
     category: system.storage
     description: >-
-      JuiceFS is a cloud-based high-performance distributed file system designed to handle storage at a scale of billions of files. It is well-suited for massive data storage needs such as big data, artificial intelligence, autonomous driving, and genomic sequencing.
+      Elasticsearch is a distributed, RESTful search and analytics engine that centrally stores your data so you can search, index, and analyze data of all shapes and sizes.

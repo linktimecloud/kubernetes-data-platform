@@ -1,11 +1,11 @@
-version: ce-v1.2.0
-alias: JuiceFS-S3-Gateway
-description: JuiceFS S3 网关是JuiceFS 支持的多种访问方式之一，它可以将JuiceFS 文件系统以S3 协议对外提供服务，使得应用可以通过S3 SDK 访问JuiceFS 上存储的文件。
+version: 8.14.3
+alias: Elasticsearch
+description: Elasticsearch 是一款分布式、RESTful 风格的搜索和分析引擎，它集中存储您的数据，让您能够轻松地搜索、索引和分析各种类型和大小的数据。
 isGlobal: false
 i18n:
   en:
     description: >-
-      JuiceFS S3 Gateway is one of the various access methods supported by JuiceFS. It allows the JuiceFS file system to be accessed externally using the S3 protocol. This enables applications to access files stored on JuiceFS using Amazon S3 SDKs.
+      Elasticsearch is a distributed, RESTful search and analytics engine that centrally stores your data so you can search, index, and analyze data of all shapes and sizes.
 dashboard:
   - id: juicefs
     name: JuiceFS 监控面板
