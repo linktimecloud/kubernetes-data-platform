@@ -1,0 +1,13 @@
+apiVersion: bdc.kdp.io/v1alpha1
+kind: Application
+metadata:
+  labels:
+    app: jupyterlab
+    app.core.bdos/type: system
+  annotations:
+    app.core.bdos/catalog: jupyterlab
+    definition.bdc.kdp.io/description: jupyterlab
+spec:
+  type: jupyterlab
+  properties:
+    hdfsEnabled: false

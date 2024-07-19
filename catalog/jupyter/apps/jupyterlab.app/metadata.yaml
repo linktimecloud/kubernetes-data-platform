@@ -1,0 +1,8 @@
+version:
+alias: jupyterlab
+description: JupyterLab 是一个基于浏览器的交互式开发环境，集成了笔记本（notebooks）、代码和数据可视化工具。
+isGlobal: false
+i18n:
+  en:
+    description: >-
+      JupyterLab is a browser-based interactive development environment that integrates notebooks, code, and data visualization tools, widely used for data science, machine learning, and research.
