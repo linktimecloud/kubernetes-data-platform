@@ -19,4 +19,5 @@
   * [可视化分析淘宝母婴购物数据](./visualization-analysis-of-taobao's-maternal-and-infant-shopping-data.md)
   * [如何在KDP上构建一个销售侧的实时数据流水线](./Real-time-incremental-data-analysis.md)
   * [在KDP上构建数据湖](./iceberg-quickstart.md)
+  * [在 KDP 上构建 LLM RAG 应用](./llm-rag-guide.md)
   * 更多...

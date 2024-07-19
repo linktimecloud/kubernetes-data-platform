@@ -23,4 +23,5 @@ Users can refer to the following scenario tutorials to practice how to do data i
   * [Visualization of the maternal and infant shopping data on Taobao](./visualization-analysis-of-taobao's-maternal-and-infant-shopping-data.md)
   * [How to build a real-time data pipeline of sales' on KDP](./Real-time-incremental-data-analysis.md)
   * [Build up your data lake on KDP](./iceberg-quickstart.md)
+  * [Build up LLM RAG applications on KDP](./llm-rag-guide.md)
   * More...
