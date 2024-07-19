@@ -1,0 +1,14 @@
+apiVersion: bdc.kdp.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    app.core.bdos/catalog: juicefs
+  labels:
+    app: elasticsearch
+    app.core.bdos/type: system
+spec:
+  name: elasticsearch
+  type: elasticsearch
+  properties:
+    master: 
+      replicaCount: 1

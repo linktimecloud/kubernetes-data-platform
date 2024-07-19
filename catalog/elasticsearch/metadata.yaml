@@ -1,0 +1,8 @@
+name: Elasticsearch
+category: 系统/存储系统
+description: Elasticsearch 是一款分布式、RESTful 风格的搜索和分析引擎，它集中存储您的数据，让您能够轻松地搜索、索引和分析各种类型和大小的数据。
+i18n:
+  en:
+    category: system.storage
+    description: >-
+      Elasticsearch is a distributed, RESTful search and analytics engine that centrally stores your data so you can search, index, and analyze data of all shapes and sizes.

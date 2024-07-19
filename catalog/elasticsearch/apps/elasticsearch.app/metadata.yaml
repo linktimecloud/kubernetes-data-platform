@@ -1,0 +1,13 @@
+version: 8.14.3
+alias: Elasticsearch
+description: Elasticsearch 是一款分布式、RESTful 风格的搜索和分析引擎，它集中存储您的数据，让您能够轻松地搜索、索引和分析各种类型和大小的数据。
+isGlobal: false
+i18n:
+  en:
+    description: >-
+      Elasticsearch is a distributed, RESTful search and analytics engine that centrally stores your data so you can search, index, and analyze data of all shapes and sizes.
+dashboard:
+  - id: juicefs
+    name: JuiceFS 监控面板
+    i18n:
+      en: JuiceFS Dashboard
