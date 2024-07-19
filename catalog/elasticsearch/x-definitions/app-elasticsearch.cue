@@ -18,6 +18,7 @@
 
 template: {
 	_ingressHost: context["name"] + "-" + context["namespace"] + "." + context["ingress.root_domain"]
+	_kibanaIngressHost: context["name"] + "-kibana-" + context["namespace"] + "." + context["ingress.root_domain"]
 	output: {
 		apiVersion: "core.oam.dev/v1beta1"
 		kind:       "Application"
@@ -136,6 +137,18 @@ template: {
 											},
 										]
 									},
+									if parameter.kibana.enabled {
+										{
+											host: _kibanaIngressHost
+											paths: [
+												{
+													path:        "/"
+													serviceName: "elasticsearch-kibana"
+													servicePort: 5601
+												},
+											]
+										},
+									}
 								]
 								tls: [
 									{
@@ -144,6 +157,14 @@ template: {
 										]
 										tlsSecretName: context["ingress.tls_secret_name"]
 									},
+									if parameter.kibana.enabled {
+										{
+											hosts: [
+												_kibanaIngressHost,
+											]
+											tlsSecretName: context["ingress.tls_secret_name"]
+										},
+									}
 								]
 							}
 							type: "bdos-ingress"
