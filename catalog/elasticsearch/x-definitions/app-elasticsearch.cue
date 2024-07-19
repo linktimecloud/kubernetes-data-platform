@@ -218,14 +218,14 @@ template: {
 		// +ui:order=1
 		master: {
 			// +minimum=1
-			// +ui:description=master 节点数量, 建议生产环境设置为 3
+			// +ui:description=master 节点数量, 建议生产环境配置3个
 			// +ui:order=1
 			replicaCount: *1 | int
 
 			// +ui:title=存储配置
 			// +ui:order=2
 			persistence: {
-				// +ui:description=是否启用持久化存储, 建议生产环境设置为 true
+				// +ui:description=是否启用持久化存储, 建议生产环境设置为true
 				// +ui:order=1
 				enabled: *true | bool
 
@@ -405,7 +405,7 @@ template: {
 			enabled: *false | bool
 
 			// +minimum=0
-			// +ui:description=master 节点数量, 建议生产环境设置为 3
+			// +ui:description=节点数量, 建议生产环境配置2个起
 			// +ui:order=2
 			replicaCount: *0 | int
 
@@ -455,7 +455,7 @@ template: {
 			enabled: *false | bool
 
 			// +minimum=0
-			// +ui:description=master 节点数量, 建议生产环境设置为 3
+			// +ui:description=节点数量, 建议生产环境配置2个起
 			// +ui:hidden={{rootFormData.kibana.enabled == false}}
 			// +ui:order=2
 			replicaCount: *1 | int
