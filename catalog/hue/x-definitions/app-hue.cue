@@ -265,7 +265,22 @@ template: {
 										volumeMounts: [{
 											mountPath: "/usr/share/hue/logs"
 											name:      "logs"
+										},{
+											name: "hive-config"
+											readOnly: true
+											mountPath: "/usr/share/hue/desktop/conf/hive-site.xml.nosasl.template"
+											subPath: "hive-site.xml.nosasl.template"
 										}]
+									}]
+									volumes: [{
+										name: "hive-config"
+										configMap: {
+											name:  "hive-server2-context"
+											"items": [{
+												key: "hive-site.xml"
+												path: "hive-site.xml.nosasl.template"
+												}]
+											}
 									}]
 									restartPolicy: "Always"
 									if parameter["imagePullSecrets"] != _|_ {
