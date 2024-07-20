@@ -252,7 +252,6 @@ template: {
 									_commonConf: {
 										"hive.metastore.uris": "thrift://__HMS_ADDRESS__:9083"
 										"hive.zookeeper.quorum": parameter.dependencies.zookeeperQuorum
-										"hive.server2.authentication": "NOSASL"
 										"hive.server2.zookeeper.namespace": "\(context.namespace)_hiveserver2/server"
 										"hive.server2.thrift.bind.host": "\(context.name)-__INDEX__.\(context.name).\(context.namespace).svc.cluster.local"
 										"hive.spark.client.rpc.server.address": "\(context.name)-__INDEX__.\(context.name).\(context.namespace).svc.cluster.local"
@@ -408,7 +407,6 @@ template: {
 									properties: {
 										_commonConf: {
 											"hive.zookeeper.quorum": parameter.dependencies.zookeeperQuorum
-											"hive.server2.authentication": "NOSASL"
 											"hive.server2.thrift.bind.host": "\(context.name)-0.\(context.name).\(context.namespace).svc.cluster.local"
 										}
 										_commonConfStr: "\n\t\(strings.Join([for k, v in _commonConf {"<property>\n\t\t<name>\(k)</name>\n\t\t<value>\(v)</value>\n\t</property>"}], "\n\t"))"
@@ -877,6 +875,7 @@ template: {
 			"hive.server2.session.check.interval":                     "15m"
 			"hive.server2.idle.session.timeout":                       "4h"
 			"hive.server2.idle.operation.timeout":                     "2h"
+			"hive.server2.authentication":                             "NOSASL"
 		} | {...}
 		// +ui:description=Spark 配置
 		// +ui:order=6
