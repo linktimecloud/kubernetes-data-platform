@@ -126,6 +126,9 @@ template: {
 		metadata: {
 			name:      context["name"]
 			namespace: context["namespace"]
+			annotations: {
+        "reloader.stakater.com/auto": "true"
+      }
 		}
 		spec: {
 			components: [
