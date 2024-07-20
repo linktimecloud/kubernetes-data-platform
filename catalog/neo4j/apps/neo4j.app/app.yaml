@@ -1,0 +1,12 @@
+apiVersion: bdc.kdp.io/v1alpha1
+kind: Application
+metadata:
+  labels:
+    app: neo4j
+    app.core.bdos/type: system
+  annotations:
+    app.core.bdos/catalog: neo4j
+    definition.bdc.kdp.io/description: neo4j
+spec:
+  type: neo4j
+

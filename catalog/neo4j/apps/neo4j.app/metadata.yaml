@@ -1,0 +1,8 @@
+version: 2.4.4
+alias: neo4j
+description: Neo4j是一个高性能的、NOSQL图形数据库
+isGlobal: false
+i18n:
+  en:
+    description: >-
+      Neo4j is a high-performance NOSQL graph database.

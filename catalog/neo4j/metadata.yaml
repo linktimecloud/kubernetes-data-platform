@@ -1,0 +1,8 @@
+name: Neo4j
+category: 系统/存储系统
+description: Neo4j是一个高性能的、NOSQL图形数据库
+i18n:
+  en:
+    category: system.dataManagement
+    description: >-
+      Neo4j is a high-performance NOSQL graph database.
