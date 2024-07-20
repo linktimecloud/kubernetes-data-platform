@@ -48,3 +48,4 @@ spec:
       hive.server2.session.check.interval: "15m"
       hive.server2.idle.session.timeout: "4h"
       hive.server2.idle.operation.timeout: "2h"
+      hive.server2.authentication: "NOSASL"
