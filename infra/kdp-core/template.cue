@@ -5,7 +5,7 @@ import (
 )
 
 _version: {
-	kdp: "v1.2.1"
+	kdp: "v1.2.2"
 	operator: "v1.1.1"
 	catalogManager: "v1.0.0"
 	ux: "v1.2.0"

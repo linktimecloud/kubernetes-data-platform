@@ -17,7 +17,7 @@ package cmd
 
 const (
 	defaultKdpRepoUrl = "https://github.com/linktimecloud/kubernetes-data-platform.git"
-    defaultKdpRepoRef = "v1.2.1"
+    defaultKdpRepoRef = "v1.2.2"
     defaultArtifactServer = "https://registry.linktimecloud.com/repository/raw/vela"
     defaultHelmRepoisotry = "oci://registry-cr.linktimecloud.com/linktimecloud/"
     defaultDockerRegistry = "registry-cr.linktimecloud.com"
