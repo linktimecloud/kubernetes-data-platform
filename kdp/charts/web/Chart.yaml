@@ -1,0 +1,7 @@
+apiVersion: v2
+name: web
+description: A Helm chart for Kubernetes-data-platform web
+
+type: application
+
+version: 1.2.0

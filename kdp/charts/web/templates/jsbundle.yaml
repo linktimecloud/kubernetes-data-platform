@@ -1,0 +1,13 @@
+apiVersion: extensions.kubesphere.io/v1alpha1
+kind: JSBundle
+metadata:
+  name: v1alpha1.kdp.kubesphere.io
+spec:
+  rawFrom:
+    configMapKeyRef:
+      key: index.js
+      name: kdp-{{ include "kdp.fullname" . }}
+      namespace: {{ .Release.Namespace }}
+status:
+  link: /dist/kdp/index.js
+  state: Available

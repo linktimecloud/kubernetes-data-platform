@@ -62,9 +62,6 @@ Create the name of the service account to use
 {{- end }}
 
 
-
-
-
 {{- /*
 Create the image to use
 */}}

@@ -1,8 +1,0 @@
-apiVersion: installer.kdp.io/v1alpha1
-kind: Infrastructure
-metadata:
-  name: kdp-installer
-spec:
-  kdpRepo: {{ .Values.installConfig.kdpRepo}}
-  kdpRepoRef: {{ .Values.installConfig.kdpRepoRef}}
-  setParameters: {{ .Values.installConfig.setParameters}}

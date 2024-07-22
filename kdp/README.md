@@ -1,64 +1,24 @@
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-# KDP helm chart
+ Full documentation is available at [KDP Website](https://linktimecloud.github.io/kubernetes-data-platform/).
 
-kdp is the installation service for the kdp (Kubernetes Data Platform) management platform. Using the kdp chart, kdp can be deployed in a Kubernetes cluster.
+## Introduction
+KDP(Kubernetes Data Platform) delivers a modern, hybrid and cloud-native data platform based on Kubernetes. It leverages the cloud-native capabilities of Kubernetes to manage data platform effectively.
 
-To pull this chart from the repository,
+![kdp-arch](https://linktime-public.oss-cn-qingdao.aliyuncs.com/linktime-homepage/kdp/kdp-archi-en.png)
 
-```bash
-helm pull oci://registry-1.docker.io/linktimecloud/kdp-chart --version 1.0.0-rc1
-```
+## Highlights
+* Out-of-the-box Kubernetes data platform with:
+    * K8s-native integration and optimization of mainstream big data computing and storage engines
+    * The standardized configuration management of big data components which simplifies the complexity of configuration dependency management of big data components
+* Standardized big data application integration framework with:
+    * The application delivery engine based on [OAM](https://oam.dev/) which simplifies the delivery and development of big data applications
+    * Scalable application layer operation and maintenance capabilities: observability, elastic scaling, gray scale publishing, etc
+* Model concept of big data cluster and application catalog:
+    * Big Data cluster: Manage big data components in the form of "cluster" on K8s, providing unified life cycle management of big data applications in the same big data cluster
+    * Application Catalog: Combines individual big data components into an application catalog, providing a unified management view from the application layer to the container layer
 
-Other Commands,
 
-```bash
-helm show all oci://registry-1.docker.io/linktimecloud/kdp-chart --version 1.0.0-rc1
-helm template <my-release> oci://registry-1.docker.io/linktimecloud/kdp-chart --version 1.0.0-rc1
-helm install <my-release> oci://registry-1.docker.io/linktimecloud/kdp-chart --version 1.0.0-rc1
-helm upgrade <my-release> oci://registry-1.docker.io/linktimecloud/kdp-chart --version <new-version>
-```
-
-## Prerequisites
-- Kubernetes 1.23+
-
-## Parameters
-
-### kdp-infra parameters
-
-| Name                                      | Description                                                                           | Value          |
-| ----------------------------------------- | ------------------------------------------------------------------------------------- | -------------- |
-| `image.registry`                          | Image registry                                                                        | `""`           |
-| `image.repository`                        | Image repository                                                                      | `kdp-infra`    |
-| `image.pullPolicy`                        | Image pull policy                                                                     | `IfNotPresent` |
-| `image.tag`                               | Image tag                                                                             | `""`           |
-| `image.digest`                            | Image digest                                                                          | `""`           |
-| `imagePullSecrets`                        | Image pull secrets                                                                    | `[]`           |
-| `nameOverride`                            | String to partially override kdp-infra.fullname                                       | `""`           |
-| `fullnameOverride`                        | String to fully override kdp-infra.name                                               | `""`           |
-| `serviceAccount.create`                   | Create serviceAccount                                                                 | `true`         |
-| `serviceAccount.automount`                | Automatically mount a ServiceAccount's API credentials?                               | `true`         |
-| `serviceAccount.annotations`              | Annotations to add to the service account                                             | `{}`           |
-| `serviceAccount.name`                     | The name of the service account to use.                                               | `""`           |
-| `podAnnotations`                          |                                                                                       | `{}`           |
-| `podLabels`                               |                                                                                       | `{}`           |
-| `service.port`                            | Service port                                                                          | `9115`         |
-| `resources`                               |                                                                                       | `{}`           |
-| `volumes`                                 | Volumes for the output Deployment definition                                          | `[]`           |
-| `volumeMounts`                            | Volume mounts for the output Deployment definition                                    | `[]`           |
-| `nodeSelector`                            | Node selector for pod assignment                                                      | `{}`           |
-| `affinity`                                | Affinity for pod assignment                                                           | `{}`           |
-| `livenessProbe.initialDelaySeconds`       | Initial delay seconds for the liveness probe                                          | `5`            |
-| `livenessProbe.periodSeconds`             | Period seconds for the liveness probe                                                 | `10`           |
-| `livenessProbe.timeoutSeconds`            | Timeout seconds for the liveness probe                                                | `1`            |
-| `livenessProbe.failureThreshold`          | Failure threshold for the liveness probe                                              | `3`            |
-| `livenessProbe.successThreshold`          | Success threshold for the liveness probe                                              | `1`            |
-| `readinessProbe.initialDelaySeconds`      | Initial delay seconds for the readiness probe                                         | `5`            |
-| `readinessProbe.periodSeconds`            | Period seconds for the readiness probe                                                | `10`           |
-| `readinessProbe.timeoutSeconds`           | Timeout seconds for the readiness probe                                               | `1`            |
-| `readinessProbe.failureThreshold`         | Failure threshold for the readiness probe                                             | `3`            |
-| `readinessProbe.successThreshold`         | Success threshold for the readiness probe                                             | `1`            |
-| `metrics.serviceMonitor.enabled`          | Enable the ServiceMonitor resource for Prometheus Operator                            | `true`         |
-| `metrics.serviceMonitor.additionalLabels` | Additional labels that can be used so ServiceMonitor will be discovered by Prometheus | `{}`           |
-| `metrics.serviceMonitor.interval`         | Specify the interval at which metrics should be scraped                               | `30s`          |
-| `metrics.serviceMonitor.scrapeTimeout`    | Specify the timeout after which the scrape is ended                                   | `30s`          |
+## Usage Plan
+* Obtain the storageClass name of the Kubernetes cluster storage and update the extension component configuration persistence.storageClass.
+* Update the extension component configuration persistence.accessModes according to the operations supported by the storageClass of the Kubernetes cluster storage.
+* Update the extension component configuration global.ingress.domain according to the domain name of the Kubernetes cluster ingress.
