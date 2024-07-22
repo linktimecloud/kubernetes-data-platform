@@ -1,6 +1,5 @@
 include makefiles/const.mk
 include makefiles/build.mk
-include makefiles/build-helm-package.mk
 include makefiles/dependency.mk
 
 ##@ General
