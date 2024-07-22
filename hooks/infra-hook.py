@@ -4,6 +4,7 @@ import json
 import os
 import shutil
 import subprocess
+import time
 import traceback
 
 import sys
@@ -139,7 +140,7 @@ def check_infra_spec_data(context_data):
     return False
 
 
-def check_infra_step_status():
+def check_infra_step_status(check_step_retry=0):
     steps = []
     status = Running
     for addon_name in ADDON_NAMES:
@@ -167,6 +168,12 @@ def check_infra_step_status():
         if addon_status[0] != "running":
             status = Unhealthy
             continue
+    # if status is unhealthy, retry MAX_INSTALL_NUM times
+    if status == Unhealthy:
+        if check_step_retry < MAX_INSTALL_NUM:
+            check_step_retry += 1
+            time.sleep(3)
+            return check_infra_step_status(check_step_retry)
     return status, steps
 
 
@@ -272,7 +279,7 @@ class InfraController(InfraKubernetes):
         self.infra_spec = infra_spec
 
     def pre_infra_operator(self):
-        self.path_status(RunningWorkflow, "", [])
+        self.path_status(RunningWorkflow, "nil", ["nil"])
         if os.path.exists(OPERATOR_LOG_FILE):
             os.remove(OPERATOR_LOG_FILE)
 
@@ -413,8 +420,22 @@ def infra_operator():
                 command = f"kdp install {set_cmd}"
                 InfraController(object_name, object_spec).schedule_infra(command)
         if object_type == "Synchronization":
-            print("synchronization, not support operator")
+#             object_watch_type = get_items(context_data, ["watchEvent"])
             shutil.copy(HOOK_RESULT_FILE, "/tmp/Synchronization.json")
+            sync_infra = get_items(context_data, ["objects"])
+            for infra_line in sync_infra:
+                object_name = get_items(infra_line, ["object", "metadata", "name"])
+                object_kind = get_items(infra_line, ["object", "kind"])
+                object_spec = get_items(infra_line, ["object", "spec"])
+                set_cmd = get_set_parameters(infra_line)
+                
+                set_cmd = f"{set_cmd} --force-reinstall"
+                if check_labels(infra_line):
+                    print(f"{object_kind}/{object_name} labels is terminated, disallowed operation")
+                    continue
+                InfraController(object_name, object_spec).create_infra(set_cmd)
+                # print("synchronization, not support operator")
+
 
 
 if __name__ == "__main__":
