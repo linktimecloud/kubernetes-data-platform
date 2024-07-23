@@ -1,4 +1,4 @@
-"ctx-setting-juicefs": {
+"ctx-setting-mongodb": {
 	description: ""
 	type:        "xdefinition"
 	attributes: {
@@ -6,7 +6,7 @@
 			definition: {
 				apiVersion: "bdc.kdp.io/v1alpha1"
 				kind:       "ContextSetting"
-				type:       "elasticsearch"
+				type:       "mongodb"
 			}
 		}
 	}
