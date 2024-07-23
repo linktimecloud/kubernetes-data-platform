@@ -2,7 +2,7 @@ apiVersion: bdc.kdp.io/v1alpha1
 kind: Application
 metadata:
   annotations:
-    app.core.bdos/catalog: juicefs
+    app.core.bdos/catalog: elasticsearch
   labels:
     app: elasticsearch
     app.core.bdos/type: system

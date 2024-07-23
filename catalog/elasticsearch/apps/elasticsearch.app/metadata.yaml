@@ -7,7 +7,7 @@ i18n:
     description: >-
       Elasticsearch is a distributed, RESTful search and analytics engine that centrally stores your data so you can search, index, and analyze data of all shapes and sizes.
 dashboard:
-  - id: juicefs
-    name: JuiceFS 监控面板
+  - id: elasticsearch
+    name: Elasticsearch 监控面板
     i18n:
-      en: JuiceFS Dashboard
+      en: Elasticsearch Dashboard
