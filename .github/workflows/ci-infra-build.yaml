@@ -93,7 +93,6 @@ jobs:
         uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
         with:
           submodules: true
-
       - name: Setup Go
         uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7
         with:
@@ -105,6 +104,10 @@ jobs:
           path: .work/pkg
           key: ${{ runner.os }}-pkg-${{ hashFiles('**/go.sum') }}
           restore-keys: ${{ runner.os }}-pkg-
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@5927c834f5b4fdf503fca6f4c7eccda82949e1ee # v3.1.0
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@4fd812986e6c8c2a69e18311145f9371337f27d4 # v3.4.0
 
       - uses: actions/checkout@v4
       - name: Docker Login
@@ -114,7 +117,9 @@ jobs:
           password: ${{ secrets.REG_PASSWD }}
 
       - name: Run Build Images
-        run: make kdp-infra-build IMG_REGISTRY=${{ secrets.CONTAINER_REGISTRY }}
+        run: |
+          make multi-arch-builder IMG_REGISTRY=${{ secrets.CONTAINER_REGISTRY }}
+          make publish IMG_REGISTRY=${{ secrets.CONTAINER_REGISTRY }}
 
       - name: Cleanup binary
         run: make kdp-cli-clean

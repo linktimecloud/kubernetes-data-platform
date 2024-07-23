@@ -1,6 +1,10 @@
 ##@ Docker image info
 IMG			   ?= linktimecloud/kubernetes-data-platform:$(VERSION)
+KDP_IMG        ?= linktimecloud/kdp:$(VERSION)
 IMG_REGISTRY   ?= ""
+OUTPUT_TYPE 	:= registry
+TARGETARCHS 	:= amd64 arm64
+ALL_OS_ARCH 	:= linux-arm64 linux-amd64
 
 ##@ Build docker image
 .PHONY: docker-build
@@ -46,13 +50,29 @@ kdp-cli-clean:
 ##@ Build infra image
 .PHONY: kdp-infra-build
 kdp-infra-build:
-	for arch in amd64 arm64; do \
-		env GOOS=linux GOARCH=$$arch \
-		go build -ldflags "-X kdp/cmd.CliVersion=$(VERSION) -X kdp/cmd.CliGoVersion=$(GO_VERSION) -X kdp/cmd.CliGitCommit=$(GIT_COMMIT) -X \"kdp/cmd.CliBuiltAt=$(BUILD_DATE)\" -X \"kdp/cmd.CliOSArch=$$arch\"" -o ./cmd/output/$(VERSION)/kdp-linux-$$arch; \
-		if [ -n "$(IMG_REGISTRY)" ]; then \
-			docker buildx build --platform linux/$$arch --build-arg VERSION="$(VERSION)" --output=type=image,name=$(IMG_REGISTRY)/kdp:$(VERSION),push=true -f kdp.Dockerfile . ; \
-		else \
-			docker buildx build --platform linux/$$arch --build-arg VERSION="$(VERSION)" --output=type=docker,name=kdp-$$arch:$(VERSION) -f kdp.Dockerfile . ; \
-		fi \
-	done
+	go build -ldflags "-X kdp/cmd.CliVersion=$(VERSION) -X kdp/cmd.CliGoVersion=$(GO_VERSION) -X kdp/cmd.CliGitCommit=$(GIT_COMMIT) -X \"kdp/cmd.CliBuiltAt=$(BUILD_DATE)\" -X \"kdp/cmd.CliOSArch=$$arch\"" -o ./cmd/output/$(VERSION)/kdp-linux-$(TARGETARCH); \
+	docker buildx build \
+		--output=type=$(OUTPUT_TYPE) \
+		--platform linux/$(TARGETARCH) \
+		--provenance false \
+		--build-arg VERSION=$(VERSION) \
+		--build-arg TARGETARCH=$(TARGETARCH) \
+		-t $(IMG_REGISTRY)/$(KDP_IMG)-linux-$(TARGETARCH) \
+		-f kdp.Dockerfile .
+	@$(OK)
 
+
+##@ push infra image
+.PHONY: publish
+publish:
+	docker manifest create --amend $(IMG_REGISTRY)/$(KDP_IMG) $(foreach osarch, $(ALL_OS_ARCH), $(IMG_REGISTRY)/$(KDP_IMG)-${osarch})
+	docker manifest push --purge $(IMG_REGISTRY)/$(KDP_IMG)
+	docker manifest inspect $(IMG_REGISTRY)/$(KDP_IMG)
+
+
+##@ Build multi-arch image
+.PHONY: multi-arch-builder
+multi-arch-builder:
+	for arch in $(TARGETARCHS); do \
+		TARGETARCH=$${arch} $(MAKE) kdp-infra-build;\
+    done
