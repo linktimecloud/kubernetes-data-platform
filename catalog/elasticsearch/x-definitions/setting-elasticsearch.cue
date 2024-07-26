@@ -1,4 +1,4 @@
-"ctx-setting-juicefs": {
+"ctx-setting-elasticsearch": {
 	description: ""
 	type:        "xdefinition"
 	attributes: {

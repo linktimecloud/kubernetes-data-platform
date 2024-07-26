@@ -104,12 +104,12 @@ curl -X DELETE "${ES_ENDPOINT}/${ES_INDEX}?pretty"
 
 ### 3. FAQ
 
-1. Elasticsearch 有哪些常用 node role ?
+1. What are the common node roles in Elasticsearch?
 
-- 主节点（Master-eligible Node）:有资格被选举为主节点的节点。主节点负责管理集群的状态，包括创建和删除索引、跟踪集群中的节点以及分配分片到节点等。
-- 数据节点（Data Node）:负责存储数据并执行数据相关的操作，如搜索和聚合。数据节点处理与数据存储和查询相关的负载。
-- 协调节点（Coordinating Node）:负责接收客户端请求，将请求分发到相应的数据节点，并收集结果返回给客户端。每个节点默认都是协调节点，但可以通过配置专门指定某些节点为协调节点。
-- 摄取节点（Ingest Node）:负责执行预处理管道，对文档进行转换和 enrich 操作。摄取节点在索引文档之前对文档进行预处理。
+- **Master-eligible Node**: Nodes that are eligible to be elected as the master node. The master node is responsible for managing the cluster state, including creating and deleting indices, tracking nodes in the cluster, and allocating shards to nodes, among other tasks.
+- **Data Node**: Responsible for storing data and performing data-related operations such as searches and aggregations. Data nodes handle the load related to data storage and querying.
+- **Coordinating Node**: Responsible for receiving client requests, dispatching requests to the appropriate data nodes, and collecting results to return to the client. By default, every node is a coordinating node, but specific nodes can be designated as coordinating nodes through configuration.
+- **Ingest Node**: Responsible for executing pre-processing pipelines, transforming and enriching documents. Ingest nodes perform pre-processing on documents before they are indexed.
 
 
 > https://www.elastic.co/guide/en/elasticsearch/reference/8.14/troubleshooting.html
