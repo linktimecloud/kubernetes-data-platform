@@ -1,10 +1,6 @@
 name: Publish Chart
 
 on:
-  push:
-    branches:
-      - main
-      - release-*
   release:
     types:
       - published

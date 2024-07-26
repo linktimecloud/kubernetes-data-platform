@@ -1,6 +1,6 @@
 ##@ Docker image info
 IMG			   ?= linktimecloud/kubernetes-data-platform:$(VERSION)
-KDP_IMG        ?= linktimecloud/kdp-infra:$(VERSION)
+KDP_IMG        ?= linktimecloud/kdp:$(VERSION)
 IMG_REGISTRY   ?= ""
 OUTPUT_TYPE 	:= registry
 TARGETARCHS 	:= amd64 arm64

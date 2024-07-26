@@ -2,7 +2,6 @@
 HELM_CHART         ?= kdp-infra
 HELM_CHART_VERSION ?= $(VERSION)
 KUBESPHERE_EXTENSION ?= helm
-KUBESPHERE_EXTENSION_VERSION   ?= $(KUBESPHERE_EXTENSION_VERSION)
 
 .PHONY: helm-package
 helm-package:   ## Helm package
@@ -11,7 +10,10 @@ helm-package:   ## Helm package
 
 .PHONY: kubesphere-helm-package
 kubesphere-helm-package:   ## Kubesphere Helm package
+	@echo $(VERSION)
+	@sed -i.bak "s/1\.2\.0/$(VERSION)/g" ./helm/extension.yaml
 	$(KSBUILDBIN) package $(KUBESPHERE_EXTENSION)
+	mv ./helm/extension.yaml.bak ./helm/extension.yaml
 
 
 .PHONY: helm-doc

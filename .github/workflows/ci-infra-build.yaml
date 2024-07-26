@@ -1,15 +1,11 @@
 name: CI-Infra-Build
 
 on:
-  push:
-    branches:
-      - main
-      - release-*
-  workflow_dispatch: {}
-  pull_request:
-    branches:
-      - main
-      - release-*
+  release:
+    types:
+      - published
+    tags:
+      - v*
 
 permissions:
   contents: read
@@ -93,6 +89,13 @@ jobs:
         uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
         with:
           submodules: true
+
+      - name: Get Version
+        id: get_version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/}
+          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
+
       - name: Setup Go
         uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7
         with:
@@ -118,8 +121,9 @@ jobs:
 
       - name: Run Build Images
         run: |
-          make multi-arch-builder IMG_REGISTRY=${{ secrets.CONTAINER_REGISTRY }}
-          make publish IMG_REGISTRY=${{ secrets.CONTAINER_REGISTRY }}
+          version=${{ steps.get_version.outputs.VERSION }}
+          make multi-arch-builder IMG_REGISTRY=${{ secrets.CONTAINER_REGISTRY }} VERSION=${version}
+          make publish IMG_REGISTRY=${{ secrets.CONTAINER_REGISTRY }}  VERSION=${version}
 
       - name: Cleanup binary
         run: make kdp-cli-clean
