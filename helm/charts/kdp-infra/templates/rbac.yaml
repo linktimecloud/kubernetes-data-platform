@@ -2,9 +2,9 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ include "kdp.serviceAccountName" . }}
+  name: {{ include "kdp-infra.serviceAccountName" . }}
   labels:
-    {{- include "kdp.labels" . | nindent 4 }}
+    {{- include "kdp-infra.labels" . | nindent 4 }}
   {{- with .Values.serviceAccount.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -14,7 +14,7 @@ automountServiceAccountToken: {{ .Values.serviceAccount.automount }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: {{ include "kdp.serviceAccountName" . }}-cr
+  name: {{ include "kdp-infra.serviceAccountName" . }}-cr
 rules:
   - verbs:
       - '*'
@@ -29,10 +29,10 @@ metadata:
   name: test-crd-kdp-crb
 subjects:
   - kind: ServiceAccount
-    name: {{ include "kdp.serviceAccountName" . }}
+    name: {{ include "kdp-infra.serviceAccountName" . }}
     namespace: {{ .Release.Namespace }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ include "kdp.serviceAccountName" . }}-cr
+  name: {{ include "kdp-infra.serviceAccountName" . }}-cr
 {{- end }}

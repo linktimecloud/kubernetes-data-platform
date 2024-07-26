@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "kdp.fullname" . }}-controller
+  name: {{ include "kdp-infra.fullname" . }}-controller
   labels:
-    app: {{ include "kdp.name" . }}
+    app: {{ include "kdp-infra.name" . }}
     release: {{ .Release.Name }}
-    {{- include "kdp.labels" . | nindent 4 }}
+    {{- include "kdp-infra.labels" . | nindent 4 }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      {{- include "kdp.selectorLabels" . | nindent 6 }}
+      {{- include "kdp-infra.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,7 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "kdp.labels" . | nindent 8 }}
+        {{- include "kdp-infra.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -27,10 +27,10 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "kdp.serviceAccountName" . }}
+      serviceAccountName: {{ include "kdp-infra.serviceAccountName" . }}
       containers:
         - name: {{ .Chart.Name }}
-          image: {{ include "kdp.image" . }}
+          image: {{ include "kdp-infra.image" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
@@ -59,7 +59,7 @@ spec:
       volumes:
         - name: kdp-src
           persistentVolumeClaim:
-            claimName: {{ include  "kdp.fullname" .}}-pvc
+            claimName: {{ include  "kdp-infra.fullname" .}}-pvc
             readOnly: false
       {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}

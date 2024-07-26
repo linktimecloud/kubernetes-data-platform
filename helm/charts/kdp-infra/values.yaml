@@ -1,25 +1,29 @@
+## @section Global parameters
 global:
   ingress:
+    ## @param global.ingress.class Ingress class
     class: "kong"
+    ## @param global.ingress.domain Domain name for ingress
     domain: "kdp-e2e.io"
+    ## @param global.ingress.tlsSecretName TLS secret name for ingress
     tlsSecretName: ""
 # Default values for kdp.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 ## @section kdp parameters
-## @param image.registry Image registry
-## @param image.repository Image repository
-## @param image.pullPolicy Image pull policy
-## @param image.tag Image tag
-## @param image.digest Image digest
 image:
+  ## @param image.registry Image registry
   registry: "od-registry.linktimecloud.com"
+  ## @param image.repository Image repository
   repository: kdp
+  ## @param image.pullPolicy Image pull policy
   # IfNotPresent, Always
   pullPolicy: Always
-  tag: ""
-  digest: "sha256:5e00383433dbe9d05807dfa67cacad03cf0248960868bcc61d6c86e2876dacbf"
+  ## @param image.tag Image tag
+  tag: "1.0.0"
+  ## @param image.digest Image digest
+  digest: ""
 
 ## @param imagePullSecrets Image pull secrets
 imagePullSecrets: []
@@ -108,7 +112,6 @@ readinessProbe:
 ## @param metrics.serviceMonitor.enabled Enable the ServiceMonitor resource for Prometheus Operator
 ## @param metrics.serviceMonitor.additionalLabels Additional labels that can be used so ServiceMonitor will be discovered by Prometheus
 ## @param metrics.serviceMonitor.interval Specify the interval at which metrics should be scraped
-## @param metrics.serviceMonitor.scrapeTimeout Specify the timeout after which the scrape is ended
 metrics:
   serviceMonitor:
     enabled: true
@@ -116,6 +119,7 @@ metrics:
     interval: 30s
 
 persistence:
+  ## @param persistence.enabled Enable persistence using Persistent Volume Claims
   enabled: true
   ## @param persistence.storageClass PVC Storage Class for MinIO&reg; data volume
   ## If defined, storageClassName: <storageClass>
@@ -142,12 +146,13 @@ installConfig:
   ## @param installConfig.kdpRepoRef kdp repo ref
   kdpRepoRef: "release-1.2"
   ## @param installConfig.setParameters setParameters
-  setParameters:
-    - name: "dnsService.name"
-      value: "kube-dns"
-    - name: "kong.enabled"
-      value: "true"
-    - name: "prometheus.enabled"
-      value: "false"
-    - name: "loki.enabled"
-      value: "false"
+  setParameters: []
+    ## e.g:
+    ## - name: "dnsService.name"
+    ##   value: "kube-dns"
+    ## - name: "kong.enabled"
+    ##   value: "true"
+    ## - name: "prometheus.enabled"
+    ##   value: "true"
+    ## - name: "loki.enabled"
+    ##   value: "true"

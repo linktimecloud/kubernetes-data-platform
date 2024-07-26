@@ -7,11 +7,11 @@ SPDX-License-Identifier: APACHE-2.0
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{ include  "kdp.fullname" .}}-pvc
+  name: {{ include  "kdp-infra.fullname" .}}-pvc
   namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ include  "kdp.name" .}}
-    chart: {{ include  "kdp.name" .}}
+    app: {{ include  "kdp-infra.name" .}}
+    chart: {{ include  "kdp-infra.name" .}}
     release: {{ .Release.Name }}
     monitoring: "true"
       {{- if .Values.metrics.serviceMonitor.additionalLabels }}
@@ -30,5 +30,4 @@ spec:
     requests:
       storage: {{ .Values.persistence.size | quote }}
   storageClassName: {{ .Values.persistence.storageClass | quote }}
-{{/*  volumeName: {{ include  "kdp.fullname" .}}-pv*/}}
-{{/*  volumeMode: Filesystem*/}}
+

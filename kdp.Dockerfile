@@ -15,7 +15,7 @@ ARG VERSION
 ENV KDP_ROOT_DIR=${KDP_ROOT_DIR:-.kdp}
 ENV PATH="/venv/bin:$PATH"
 
-ADD hooks/* /hooks
+ADD docker/hooks/* /hooks
 ADD cmd/output/${VERSION}/kdp-linux-$TARGETARCH /usr/local/bin/kdp
 
 COPY --from=pip-package /venv /venv
