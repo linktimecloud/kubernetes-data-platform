@@ -41,7 +41,7 @@ dependencies:
   - name: web
     tags:
       - extension
-  - name: kdp
+  - name: kdp-infra
     tags:
       - extension
 # installationMode describes how to install subcharts, it can be HostOnly or Multicluster.

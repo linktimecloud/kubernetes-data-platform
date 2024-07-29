@@ -429,7 +429,7 @@ def infra_operator():
                 object_spec = get_items(infra_line, ["object", "spec"])
                 set_cmd = get_set_parameters(infra_line)
                 
-                set_cmd = f"{set_cmd} --force-reinstall"
+                set_cmd = f" --force-reinstall {set_cmd}"
                 if check_labels(infra_line):
                     print(f"{object_kind}/{object_name} labels is terminated, disallowed operation")
                     continue

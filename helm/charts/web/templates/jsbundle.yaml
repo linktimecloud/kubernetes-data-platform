@@ -6,7 +6,7 @@ spec:
   rawFrom:
     configMapKeyRef:
       key: index.js
-      name: kdp-{{ include "kdp.fullname" . }}
+      name: kdp-{{ include "web.fullname" . }}
       namespace: {{ .Release.Namespace }}
 status:
   link: /dist/kdp/index.js

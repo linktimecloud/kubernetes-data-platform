@@ -50,7 +50,7 @@ kdp-cli-clean:
 ##@ Build infra image
 .PHONY: kdp-infra-build
 kdp-infra-build:
-	go build -ldflags "-X kdp/cmd.CliVersion=$(VERSION) -X kdp/cmd.CliGoVersion=$(GO_VERSION) -X kdp/cmd.CliGitCommit=$(GIT_COMMIT) -X \"kdp/cmd.CliBuiltAt=$(BUILD_DATE)\" -X \"kdp/cmd.CliOSArch=$$arch\"" -o ./cmd/output/$(VERSION)/kdp-linux-$(TARGETARCH); \
+	CGO_ENABLED=0 GOOS=linux GOARCH=$(TARGETARCH) go build -ldflags "-X kdp/cmd.CliVersion=$(VERSION) -X kdp/cmd.CliGoVersion=$(GO_VERSION) -X kdp/cmd.CliGitCommit=$(GIT_COMMIT) -X \"kdp/cmd.CliBuiltAt=$(BUILD_DATE)\" -X \"kdp/cmd.CliOSArch=linux/$(TARGETARCH)\"" -o ./cmd/output/$(VERSION)/kdp-linux-$(TARGETARCH); \
 	docker buildx build \
 		--output=type=$(OUTPUT_TYPE) \
 		--platform linux/$(TARGETARCH) \
