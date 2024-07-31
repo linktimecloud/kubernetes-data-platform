@@ -39,7 +39,7 @@ parameter: {
 	}
 	// +usage=Specify cluster DNS service
 	dnsService: {
-		name: *"coredns" | string
+		name: *"kube-dns" | string
 		namespace: *"kube-system" | string
 	}
 	// +usage=Enable/Disable Prometheus CRD installation
