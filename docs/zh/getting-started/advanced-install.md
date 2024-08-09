@@ -57,7 +57,7 @@ kdp install
 | systemMysql.users.root.password | KDP 内置 MySQL root 用户密码（base64编码） | a2RwUm9vdDEyMyo= | 否 | - 仅使用 KDP 内置 MySQL 时生效 <br> - 安装后强制更新会导致 KDP 内置 MySQL 工作负载运行异常 |
 | systemMysql.users.kdpAdmin.user | KDP 基础服务使用的 MySQL 用户名 | kdpAdmin | 是 | - 如使用 KDP 内置 MySQL 会自动创建用户 <br> - 如使用外部 MySQL，可指定为对应的用户名 |
 | systemMysql.users.kdpAdmin.password | KDP 基础服务使用的 MySQL 用户密码（base64编码） | a2RwQWRtaW4xMjMq | 是 | - 如使用 KDP 内置 MySQL 会自动设置用户密码 <br> - 如使用外部 MySQL，可指定为对应的用户密码 |
-| dnsService.name | KDP 日志网关自动发现所使用的 DNS service 名称 | coredns | 是 | 配合`dnsService.namespace`参数使用，仅当 K8s 集群的 DNS 服务不使用 CoreDNS 时指定 |
+| dnsService.name | KDP 日志网关自动发现所使用的 DNS service 名称 | kube-dns | 是 | 配合`dnsService.namespace`参数使用，仅当 K8s 集群的 DNS 服务不使用 CoreDNS 时指定 |
 | dnsService.namespace | KDP 日志网关自动发现所使用的 DNS service 命名空间 | kube-system | 是 | |
 
 ## 访问 KDP UX

@@ -61,7 +61,7 @@ Runtime parameters are supported via "--set k1=v1 --set k2=v2 ..." when install 
 | systemMysql.users.root.password | root user password of KDP built-in MySQL(base64 encoded) | a2RwUm9vdDEyMyo= | N | - Effective only when using KDP built-in MySQL <br> - A force update after installation will cause KDP built-in MySQL workloads to operate abnormally |
 | systemMysql.users.kdpAdmin.user | MySQL user name used by the KDP infrastructure services | kdpAdmin | Y | - If using KDP built-in MySQL, the user will be automatically created <br> - If using external MySQL, specify the corresponding user name |
 | systemMysql.users.kdpAdmin.password | MySQL user password used by the KDP infrastructure services(base64 encoded) | a2RwQWRtaW4xMjMq | Y | - If using KDP built-in MySQL, the user password will be automatically set <br> - If using external MySQL, specify the corresponding user password |
-| dnsService.name | The DNS service name used by KDP logging gateway for service discovery | coredns | Y | Used in conjunction with the `dnsService.namespace` parameter, only specified if the DNS service of the K8s cluster does not use CoreDNS |
+| dnsService.name | The DNS service name used by KDP logging gateway for service discovery | kube-dns | Y | Used in conjunction with the `dnsService.namespace` parameter, only specified if the DNS service of the K8s cluster does not use CoreDNS |
 | dnsService.namespace | The DNS service namespace used by KDP logging gateway for service discovery | kube-system | Y | |
 
 ## Visit KDP UX
