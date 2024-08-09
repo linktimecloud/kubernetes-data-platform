@@ -1,0 +1,24 @@
+apiVersion: installer.kdp.io/v1alpha1
+kind: Infrastructure
+metadata:
+  name: kdp-installer
+spec:
+  kdpRepo: {{ .Values.installConfig.kdpRepo | quote }}
+  kdpRepoRef: {{ .Values.installConfig.kdpRepoRef | quote }}
+  setParameters:
+    {{- $staticParams := dict
+      "ingress.class" .Values.global.ingress.class
+      "ingress.domain" .Values.global.ingress.domain }}
+    {{- if ne .Values.global.ingress.tlsSecretName "" }}
+    {{- $_ := set $staticParams "ingress.tlsSecretName" .Values.global.ingress.tlsSecretName }}
+    {{- end }}
+
+    {{- $allParams := list }}
+    {{- range .Values.installConfig.setParameters }}
+    {{- $allParams = append $allParams . }}
+    {{- end }}
+    {{- range $k, $v := $staticParams }}
+    {{- $allParams = append $allParams (dict "name" $k "value" $v) }}
+    {{- end }}
+
+    {{- toYaml $allParams | nindent 2 }}

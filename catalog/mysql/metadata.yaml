@@ -1,6 +1,7 @@
 name: MySQL
 category: 系统/大数据开发工具
 description: MySQL主从架构的容器化实现，默认创建一套MySQL主从服务，MySQL exporter和备份服务
+group: Middleware
 i18n:
   en:
     category: system.dataManagement

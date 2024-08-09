@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include  "kdp-infra.fullname" .}}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ include  "kdp-infra.name" .}}
+    chart: {{ include  "kdp-infra.name" .}}
+    release: {{ .Release.Name }}
+    monitoring: "true"
+    {{- if .Values.metrics.serviceMonitor.additionalLabels }}
+      {{- toYaml .Values.metrics.serviceMonitor.additionalLabels | nindent 4 }}
+    {{- end }}
+spec:
+  type: ClusterIP
+  ports:
+    - name: metrics
+      port: {{ .Values.service.port }}
+      protocol: TCP
+  selector:
+    app: {{ include  "kdp-infra.name" . }}
+    release: {{ .Release.Name }}

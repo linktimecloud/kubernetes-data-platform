@@ -1,0 +1,5 @@
+global:
+  ingress:
+    class: "kong"
+    domain: "kdp-e2e.io"
+    tlsSecretName: ""
