@@ -1,0 +1,153 @@
+global:
+  ingress:
+    class: "kong"
+    domain: "kdp-e2e.io"
+    tlsSecretName: ""
+
+kdp-infra:
+  # Default values for kdp.
+
+  ## @section kdp parameters
+  ## @param image.registry Image registry
+  ## @param image.repository Image repository
+  ## @param image.pullPolicy Image pull policy
+  ## @param image.tag Image tag
+  ## @param image.digest Image digest
+  image:
+    registry: "od-registry.linktimecloud.com"
+    repository: kdp
+    # IfNotPresent, Always
+    pullPolicy: Always
+    tag: ""
+    digest: ""
+
+  ## @param imagePullSecrets Image pull secrets
+  imagePullSecrets: []
+  ## @param nameOverride String to partially override kdp.fullname
+  nameOverride: ""
+  ## @param fullnameOverride String to fully override kdp.name
+  fullnameOverride: ""
+
+  ## @param serviceAccount.create Create serviceAccount
+  ## @param serviceAccount.automount Automatically mount a ServiceAccount's API credentials?
+  ## @param serviceAccount.annotations Annotations to add to the service account
+  ## @param serviceAccount.name The name of the service account to use.
+  serviceAccount:
+    create: true
+    # Automatically mount a ServiceAccount's API credentials?
+    automount: true
+    annotations: {}
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+
+  ## @param podAnnotations
+  podAnnotations: {}
+  ## @param podLabels
+  podLabels: {}
+
+  ## @param service.port Service port
+  service:
+    port: "9115"
+
+  ## @param resources
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+  #   memory: 128Mi
+
+  ## @param volumes Volumes for the output Deployment definition
+  volumes: []
+  # - name: foo
+  #   secret:
+  #     secretName: mysecret
+  #     optional: false
+
+  ## @param volumeMounts Volume mounts for the output Deployment definition
+  volumeMounts: []
+  # - name: foo
+  #   mountPath: "/etc/foo"
+  #   readOnly: true
+
+  ## @param nodeSelector Node selector for pod assignment
+  nodeSelector: {}
+
+  ## @param affinity Affinity for pod assignment
+  affinity: {}
+
+  ## @param livenessProbe.initialDelaySeconds Initial delay seconds for the liveness probe
+  ## @param livenessProbe.periodSeconds Period seconds for the liveness probe
+  ## @param livenessProbe.timeoutSeconds Timeout seconds for the liveness probe
+  ## @param livenessProbe.failureThreshold Failure threshold for the liveness probe
+  ## @param livenessProbe.successThreshold Success threshold for the liveness probe
+  livenessProbe:
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    timeoutSeconds: 1
+    failureThreshold: 3
+    successThreshold: 1
+
+  ## @param readinessProbe.initialDelaySeconds Initial delay seconds for the readiness probe
+  ## @param readinessProbe.periodSeconds Period seconds for the readiness probe
+  ## @param readinessProbe.timeoutSeconds Timeout seconds for the readiness probe
+  ## @param readinessProbe.failureThreshold Failure threshold for the readiness probe
+  ## @param readinessProbe.successThreshold Success threshold for the readiness probe
+  readinessProbe:
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    timeoutSeconds: 1
+    failureThreshold: 3
+    successThreshold: 1
+
+  ## @param metrics.serviceMonitor.enabled Enable the ServiceMonitor resource for Prometheus Operator
+  ## @param metrics.serviceMonitor.additionalLabels Additional labels that can be used so ServiceMonitor will be discovered by Prometheus
+  ## @param metrics.serviceMonitor.interval Specify the interval at which metrics should be scraped
+  ## @param metrics.serviceMonitor.scrapeTimeout Specify the timeout after which the scrape is ended
+  metrics:
+    serviceMonitor:
+      enabled: true
+      additionalLabels: {}
+      interval: 30s
+
+  persistence:
+    enabled: true
+    ## @param persistence.storageClass PVC Storage Class for MinIO&reg; data volume
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    ##   GKE, AWS & OpenStack)
+    ##
+    storageClass: "standard"
+    ## @param persistence.accessModes PVC Access Modes for MinIO&reg; data volume
+    ##
+    accessModes:
+      - ReadWriteOnce
+    ## @param persistence.size PVC Storage Request for MinIO&reg; data volume
+    ##
+    size: 1Gi
+    ## @param persistence.annotations Annotations for the PVC
+    ##
+    annotations: {}
+
+  installConfig:
+    ## @param installConfig.kdpRepo kdp repo url
+    kdpRepo: "https://gitee.com/linktime-cloud/kubernetes-data-platform.git"
+    ## @param installConfig.kdpRepoRef kdp repo ref
+    kdpRepoRef: "release-1.2"
+    ## @param installConfig.setParameters setParameters
+    setParameters:
+      - name: "dnsService.name"
+        value: "kube-dns"
+      - name: "kong.enabled"
+        value: "true"
+      - name: "prometheus.enabled"
+        value: "true"
+      - name: "loki.enabled"
+        value: "true"
