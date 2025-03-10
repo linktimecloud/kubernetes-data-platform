@@ -1,0 +1,13 @@
+apiVersion: bdc.kdp.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    app.core.bdos/catalog: mongodb
+  labels:
+    app: mongodb
+    app.core.bdos/type: system
+spec:
+  name: mongodb
+  type: mongodb
+  properties:
+    shards: 1
