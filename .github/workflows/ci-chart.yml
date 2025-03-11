@@ -1,0 +1,53 @@
+name: Publish Chart
+
+on:
+  release:
+    types:
+      - published
+    tags:
+      - v*
+
+permissions:
+  contents: read
+
+jobs:
+  publish-charts:
+    env:
+      HELM_CHART_DIR: helm/charts/kdp-infra
+
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
+
+      - name: Get Version
+        id: get_version
+        run: |
+          CHART_VERSION=${GITHUB_REF#refs/tags/}
+          echo "CHART_VERSION=${CHART_VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Install Helm
+        uses: azure/setup-helm@fe7b79cd5ee1e45176fcad797de68ecaf3ca4814
+        with:
+          version: v3.8.2
+
+      - name: Setup node
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
+        with:
+          node-version: "20"
+      - name: Generate helm doc
+        run: |
+          make helm-doc-gen
+
+      - name: Docker Login
+        uses: docker/login-action@e92390c5fb421da1463c202d546fed0ec5c39f20 # v3.1.0
+        with:
+          username: ${{ secrets.REG_USER }}
+          password: ${{ secrets.REG_PASSWD }}
+
+      - name: Tag helm chart and push to registry
+        run: |
+          chart_version=${{ steps.get_version.outputs.CHART_VERSION }}
+          sed -i "s/1.0.0/${chart_version}/g" $HELM_CHART_DIR/Chart.yaml
+          sed -i "s/1.0.0/${chart_version}/g" $HELM_CHART_DIR/values.yaml
+          helm package ./$HELM_CHART_DIR
+          helm push kdp-infra-${chart_version}.tgz  oci://${{ secrets.CONTAINER_REGISTRY }}/linktimecloud

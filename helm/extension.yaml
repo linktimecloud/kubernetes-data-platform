@@ -1,0 +1,53 @@
+apiVersion: kubesphere.io/v1alpha1
+name: kdp
+version: 1.2.0
+displayName:
+  zh: KDP
+  en: KDP
+description:
+  zh: KDP(Kubernetes Data Platform) 提供了一个基于 Kubernetes 的现代化混合云原生数据平台。它能够利用 Kubernetes 的云原生能力来有效地管理数据平台。
+  en: KDP(Kubernetes Data Platform) delivers a modern, hybrid and cloud-native data platform based on Kubernetes. It leverages the cloud-native capabilities of Kubernetes to manage data platform effectively.
+category: other
+keywords:
+  - other
+  - kdp
+  - data
+  - platform
+  - bigData
+home: https://www.linktimecloud.com
+sources:
+  - https://github.com/linktimecloud/kubernetes-data-platform
+kubeVersion: ">=1.26.3-0"
+ksVersion: ">=4.0.0-0"
+maintainers:
+  - name: "linktimecloud"
+    email: "info@linktime.cloud"
+    url: "https://www.linktimecloud.com/"
+provider:
+  zh:
+    name: "武汉智领云科技有限公司"
+    email: "info@linktime.cloud"
+    url: "https://en.linktimecloud.com/"
+  en:
+    name: "LinkTime Cloud"
+    email: "info@linktime.cloud"
+    url: "https://www.linktimecloud.com/"
+icon: ./static/kdp.svg
+screenshots:                 # 扩展组件截图（可选项）
+  - ./static/screenshots/kdp.png
+  - ./static/screenshots/kdp-ux.png
+  - ./static/screenshots/kdp-bdc.png
+dependencies:
+  - name: web
+    tags:
+      - extension
+  - name: kdp-infra
+    tags:
+      - extension
+# installationMode describes how to install subcharts, it can be HostOnly or Multicluster.
+# In Multicluster mode, the subchart with tag `extension` will only be deployed to the host cluster,
+# and the subchart with tag `agent` will be deployed to all selected clusters.
+installationMode: HostOnly
+# Custom namespace example: If not specified, it will be installed in the namespace named extension-{name}.
+#namespace: ""
+
